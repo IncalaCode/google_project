@@ -31,9 +31,9 @@ function init(convertfile) {
         return alert("The file is not supported or try again");
     }
 
-    var img_replaced_file = img_replaced_file(convertfile);
+    convertfile[0] = img_replaced_file(convertfile[0]);
 
-    console.log(convertfile)//remove it 
+    console.log(convertfile[0])//remove it 
     alert("All safe");  // Placeholder alert, remove it when finished
 }
 
@@ -63,8 +63,23 @@ async function import_file(file) {
 }
 
 // img to string 
-function img_replaced_file() {
+function img_replaced_file(htmlContent) {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(htmlContent, 'text/html');
 
+    // Get all <img> tags in the document
+    var imgTags = doc.getElementsByTagName('img');
+
+    // Iterate over each <img> tag and replace it with its src
+    Array.from(imgTags).forEach(function (imgTag) {
+
+
+        var srcText = document.createTextNode(imgTag.src);
+        // here the ai will cook to change the img to string
+        imgTag.parentNode.replaceChild(srcText, imgTag);
+    });
+
+    return doc
 }
 
 function pdf_convert(file) {
@@ -76,4 +91,26 @@ function ppt_convert(file) {
 }
 
 
+function change_imgto_string() {
 
+}
+
+
+const { GoogleGenerativeAI } = require("@google/generative-ai");
+
+// Access your API key as an environment variable (see "Set up your API key" above)
+const genAI = new GoogleGenerativeAI("AIzaSyDTYPNXHwNE5nA5-uHRnBhS_mCXJSoDHXQ");
+
+async function run() {
+    // The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    const prompt = "Write a story about a magic backpack."
+
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+    console.log(text);
+}
+
+run();
