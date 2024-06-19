@@ -30,12 +30,14 @@ export default class Tag {
                         result[result.length - 1].count += textContent.length;
                     } else {
                         result.push({ tag: this.tags.includes(tagName) ? tagName : "normal_tag", text: textContent, count: textContent.length, focus: 0, title: "tage" + i });
+                        i++;
                     }
                 } else {
                     result.push({ tag: this.tags.includes(tagName) ? tagName : "normal_tag", text: textContent, count: textContent.length, focus: 0, title: "tage" + i });
+                    i++;
                 }
 
-                i++;
+
             }
         });
 

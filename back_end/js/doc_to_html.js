@@ -63,17 +63,26 @@ function convertToHtml(arrayBuffer) {
 }
 
 // Function to replace <img> tags with their src as text nodes
-function img_replaced(htmlContent) {
+async function img_replaced(htmlContent, convertfile, tag) {
     var parser = new DOMParser();
     var doc = parser.parseFromString(htmlContent, 'text/html');
 
     // Get all <img> tags in the document
     var imgTags = doc.getElementsByTagName('img');
 
+    // creating the class for converting img to string
+
+    const convert_img = new import_ai();
+
     // Iterate over each <img> tag and replace it with its src as text content
-    Array.from(imgTags).forEach(function (imgTag) {
+    Array.from(imgTags).forEach(async function (imgTag) {
         var srcText = document.createTextNode(imgTag.src);
+
+        srcText.data = "image information [" + await convert_img.img_convert_text(srcText.data) + "]"
+
         imgTag.parentNode.replaceChild(srcText, imgTag);
+        convertfile[0] = tag.classify_tag(convertfile[0].body);
+        console.log(convertfile[0]);
     });
 
     // Return the updated document as HTML string
@@ -94,27 +103,14 @@ function ppt_convert(file) {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // Function to initialize and check conversion results
-function init(convertfile) {
+async function init(convertfile) {
     if (!convertfile[1].type) {
         return alert("The file is not supported or try again");
     }
 
-    var tag = new Tag()
+    var tag = new Tag();
 
-    convertfile[0] = img_replaced(convertfile[0]);
+    convertfile[0] = await img_replaced(convertfile[0], convertfile, tag);
     console.log(convertfile[0].body);
-    convertfile[0] = tag.classify_tag(convertfile[0].body);
 
-    console.log(convertfile[0]);
-    document.write(JSON.stringify(convertfile[0]))// Log the modified HTML (remove in production)
-
-
-    // var res = new import_ai();
-    // res.text_gen().then((text) => {
-    //     console.log("Generated text:", text);
-    //     alert("All safe"); // Placeholder alert, remove it when finished
-    // }).catch((error) => {
-    //     console.error("Error generating text:", error);
-    //     alert("Error generating text"); // Handle error appropriately
-    // });
 }
