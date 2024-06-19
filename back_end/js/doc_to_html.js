@@ -105,7 +105,8 @@ function init(convertfile) {
     console.log(convertfile[0].body);
     convertfile[0] = tag.classify_tag(convertfile[0].body);
 
-    console.log(convertfile[0]); // Log the modified HTML (remove in production)
+    console.log(convertfile[0]);
+    document.write(JSON.stringify(convertfile[0]))// Log the modified HTML (remove in production)
 
 
     // var res = new import_ai();
