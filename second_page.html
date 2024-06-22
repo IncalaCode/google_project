@@ -4,23 +4,43 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>QUGEN</title>
+    <!-- ONLY A BOOTSTRAP OK -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/second_page_css.css">
+
+
+
+
   </head>
 
   <body>
     <!-- this the place you need to add you html and do not change the  the file import form this place ok ;)-->
     <input type="file" name="file" id="import_file" size="1">
 
+    <button popovertarget="search_place"> find</button>
+    <!-- the serach bar for the finder -->
+    <div id="search_place" class="fade-in" popover>Mark it With : <input type="color" id="highlight_color"
+        value="#ff3000">
+      <input type="text" id="search_word_bar" class="" placeholder="search the word">
 
+    </div>
 
+    <pre id="display_list" class="shadow p-3 mb-5 bg-white rounded warp ">
 
-
+                  <!-- here is the doc list will be displayed so dont delete only chang the css or class or bootstrap -->
+                </pre>
 
     <!-- dont touch under here -->
+
+    <!-- markdown for js  -->
+    <script src="https://cdn.jsdelivr.net/npm/turndown/dist/turndown.min.js"></script>
 
     <!-- cdn for the js  -->
     <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.8/mammoth.browser.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
 
     <!-- cnd for google doc  -->
     <script type="importmap">
@@ -31,9 +51,11 @@
             }
           </script>
 
-
-
-
+    <!-- CDN of mark.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"
+      integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww=="
+      crossorigin="anonymous">
+      </script>
 
     <!-- user  imported js  -->
     <script type="module" src="./back_end/js/doc_to_html.js"></script>

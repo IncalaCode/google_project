@@ -1,116 +1,117 @@
-
-
 import import_ai from "./connect_to_ai.js";
-import Tag from "./classification.js"
+import { Tag } from "./classification.js";
+import { display_list } from "./display_list.js";
 
-/// for addEventListener for file drop
-document.getElementById("import_file").addEventListener('change', async (file) => {
-    file = file.target.files[0] || [];
+
+// Add event listener for file drop
+document.getElementById("import_file").addEventListener('change', async (event) => {
+    const file = event.target.files[0];
     if (file) {
-        // Log the file details (remove in production)
         console.log('File name:', file.name);
         console.log('File size:', file.size);
         console.log('File type:', file.type);
 
-        let result;
-
-        if (file.type === "application/pdf") {
-            result = pdf_convert(file);  // Assuming pdf_convert() function is defined elsewhere
-        } else if (file.type === "application/vnd.ms-powerpoint") {
-            result = ppt_convert(file);  // Assuming ppt_convert() function is defined elsewhere
-        } else if (file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
-            result = file;
-        } else {
-            return alert("The document is not supported. Error 1");
-        }
-
         try {
-            const convertfile = await convertToHtml(result);
-            init(convertfile);
+            let result;
+            switch (file.type) {
+                case "application/pdf":
+                    result = await pdf_convert(file); // Assuming pdf_convert() is defined
+                    break;
+                case "application/vnd.ms-powerpoint":
+                    result = await ppt_convert(file); // Assuming ppt_convert() is defined
+                    break;
+                case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+                    result = file;
+                    break;
+                default:
+                    alert("The document is not supported. Error 1");
+                    return;
+            }
+
+            const convertedFile = await convertToHtml(result);
+            await init(convertedFile);
         } catch (error) {
             console.error("Error converting file to HTML:", error);
-            alert("Error converting file to HTML"); // Handle error appropriately
+            alert("Error converting file to HTML");
         }
     }
-})
-
-
-
+});
 
 // Function to convert a document to HTML
-function convertToHtml(arrayBuffer) {
+function convertToHtml(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
 
         reader.onload = () => {
             const arrayBuffer = reader.result;
-            mammoth.convertToHtml({ arrayBuffer: arrayBuffer })
+            mammoth.convertToHtml({ arrayBuffer })
                 .then((resultObject) => {
                     const result = resultObject.value;
-                    resolve([result, { type: result ? true : false }]); // Assuming type: true is a placeholder for some condition
+                    resolve([result, { type: !!result }]);
                 })
-                .catch((error) => {
-                    reject(error);
-                });
+                .catch(reject);
         };
 
-        reader.onerror = (error) => {
-            reject(error);
-        };
-
-        reader.readAsArrayBuffer(arrayBuffer);
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
     });
+}
+
+// Placeholder functions for document conversion
+async function pdf_convert(file) {
+    // Implement PDF conversion logic
+    throw new Error("pdf_convert function is not implemented");
+}
+
+async function ppt_convert(file) {
+    // Implement PowerPoint conversion logic
+    throw new Error("ppt_convert function is not implemented");
+}
+
+// Function to initialize and check conversion results
+async function init(convertedFile) {
+    if (!convertedFile[1].type) {
+        alert("The file is not supported or try again");
+        return;
+    }
+    await replaceImagesWithText(convertedFile[0], convertedFile);
 }
 
 // Function to replace <img> tags with their src as text nodes
-async function img_replaced(htmlContent, convertfile, tag) {
-    var parser = new DOMParser();
-    var doc = parser.parseFromString(htmlContent, 'text/html');
+async function replaceImagesWithText(htmlContent, convertedFile) {
+    const parser = new DOMParser();
+    const tag = new Tag();
 
-    // Get all <img> tags in the document
-    var imgTags = doc.getElementsByTagName('img');
-
-    // creating the class for converting img to string
-
+    const doc = parser.parseFromString(htmlContent, 'text/html');
+    const imgTags = doc.getElementsByTagName('img');
     const convert_img = new import_ai();
 
-    // Iterate over each <img> tag and replace it with its src as text content
-    Array.from(imgTags).forEach(async function (imgTag) {
-        var srcText = document.createTextNode(imgTag.src);
-
-        srcText.data = "image information [" + await convert_img.img_convert_text(srcText.data) + "]"
-
-        imgTag.parentNode.replaceChild(srcText, imgTag);
-        convertfile[0] = tag.classify_tag(convertfile[0].body);
-        console.log(convertfile[0]);
-    });
-
-    // Return the updated document as HTML string
-    return doc;
-}
-
-
-// Placeholder functions for document conversion
-function pdf_convert(file) {
-    // Implement PDF conversion logic
-}
-
-function ppt_convert(file) {
-    // Implement PowerPoint conversion logic
-}
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////////////
-// Function to initialize and check conversion results
-async function init(convertfile) {
-    if (!convertfile[1].type) {
-        return alert("The file is not supported or try again");
+    for (let element of imgTags) {
+        await con_img_ai(element, convert_img)
     }
 
-    var tag = new Tag();
+    //for unfinshed list with  error hundleing method 
+    try {
+        await con_img_ai(imgTags[0], convert_img);
+    } catch (error) {
+        console.error("Error processing image:", error);
+    }
 
-    convertfile[0] = await img_replaced(convertfile[0], convertfile, tag);
-    console.log(convertfile[0].body);
 
+    console.log(JSON.stringify(convertedFile));
+
+    convertedFile[0] = tag.classify_tag(doc.body.innerHTML);
+    console.log(convertedFile[0]);
+
+    // For displaying the list
+    display_list(convertedFile);
+
+    console.log(convertedFile);
+}
+
+async function con_img_ai(element, convert_img) {
+    const srcText = document.createTextNode(element.src);
+    const response = await convert_img.img_convert_text(srcText.data);
+    srcText.data = "image information [" + response + "]";
+    element.parentNode.replaceChild(srcText, element);
 }
