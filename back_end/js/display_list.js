@@ -102,63 +102,88 @@ function code_display(value) {
 }
 
 
+
 ///for the search bar ok 
-// Initialize variables to track highlighted elements and current index
-let highlightedElements = [];
-let currentHighlightIndex = -1;
+// Event listener for input in search bar
+document.getElementById('search_word_bar').addEventListener('input', () => {
 
-// Function to highlight and scroll to the next or previous occurrence
-function highlightAndScroll(direction) {
-    // Remove previous highlighted class
-    highlightedElements.forEach(el => el.classList.remove('highlighted'));
-
+    // currrent use 
+    let current = 0
     // Select the whole paragraph
-    let ob = new Mark(document.querySelector(".main_display"));
+    var ob = new Mark(document.querySelector(".main_display"));
 
     // First unmark the highlighted word or letter
     ob.unmark();
 
     // Get the highlight color
-    let color = document.getElementById('highlight_color').value;
+    var color = document.getElementById('highlight_color').value;
 
     // Add a temporary style tag for the highlight color
-    let style = document.createElement('style');
-    style.type = 'text/css';
+    var style = document.createElement('style');
     style.innerHTML = `.highlight { background-color: ${color}; }`;
     document.head.appendChild(style);
 
-    // Highlight letter or word with options
+    // Highlight letter or word
     ob.mark(document.getElementById("search_word_bar").value, {
         className: 'highlight',
-        ignoreJoiners: true, // Ignore certain characters when searching
-        separateWordSearch: true, // Treat each word separately
-        each: function (element) {
-            // Add to highlighted elements array
-            highlightedElements.push(element);
-        },
-        done: function () {
-            if (highlightedElements.length > 0) {
-                // Update current highlight index based on direction
-                if (direction === 'next') {
-                    currentHighlightIndex = (currentHighlightIndex + 1) % highlightedElements.length;
-                } else if (direction === 'previous') {
-                    currentHighlightIndex = (currentHighlightIndex - 1 + highlightedElements.length) % highlightedElements.length;
-                }
 
-                // Scroll to the current highlighted element
-                let currentElement = highlightedElements[currentHighlightIndex];
-                currentElement.classList.add('highlighted');
-                currentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        done: function () {
+            // Get all highlighted elements
+            var highlightedElements = document.querySelectorAll('.highlight');
+
+            // Scroll to the first highlighted element
+            if (highlightedElements.length > 0) {
+                highlightedElements[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         }
     });
-}
 
-// Event listener for input in search bar
-document.getElementById('search_word_bar').addEventListener('input', () => {
-    highlightedElements = [];
-    currentHighlightIndex = -1;
-    highlightAndScroll('next'); // Highlight and scroll to next occurrence by default
+    // for the down button
+    document.getElementById('down_btn').addEventListener('click', () => {
+        // Get all highlighted elements
+        var highlightedElements = document.querySelectorAll('.highlight');
+
+        if (current == highlightedElements.length - 1) {
+            alert("you reached the end of search")
+        }
+
+        // Scroll to the first highlighted element
+        if (highlightedElements.length > 0 && current < highlightedElements.length - 1) {
+            highlightedElements[current + 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            current++
+        }
+    })
+
+    // for the up button
+    document.getElementById('up_btn').addEventListener('click', () => {
+        // Get all highlighted elements
+        var highlightedElements = document.querySelectorAll('.highlight');
+
+        if (current == 0) {
+            alert("you reached the frist of search")
+        }
+        // Scroll to the first highlighted element
+        if (highlightedElements.length > 0 && current > 0) {
+            highlightedElements[current - 1].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            current--
+        }
+    })
 });
 
 
+// document.getElementById('display_list').addEventListener('mouseup', () => {
+//     const selectedTextArea = document.getElementById('selected_place');
+//     const selection = window.getSelection();
+//     if (selection.toString().trim() !== '') {
+//         markInstance.unmark({
+//             done: function () {
+//                 markInstance.mark(selection.toString(), {
+//                     className: 'mark',
+//                     done: function () {
+//                         selectedTextArea.value = selection.toString();
+//                     }
+//                 });
+//             }
+//         });
+//     }
+// });

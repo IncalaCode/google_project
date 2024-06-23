@@ -17,17 +17,14 @@
 }
 
 #search_place {
+    position: absolute;
     gap: 12px;
     border-radius: 12px;
-    border: 1px solid gray;
-    margin-top: 0;
-    margin-right: 10px;
-}
+    z-index: 9999;
 
-#display_list {
-    font-family: 'Times New Roman';
 
 }
+
 
 .highlight {
     color: white;
@@ -39,6 +36,16 @@
 .current-highlight {
     border: 2px solid black;
     /* Example style for the current highlight */
+}
+
+.modal-body {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.focus_point {
+    background-color: yellow;
+    color: aliceblue;
 }
 
 @keyframes fadeIn {
