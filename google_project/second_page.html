@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>second-page</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <style>
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f4f8;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: #333;
+      }
+
+      .container {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        width: 300px;
+        text-align: center;
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      h2 {
+        margin-bottom: 20px;
+        color: #422781;
+        animation: fadeIn 1.5s ease-in-out;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+        color: #422781;
+        animation: fadeIn 2s ease-in-out;
+      }
+
+      input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        animation: fadeIn 2.5s ease-in-out;
+      }
+
+      button {
+        background-color: #422781;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        animation: fadeIn 3s ease-in-out;
+      }
+
+      button:hover {
+        background-color: #311d5b;
+      }
+
+      .result {
+        margin-top: 20px;
+        animation: fadeIn 3.5s ease-in-out;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h2>Upload File to Generate Questions</h2>
+
+      <form onsubmit="generateQuestions(event)">
+        <label for="importfile">Import a file:</label>
+        <input
+          type="file"
+          name="file"
+          id="importfile"
+          onchange="import_file(this)"
+          size="1"
+        />
+
+        <button type="submit">Generate Questions</button>
+      </form>
+
+      <div class="result" id="result"></div>
+    </div>
+
+    <!-- cdn for the js -->
+    <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.8/mammoth.browser.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- user imported js -->
+    <script src="./back_end/js/doc_to_html.js"></script>
+    <script>
+      function import_file(input) {
+        const file = input.files[0];
+        if (file) {
+          // Add code here to handle file import and parsing
+          console.log("File imported:", file.name);
+        }
+      }
+
+      function generateQuestions(event) {
+        event.preventDefault();
+        const resultDiv = document.getElementById("result");
+        // Simulate question generation
+        const questions = [
+          "What is the main topic of the document?",
+          "List three key points discussed.",
+          "What questions do you still have after reading the document?",
+        ];
+
+        resultDiv.innerHTML = "<h3>Generated Questions:</h3>";
+        questions.forEach((question) => {
+          const p = document.createElement("p");
+          p.textContent = question;
+          resultDiv.appendChild(p);
+        });
+      }
+    </script>
+  </body>
+</html>
