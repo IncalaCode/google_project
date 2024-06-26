@@ -86,9 +86,14 @@
 
 export function display_list(convertfile) {
     const displayListElement = document.getElementById('display_list');
-    displayListElement.innerHTML = '';  // Clear any existing content
+    displayListElement.innerHTML = '';
+    displayListElement.classList.add('fade-in', "main_display")// Clear any existing content
 
-    displayListElement.appendChild(code_display(convertfile));
+    displayListElement.innerHTML = convertfile;
+
+    // for selecting the selectable place 
+
+
 
 
 }
@@ -96,7 +101,7 @@ export function display_list(convertfile) {
 function code_display(value) {
     const code_tag = document.createElement('code')
     code_tag.innerHTML = value
-    code_tag.classList.add('fade-in', "main_display")
+
     return code_tag
 
 }
