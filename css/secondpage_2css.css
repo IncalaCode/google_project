@@ -1,0 +1,175 @@
+.highlight {
+    background-color: yellow;
+    color: #000;
+}
+
+::selection {
+    background-color: #ccc;
+    color: black;
+}
+
+#annotationPanel {
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+#annotationPanel h2 {
+    margin-top: 0;
+}
+
+#annotationsList {
+    list-style: none;
+    padding-left: 0;
+}
+
+#annotationModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.container {
+    padding: 1.5rem 10rem;
+}
+
+h1 {
+    font-size: 3rem;
+    margin: 1.25rem 0;
+}
+
+h2 {
+    font-size: 2rem;
+}
+
+hr {
+    margin: 3rem 0;
+    border: 0;
+    height: 1px;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.25));
+}
+
+p {
+    margin-bottom: 2rem;
+    line-height: 1.75rem;
+}
+
+#highlightchooesbut {
+    display: block;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.25rem;
+    color: #56b8f5;
+    background-color: #fff;
+    cursor: pointer;
+    border: 2px solid #56b8f5;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    display: none;
+    transition: color 0.2s, background-color 0.2s ease-in-out;
+}
+
+#highlightchooesbut:hover {
+    color: #fff;
+    background-color: #56b8f5;
+}
+
+#highlightchooesbut i {
+    pointer-events: none;
+}
+
+.btnEntrance {
+    animation-duration: 0.2s;
+    animation-fill-mode: both;
+    animation-name: btnEntrance;
+}
+
+@keyframes btnEntrance {
+    0% {
+        opacity: 0;
+        transform: scale3d(0.3, 0.3, 0.3);
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@media(max-width: 992px) {
+    .container {
+        padding: 1.25rem 6rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+    }
+}
+
+@media(max-width:768px) {
+    html {
+        font-size: 12px;
+    }
+
+    .container {
+        padding: 1rem 3rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    hr {
+        margin: 1.5rem 0;
+    }
+}
+
+.popup {
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    width: 300px;
+    z-index: 1050;
+}
+
+.collapsed-text {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 300px;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    /* Adjust as needed */
+}
+
+.fade-in {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+
+
+.errors {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+}

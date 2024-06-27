@@ -1,25 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-    </head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUGEN</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="./css/second_page_css.css">
+    <link rel="stylesheet" href="./css/secondpage_2css.css">
+  </head>
 
-    <body>
-        <!-- this the place you need to add you html and do not change the  the file import form this place ok ;)-->
-        <input type="file" name="file" id="importfile" onchange="import_file(this)" size="1">
+  <body>
+    <div class="container mt-3">
+      <input type="file" name="file" id="import_file" class="form-control-file">
 
+      <!-- Trigger button for the modal -->
+      <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#myModal">
+        Open Popup
+      </button>
+    </div>
 
+    <section>
 
-        <!-- cdn for the js  -->
-        <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.8/mammoth.browser.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <!-- Modal structure -->
+      <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg"> <!-- Use .modal-lg for a large modal -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="myModalLabel">
+                <!-- the search bar for the finder -->
+                <div id="search_place" class="fade-in">
+                  <div class="form-row align-items-center">
+                    <div class="col-auto">
+                      <label for="highlight_color" class="col-form-label">Mark:</label>
+                    </div>
+                    <div class="col-auto">
+                      <input type="color" id="highlight_color" value="#ff3000" class="form-control form-control-color">
+                    </div>
+                    <div class="col-auto">
+                      <input type="text" id="search_word_bar" class="form-control" placeholder="search the word">
+                    </div>
+                    <div class="col-auto">
+                      <div class="btn-group">
+                        <button id="up_btn" class="btn btn-info"><i class="bi bi-arrow-up"></i></button>
+                        <button id="down_btn" class="btn btn-info"><i class="bi bi-arrow-down"></i></button>
+                        <button id="penTool" class="btn btn-info">
+                          <i class="fas fa-pen"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <pre id="display_list" class="warp display">
+            <!-- here is the doc list will be displayed so don't delete only change the css or class or bootstrap -->
+            </pre>
+            </div>
+          </div>
+        </div>
+      </div>
 
+      <!-- Floating button -->
+      <button id="highlightchooesbut" class="icon">✔️</button>
 
-        <!-- user  imported js  -->
-        <script src="./back_end/js/doc_to_html.js"></script>
-    </body>
+      <div id="errors">
+        <!-- Error messages -->
+      </div>
+
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/turndown/dist/turndown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.8/mammoth.browser.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Import map for Google Generative AI -->
+    <script type="importmap">
+  {
+    "imports": {
+      "@google/generative-ai": "https://esm.run/@google/generative-ai"
+    }
+  }
+  </script>
+
+    <!-- CDN of mark.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"
+      integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww=="
+      crossorigin="anonymous"></script>
+
+    <!-- User imported JS -->
+    <script type="module" src="./back_end/js/doc_to_html.js"></script>
+    <script src="./back_end/js/selection.js"></script>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  </body>
 
 </html>

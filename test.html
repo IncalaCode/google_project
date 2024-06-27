@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+        <title>Highlighter and Annotation Maker</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+            }
+
+            .highlight {
+                background-color: yellow;
+            }
+
+            #annotationPanel {
+                margin: 20px;
+                padding: 10px;
+                border: 1px solid #ccc;
+            }
+
+            #annotationPanel h2 {
+                margin-top: 0;
+            }
+
+            #annotationsList {
+                list-style: none;
+                padding-left: 0;
+            }
+
+            #annotationModal {
+                display: none;
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                padding: 20px;
+                background: white;
+                border: 1px solid #ccc;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            #penTool {
+                margin: 20px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                cursor: pointer;
+                display: inline-block;
+            }
+
+            .container {
+                padding: 1.5rem 10rem;
+            }
+
+            h1 {
+                font-size: 3rem;
+                margin: 1.25rem 0;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            hr {
+                margin: 3rem 0;
+                border: 0;
+                height: 1px;
+                background: linear-gradient(to right, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.25));
+            }
+
+            p {
+                margin-bottom: 2rem;
+                line-height: 1.75rem;
+            }
+
+            #highlightchooesbut {
+                display: flexbox;
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 1.25rem;
+                color: #56b8f5;
+                background-color: #fff;
+                cursor: pointer;
+                border: 2px solid #56b8f5;
+                border-radius: 50%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 10;
+                display: none;
+                transition: color 0.2s, background-color 0.2s ease-in-out;
+            }
+
+            #highlightchooesbut:hover {
+                color: #fff;
+                background-color: #56b8f5;
+            }
+
+            #highlightchooesbut i {
+                pointer-events: none;
+            }
+
+            .btnEntrance {
+                animation-duration: 0.2s;
+                animation-fill-mode: both;
+                animation-name: btnEntrance;
+            }
+
+            @keyframes btnEntrance {
+                0% {
+                    opacity: 0;
+                    transform: scale3d(0.3, 0.3, 0.3);
+                }
+
+                100% {
+                    opacity: 1;
+                }
+            }
+
+            @media(max-width: 992px) {
+                .container {
+                    padding: 1.25rem 6rem;
+                }
+
+                h1 {
+                    font-size: 2.5rem;
+                }
+
+                h2 {
+                    font-size: 1.75rem;
+                }
+            }
+
+            @media(max-width:768px) {
+                html {
+                    font-size: 12px;
+                }
+
+                .container {
+                    padding: 1rem 3rem;
+                }
+
+                h1 {
+                    font-size: 2rem;
+                }
+
+                h2 {
+                    font-size: 1.5rem;
+                }
+
+                hr {
+                    margin: 1.5rem 0;
+                }
+            }
+
+
+            .popup {
+                display: none;
+                position: absolute;
+                background-color: white;
+                border: 1px solid black;
+                padding: 10px;
+                z-index: 100;
+                box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+                border-radius: 5px;
+                width: 200px;
+            }
+
+            .popup textarea {
+                width: 100%;
+                height: 50px;
+                margin-bottom: 10px;
+                padding: 5px;
+                font-family: Arial, sans-serif;
+            }
+
+            .popup-btn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 45%;
+                margin: 0 2.5%;
+                padding: 5px;
+                border: none;
+                cursor: pointer;
+                border-radius: 5px;
+                color: #fff;
+            }
+
+            #acceptAnnotation {
+                background-color: #4CAF50;
+            }
+
+            #deleteAnnotation {
+                background-color: #f44336;
+            }
+
+            .popup-btn i {
+                margin-right: 5px;
+            }
+
+            .errors {
+                width: 50px;
+                height: 50px;
+                border-radius: 12px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="penTool">Pen Tool</div>
+
+        <div id="annotationPanel">
+            <h2>Annotations</h2>
+            <ul id="annotationsList"></ul>
+        </div>
+
+        <!-- <div id="popup" class="popup">
+            <textarea id="annotationText" placeholder="Add your annotation..."></textarea>
+            <button id="acceptAnnotation" class="popup-btn">
+                <i class="fas fa-check"></i> Accept
+            </button>
+            <button id="deleteAnnotation" class="popup-btn">
+                <i class="fas fa-trash"></i> Delete
+            </button>
+        </div> -->
+        <!-- 
+        <div id="annotationModal">
+            <label for="annotationInput">Annotation:</label>
+            <input type="text" id="annotationInput">
+            <button id="saveAnnotation">Save</button>
+            <button id="closeAnnotation">Close</button>
+        </div> -->
+
+        <div id="text_place" class="container">
+            <h1>Sharing Selected Text</h1>
+            <h2 class="selectable-text-area">Select the text you want to share</h2>
+            <hr>
+            <div class="selectable-text-area">
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Recusandae <a href="#">libero</a> pariatur
+                    eos aperiam saepe, beatae necessitatibus exercitationem, nemo, sit provident possimus debitis modi
+                    eligendi repellat iure vitae perferendis? Recusandae accusamus placeat velit itaque quis fuga
+                    laudantium debitis, ab eaque voluptatum illo esse incidunt! Quia tempore explicabo sint laboriosam
+                    rerum nihil voluptates voluptatibus voluptate iure. Earum magnam blanditiis voluptates quod ex
+                    exercitationem reiciendis, iure qui ducimus similique impedit nemo est, quisquam facere id adipisci
+                    harum tenetur consequuntur illum saepe laudantium. Suscipit facilis corporis natus aperiam!
+                    Reprehenderit hic quia natus nisi similique quod fugiat, architecto autem deleniti unde commodi
+                    accusamus modi voluptate?</p>
+                <p>Corporis iste ex minus vitae sit, quo illo beatae expedita distinctio modi eum eos officiis dicta
+                    soluta? This part is brilliant, let's share!! Illum, ducimus? Animi voluptate incidunt atque ipsa
+                    odit aperiam vero asperiores esse repellendus eveniet, molestiae minima optio dolor eum distinctio
+                    non perferendis sunt officiis corrupti similique et expedita saepe? Dolore, est. Tempore nisi beatae
+                    quasi quibusdam excepturi necessitatibus deleniti quas, consequuntur saepe sapiente quia, eligendi
+                    magni quod, dolores aspernatur ad sint! Nihil cupiditate atque enim esse hic laudantium, doloribus
+                    commodi fugit minus quasi nam laboriosam ipsum ex voluptatum recusandae ratione ullam, ducimus id
+                    quisquam placeat inventore aliquam in! Molestias quam maiores ipsa sequi.</p>
+                <p>Nam nisi inventore in officiis atque qui earum illo, quod laboriosam vitae quo blanditiis
+                    voluptatibus enim hic vero iure consectetur rerum deserunt deleniti? Laborum dolores cum mollitia
+                    veritatis, sequi id doloribus cupiditate asperiores minus delectus veniam porro hic optio vero ipsum
+                    cumque enim ratione animi? Saepe adipisci sapiente architecto, voluptatem reprehenderit sed esse,
+                    vel voluptas accusamus atque non neque inventore velit quidem nostrum ipsa quod repudiandae pariatur
+                    cum corporis quis molestias. Officiis labore id officia aperiam corrupti. Non veniam rem quod
+                    deserunt excepturi autem, assumenda recusandae beatae quos nihil praesentium repellendus voluptatum
+                    itaque reiciendis facere, incidunt adipisci, eligendi architecto pariatur!</p>
+            </div>
+        </div>
+
+        <button id="highlightchooesbut" class="icon">✔️</button>
+        <div id="errors">
+            <!-- were error hapend -->
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const container = document.getElementById('text_place');
+                const annotationsList = document.getElementById('annotationsList');
+
+                const annotationInput = document.getElementById('annotationInput');
+                const saveAnnotation = document.getElementById('saveAnnotation');
+                const closeAnnotation = document.getElementById('closeAnnotation');
+                const penTool = document.getElementById('penTool');
+                const selectableTextArea = document.querySelectorAll(".selectable-text-area");
+                const highlightbtn = document.querySelector("#highlightchooesbut");
+
+                const errors = document.querySelector("#errors");
+
+
+                let selectedRange = null;
+                let penActive = false;
+                let currentSpan = null;
+                let popupVisible = false; // Track if the popup is currently visible
+
+                penTool.addEventListener('click', () => {
+                    penActive = !penActive;
+                    penTool.style.backgroundColor = penActive ? '#e0e0e0' : '';
+                    container.style.cursor = penActive ? 'crosshair' : 'text';
+                });
+
+
+                highlightbtn.addEventListener('click', () => {
+                    if (selectedRange) {
+                        try {
+                            const span = document.createElement('span');
+                            span.className = 'highlight';
+
+                            selectedRange.surroundContents(span);
+
+                            span.dataset.annotation = ""; // Initialize data-annotation attribute
+                            span.addEventListener('mouseover', (event) => {
+                                currentSpan = span;
+                                showPopup(event, span);
+                            });
+                            span.addEventListener('mouseout', () => {
+                                hidePopup();
+                            });
+                            selectedRange = null;
+                            highlightbtn.style.display = 'none';
+
+                        } catch {
+                            showerorr("you cant highlight both highlight and un highlightbtn text", 'warring', highlightbtn)
+                        }
+                    }
+                });
+
+                function showerorr(error, type, where) {
+                    where.style.display = 'none'
+                    errors.classList.add(type)
+                    error.innerHTML = error
+                    error.st
+
+                }
+
+
+                selectableTextArea.forEach(elem => {
+                    elem.addEventListener("mouseup", selectableTextAreaMouseUp);
+                });
+
+
+
+                document.addEventListener("mousedown", documentMouseDown);
+
+                function selectableTextAreaMouseUp(event) {
+                    selectedRange = window.getSelection().getRangeAt(0);
+                    setTimeout(() => {
+                        const selectedText = window.getSelection().toString().trim();
+                        if (selectedText.length) {
+                            const x = event.pageX;
+                            const y = event.pageY;
+                            const highlightBtnWidth = Number(getComputedStyle(highlightbtn).width.slice(0, -2));
+                            const highlightBtnHeight = Number(getComputedStyle(highlightbtn).height.slice(0, -2));
+
+                            highlightbtn.style.left = `${x - highlightBtnWidth * 0.5}px`;
+                            highlightbtn.style.top = `${y - highlightBtnHeight * 1.25}px`;
+                            highlightbtn.style.display = "block";
+                            highlightbtn.classList.add("btnEntrance");
+                        }
+                    }, 0);
+                }
+
+                function documentMouseDown(event) {
+                    if (event.target.id !== "highlightchooesbut" && getComputedStyle(highlightbtn).display === "block") {
+                        highlightbtn.style.display = "none";
+                        highlightbtn.classList.remove("btnEntrance");
+                        window.getSelection().empty();
+                    }
+                }
+
+                function highlightbtnClick(event) {
+                    const selectedText = window.getSelection().toString();
+                    if (selectedText.length) {
+                        if (selectedRange) {
+                            annotationModal.style.display = 'block';
+                        }
+                    }
+                }
+
+                function addAnnotation(annotation, element) {
+                    const selectedText = element.textContent;
+                    const li = document.createElement('li');
+                    li.textContent = `${selectedText}: ${annotation}`;
+                    annotationsList.appendChild(li);
+
+                    element.addEventListener('click', () => {
+                        alert(`Annotation: ${annotation}`);
+                    });
+                }
+
+
+                function createPopup() {
+                    const popup = document.createElement('div');
+                    popup.id = 'popup';
+                    popup.className = 'popup';
+
+                    const textarea = document.createElement('textarea');
+                    textarea.id = 'annotationText';
+                    textarea.placeholder = 'Add your annotation...';
+
+                    const acceptButton = document.createElement('button');
+                    acceptButton.id = 'acceptAnnotation';
+                    acceptButton.className = 'popup-btn';
+                    acceptButton.innerHTML = '<i class="fas fa-check"></i> Accept';
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.id = 'deleteAnnotation';
+                    deleteButton.className = 'popup-btn';
+                    deleteButton.innerHTML = '<i class="fas fa-trash"></i> Delete';
+
+                    popup.appendChild(textarea);
+                    popup.appendChild(acceptButton);
+                    popup.appendChild(deleteButton);
+
+                    document.body.appendChild(popup);
+
+                    acceptButton.addEventListener('click', () => {
+                        if (currentSpan) {
+                            const annotation = textarea.value;
+                            currentSpan.dataset.annotation = annotation;
+                            console.log('Annotation accepted:', annotation);
+                        }
+                        hidePopup();
+                    });
+
+                    deleteButton.addEventListener('click', () => {
+                        if (currentSpan) {
+                            currentSpan.remove();
+                            currentSpan = null;
+                            console.log('Annotation deleted');
+                        }
+                        hidePopup();
+                    });
+
+                    return popup;
+                }
+
+
+                function showPopup(event, span) {
+                    const popup = document.getElementById('popup') || createPopup();
+                    const textarea = popup.querySelector('#annotationText');
+
+                    textarea.value = span.dataset.annotation; // Load existing annotation
+
+                    const rect = span.getBoundingClientRect();
+                    popup.style.left = `${rect.left + window.scrollX - 100}px`; // Position to the left of the span
+                    popup.style.top = `${rect.top + window.scrollY}px`;
+
+                    popup.style.display = 'block';
+                    popupVisible = true; // Mark popup as visible
+                }
+
+
+
+
+                function hidePopup() {
+                    if (popupVisible) {
+                        const popup = document.getElementById('popup');
+                        if (popup) {
+                            popup.style.display = 'none';
+                            popupVisible = false; // Mark popup as hidden
+                        }
+                    }
+                }
+
+                document.addEventListener('mousedown', (event) => {
+                    const popup = document.getElementById('popup');
+                    if (popup && !popup.contains(event.target) && (!currentSpan || !currentSpan.contains(event.target))) {
+                        hidePopup();
+                    }
+                });
+
+                document.addEventListener('mouseover', (event) => {
+                    const popup = document.getElementById('popup');
+                    if (popup && currentSpan && (currentSpan.contains(event.target) || popup.contains(event.target))) {
+                        showPopup(event, currentSpan);
+                    }
+                });
+
+                document.addEventListener('mouseout', (event) => {
+                    const popup = document.getElementById('popup');
+                    if (popup && !currentSpan.contains(event.target) && !popup.contains(event.target)) {
+                        hidePopup();
+                    }
+                });
+            });
+        </script>
+    </body>
+
+</html>

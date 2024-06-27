@@ -1,0 +1,59 @@
+.hover-shadow {
+    transition: box-shadow 0.3s;
+}
+
+.hover-shadow:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 2s forwards;
+}
+
+.warp {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+#search_place {
+    position: absolute;
+    gap: 12px;
+    border-radius: 12px;
+    z-index: 9999;
+
+
+}
+
+
+
+
+
+
+.highlight {
+    color: white;
+
+    transition: background-color 3s ease;
+    /* Optional: Change text color to ensure readability */
+}
+
+.current-highlight {
+    border: 2px solid black;
+    /* Example style for the current highlight */
+}
+
+.modal-body {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.focus_point {
+    background-color: yellow;
+    color: aliceblue;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
