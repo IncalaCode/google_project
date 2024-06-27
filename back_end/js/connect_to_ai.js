@@ -53,4 +53,8 @@ export default class ImportAI {
             console.error('Error running AI process:', error);
         }
     }
+
+    async generateQuestions() {
+
+    }
 }

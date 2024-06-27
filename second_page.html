@@ -79,6 +79,43 @@
 
     </section>
 
+
+    <section>
+      <div>
+        <label>Select Question Mode:</label><br>
+        <input type="radio" id="modeExam" name="questionMode" value="exam" data-min-words="10" data-max-words="50"
+          data-difficulty="easy">
+        <label for="modeExam">Exam</label><br>
+        <input type="radio" id="modeQuiz" name="questionMode" value="quiz" data-min-words="15" data-max-words="60"
+          data-difficulty="medium">
+        <label for="modeQuiz">Quiz</label><br>
+        <input type="radio" id="modeEssay" name="questionMode" value="essay" data-min-words="50" data-max-words="150"
+          data-difficulty="hard">
+        <label for="modeEssay">Essay</label><br>
+        <input type="radio" id="modeTest" name="questionMode" value="test" data-min-words="5" data-max-words="20"
+          data-difficulty="medium">
+        <label for="modeTest">Test</label><br>
+      </div>
+
+      <div>
+        <label>Select Difficulty:</label><br>
+        <select id="difficulty">
+          <option value="default ">default </option>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Number of Questions:</label><br>
+        <input type="number" id="numQuestions" value="5">
+      </div>
+
+      <button id="generatequestion">Generate Questions</button>
+
+    </section>
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/turndown/dist/turndown.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.8/mammoth.browser.min.js"></script>
@@ -100,6 +137,7 @@
 
     <!-- User imported JS -->
     <script type="module" src="./back_end/js/doc_to_html.js"></script>
+    <script type="module" src="./back_end/js/generatequestion.js"></script>
     <script src="./back_end/js/selection.js"></script>
 
     <!-- Bootstrap JS, Popper.js, and jQuery -->
