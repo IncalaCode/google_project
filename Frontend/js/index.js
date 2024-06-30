@@ -295,8 +295,17 @@
 
 					ajax.onerror = function()
 					{
+
 						form.classList.remove( 'is-uploading' );
-						alert( 'Error. Please, try again!' );
+						// 
+						// window.location.href = "second_html.html";
+						window.location.href = "../second_page.html";
+						var fd = new FormData();
+						fd.append("file", droppedFiles[0]);
+						var xhr = new XMLHttpRequest();
+						xhr.open("POST", "../second_page.html", true);
+						xhr.send(fd);
+
 					};
 
 					ajax.send( ajaxData );
@@ -344,3 +353,20 @@
 
 		});
 	}( document, window, 0 ));
+
+
+	// Redirect user to the second_page.html after a successful file upload
+	// document.querySelector('form').addEventListener('submit', function(event) {
+	//   event.preventDefault();
+	//   var form = this;
+	//   var xhr = new XMLHttpRequest();
+	//   xhr.open('POST', form.action);
+	//   xhr.setRequestHeader('Accept', 'application/json');
+	//   xhr.onreadystatechange = function() {
+	//     if (xhr.readyState === 4 && xhr.status === 200) {
+	//       // File uploaded successfully
+	//       window.location.href = 'second_page.html';
+	//     }
+	//   };
+	//   xhr.send(new FormData(form));
+	// });

@@ -11,13 +11,37 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/second_page_css.css">
+    <link rel="stylesheet" href="/google_project/Frontend/css/secondPage.css">
     <link rel="stylesheet" href="./css/secondpage_2css.css">
   </head>
 
   <body>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const fileInput = document.querySelector('#import_file');
+
+        form.addEventListener('submit', function(event) {
+          event.preventDefault();
+          const file = fileInput.files[0];
+
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const contents = e.target.result;
+            // Do something with the file contents
+            console.log(contents);
+          };
+          reader.readAsText(file);
+        });
+      });
+    </script>
     <div class="container mt-3">
       <input type="file" name="file" id="import_file" class="form-control-file">
+
+    
 
       <!-- Trigger button for the modal -->
       <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#myModal">
@@ -79,6 +103,165 @@
 
     </section>
 
+     <!-- question prefereneces -->
+     <!-- <header class='speaker-form-header'>
+
+
+      <h1>Speaker Submission</h1>
+      <p><em>Want to speak at our fake conference? Fill out this form!</em></p>
+
+    </header>
+
+      <form action='' method='get' class='speaker-form'>
+        <div class='form-row'>
+          <label for='full-name'>Name</label>
+          <input id='full-name' name='full-name' type='text'/>
+        </div>
+
+          <div class='form-row'>
+            <label for='email'>Email</label>
+            <input id='email'
+                   name='email'
+                   type='email'
+                   placeholder='joe@example.com'/>
+          </div>
+
+          <fieldset class='legacy-form-row'>
+            <legend>Type of Question</legend>
+            <input id='talk-type-1'
+                   name='talk-type'
+                   type='radio'
+                   value='main-stage' />
+            <label for='talk-type1' class='radio-label'>True or False</label>
+
+            <input id='talk-type-2'
+                   name='talk-type'
+                   type='radio'
+                   value='workshop'
+                   checked />
+            <label for='talk-type-2' class='radio-label'>Multiple Choose</label>
+        </fieldset>
+
+        <div class='form-row'>
+          <label for='t-shirt'>No of Questions</label>
+          <select id='t-shirt' name='t-shirt'>
+            <option value='xs'>Extra Small</option>
+            <option value='s'>Small</option>
+            <option value='m'>Medium</option>
+            <option value='l'>Large</option>
+          </select>
+        </div>
+      </form> -->
+
+       <!-- // parametres section (section ---2) -->
+      
+      </section>
+      <section>
+     <Div id="generated_text" class="container-fluid">
+     
+      <textarea name="txt" id="mind" cols="30" rows="10">testbox for generated_text</textarea>
+     </Div>
+     </section>
+
+       <p>
+        <a class="btn btn-primary collapseBtn" data-toggle="collapse" href="#collapseSection" role="button" aria-expanded="false" aria-controls="collapseExample">
+          Question Preferences
+        </a>
+      </p>
+      <div class="collapse" id="collapseSection">
+        <div class="card card-body">
+         
+  <section id="parametres" class="collapsible">
+
+
+    <div>
+      <main id="main" class="container">
+        <div class="row">
+           <div class="col-xs-12 col-lg-offset-3 col-lg-6">
+              <div class="m-b-md text-center">
+                 <!-- <h1 id="title">Question Preferences</h1> -->
+              </div>
+           </div>
+        </div>
+
+      <form action="" method="post">
+
+      <label>Question class</label>
+      <div class="question-answer">
+        <div>
+          <input type="radio" id="q1" name="deadline" required>
+          <label for="q1" class="radio"><span>Quiz</span></label>
+        </div>
+        <div>
+          <input type="radio" id="q2" name="deadline" required>
+          <label for="q2" class="radio"><span>Plain Question</span></label>
+        </div>
+      </div>
+
+      <label>Question type</label>
+      <div class="question-answer">
+        <div>
+          <input type="radio" id="q3" name="deadline" required>
+          <label for="q3" class="radio"><span>True or false</span></label>
+        </div>
+        <div>
+          <input type="radio" id="q4" name="deadline" required>
+          <label for="q4" class="radio"><span>Multiple choice</span></label>
+        </div>
+      </div>
+
+      <label>No. of question</label>
+      <select  name='deadline'>
+        <option value='Q5'><label for="radio_1" class="radio">1</label></option>
+        <option value='Q5'>5</option>
+        <option value='Q5'>10</option>
+        <option value='Q5'>20</option>
+        <option value='Q5'>50</option>
+
+      <!-- <div class="question-answer">
+        <div>
+          <input type="radio" value="t" name="deadline" required>
+          <label for="radio_1" class="radio"><span>1</span></label>
+        </div>
+        <div>
+          <input type="radio" value="f" name="deadline" required>
+          <label for="radio_2" class="radio"><span>5</span></label>
+        </div>
+        <div>
+          <input type="radio" value="f" name="deadline" required>
+          <label for="radio_2" class="radio"><span>10</span></label>
+        </div>
+        <div>
+          <input type="radio" value="f" name="deadline" required>
+          <label for="radio_2" class="radio"><span>20</span></label>
+        </div>
+        <div>
+          <input type="radio" value="f" name="deadline" required>
+          <label for="radio_2" class="radio"><span>50</span></label>
+        </div>
+      </div> -->
+
+
+      </form>
+    </div>
+  </div>
+</div>
+
+</section>
+
+<section >
+ <div>
+<!-- <textarea name="" id="generated_text" class="form-control" id="" cols="30" rows="10"><span><p class="generated_text">Gemini Project</p></span><br></textarea> -->
+ <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Generated Text</label>
+<textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Any other prompts?"></textarea>
+
+</div> 
+
+
+
+
+
+
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/turndown/dist/turndown.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.8/mammoth.browser.min.js"></script>
@@ -99,14 +282,17 @@
       crossorigin="anonymous"></script>
 
     <!-- User imported JS -->
+    <script src="/google_project/Frontend/js/secondPage.js"></script>
     <script type="module" src="./back_end/js/doc_to_html.js"></script>
     <script src="./back_end/js/selection.js"></script>
+    
 
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+    
   </body>
 
 </html>

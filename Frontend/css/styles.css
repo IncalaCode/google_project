@@ -291,11 +291,18 @@ body{
 						padding: 8px 16px;
 						margin: 40px auto 0;
 					}
+            /* .box__button:focus,
+            .box__button:hover
+            {
+              background-color: #39bfd3;
+            } */
 						.box__button:hover,
 						.box__button:focus
 						{
 							background-color: #e5edf1;
                             color: #2b1c83;
+                            border-color: #39bfd3;
+                            border: #000;
                             
 						}
 
@@ -322,6 +329,14 @@ input[type="file"] {
     display: inline-block;
     padding: 6px 12px;
     cursor: pointer;
+    color: #2b1c83;
+  }
+  .custom-file-upload:hover{
+    background-color: #2b1c83;
+    color: #e5edf1;
+    border: 10px solid #2b1c83;
+    border-radius: 10px;
+
   }
   #file{
     text-align: center;
@@ -561,7 +576,7 @@ input[type="file"] {
 }
 
 .button85:after {
-    color: rgb(247, 233, 207);
+    /* color: rgb(247, 233, 207); */
     z-index: -1;
     content: "";
     position: absolute;
@@ -575,7 +590,7 @@ input[type="file"] {
 }
 
 .button85:before {
-    color: rgb(247, 233, 207);
+    /* color: rgb(247, 233, 207); */
     content: "";
     background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
     position: absolute;
@@ -593,11 +608,11 @@ input[type="file"] {
 }
 
 .button85 {
-    color: rgb(247, 233, 207);
+    /* color: rgb(247, 233, 207); */
     padding: 1em 3em;
     border: none;
     outline: none;
-    color: rgb(255, 255, 255);
+    /* color: rgb(255, 255, 255); */
     background: #111;
     cursor: pointer;
     position: relative;
@@ -654,7 +669,8 @@ input[type="file"] {
     font-size: 1.25rem;
     padding: 0.625rem 2.5rem;
     line-height: 1.25;
-    border-radius: .25rem;
+    /* border-radius: .25rem; */
+    border-radius: 10px;
 }
 
 .button64 span {
