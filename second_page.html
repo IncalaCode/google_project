@@ -1,166 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>QUGEN</title>
-        <!-- Bootstrap CSS -->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <!-- Font Awesome -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="./css/second_page_css.css">
-        <link rel="stylesheet" href="./css/secondpage_2css.css">
-    </head>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUGEN</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 
-    <body>
-        <div class="container mt-3">
-            <input type="file" name="file" id="import_file" class="form-control-file">
 
-            <!-- Trigger button for the modal -->
-            <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#myModal">
-                Open Popup
-            </button>
+    <link rel="stylesheet" href="./css/second_page_css.css">
+    <link rel="stylesheet" href="./css/secondpage_2css.css">
+    <link rel="stylesheet" href="./css/additional_second_page.css">
+  </head>
+
+  <body>
+    <section class="push-content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Logo</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Another Link</a>
+              </li>
+            </ul>
+          </div>
         </div>
+      </nav>
+    </section>
 
-        <section>
-            <!-- Modal structure -->
-            <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <!-- Use .modal-lg for a large modal -->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="myModalLabel">
-                                <!-- the search bar for the finder -->
-                                <div id="search_place" class="fade-in">
-                                    <div class="form-row align-items-center">
-                                        <div class="col-auto">
-                                            <label for="highlight_color" class="col-form-label">Mark:</label>
-                                        </div>
-                                        <div class="col-auto">
-                                            <input type="color" id="highlight_color" value="#ff3000"
-                                                class="form-control form-control-color">
-                                        </div>
-                                        <div class="col-auto">
-                                            <input type="text" id="search_word_bar" class="form-control"
-                                                placeholder="search the word">
-                                        </div>
-                                        <div class="col-auto">
-                                            <div class="btn-group">
-                                                <button id="up_btn" class="btn btn-info"><i
-                                                        class="bi bi-arrow-up"></i></button>
-                                                <button id="down_btn" class="btn btn-info"><i
-                                                        class="bi bi-arrow-down"></i></button>
-                                                <button id="penTool" class="btn btn-info">
-                                                    <i class="fas fa-pen"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <pre id="display_list" class="warp display">
-                <!-- here is the doc list will be displayed so don't delete only change the css or class or bootstrap -->
-                </pre>
-                        </div>
-                    </div>
-                </div>
+    <section>
+      <!-- Opener and closer icons -->
+      <div class="opener-container opener-container_left left_button push-content">
+        <span class="toggle-slider" id="toggleRightSidebar">R</span>
+      </div>
+
+      <div class="opener-container opener-container_right right_button push-content">
+        <span class="toggle-slider" id="toggleLeftSidebar">L</span>
+      </div>
+
+      <section id="left_side_slider">
+
+        <div class="sidebar-body">
+
+          <div class="drop-zone">
+            <span class="drop-zone__prompt">Drop file here or click to upload</span>
+            <input type="file" name="myFile" id="import_file" class="drop-zone__input">
+          </div>
+          <div class="form-group">
+            <label>Select Question Mode:</label>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-secondary">
+                <input type="radio" id="modeExam" name="questionMode" value="exam" data-min-words="10"
+                  data-max-words="50" data-difficulty="easy"> Exam
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" id="modeQuiz" name="questionMode" value="quiz" data-min-words="15"
+                  data-max-words="60" data-difficulty="medium"> Quiz
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" id="modeEssay" name="questionMode" value="essay" data-min-words="50"
+                  data-max-words="150" data-difficulty="hard"> Essay
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" id="modeTest" name="questionMode" value="test" data-min-words="5"
+                  data-max-words="20" data-difficulty="medium"> Test
+              </label>
             </div>
+          </div>
 
-            <!-- Floating button -->
-            <button id="highlightchooesbut" class="icon">✔️</button>
-
-            <div id="errors">
-                <!-- Error messages -->
-            </div>
-        </section>
-
-        <section>
-            <div class="form-group">
-                <label>Select Question Mode:</label>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-secondary">
-                        <input type="radio" id="modeExam" name="questionMode" value="exam" data-min-words="10"
-                            data-max-words="50" data-difficulty="easy"> Exam
-                    </label>
-                    <label class="btn btn-secondary">
-                        <input type="radio" id="modeQuiz" name="questionMode" value="quiz" data-min-words="15"
-                            data-max-words="60" data-difficulty="medium"> Quiz
-                    </label>
-                    <label class="btn btn-secondary">
-                        <input type="radio" id="modeEssay" name="questionMode" value="essay" data-min-words="50"
-                            data-max-words="150" data-difficulty="hard"> Essay
-                    </label>
-                    <label class="btn btn-secondary">
-                        <input type="radio" id="modeTest" name="questionMode" value="test" data-min-words="5"
-                            data-max-words="20" data-difficulty="medium"> Test
-                    </label>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Select Question Types:</label>
+          <div class="form-group">
+            <label>Select Question Types:</label>
+            <div class="row">
+              <div class="col-6">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="typeTF" value="t_f">
-                    <label class="form-check-label" for="typeTF">True/False</label>
+                  <input class="form-check-input" type="checkbox" id="typeTF" value="t_f">
+                  <label class="form-check-label" for="typeTF">True/False</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="typeMatch" value="match">
-                    <label class="form-check-label" for="typeMatch">Match</label>
+                  <input class="form-check-input" type="checkbox" id="typeChoose" value="choose">
+                  <label class="form-check-label" for="typeChoose">Choose</label>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="typeShortAnswer" value="short_answer">
+                  <label class="form-check-label" for="typeShortAnswer">Short Answer</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="typeChoose" value="choose">
-                    <label class="form-check-label" for="typeChoose">Choose</label>
+                  <input class="form-check-input" type="checkbox" id="typeEssay" value="essay">
+                  <label class="form-check-label" for="typeEssay">Essay</label>
                 </div>
+              </div>
+              <div class="col-12">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="typeShortAnswer" value="short_answer">
-                    <label class="form-check-label" for="typeShortAnswer">Short Answer</label>
+                  <input class="form-check-input" type="checkbox" id="typeMatch" value="match">
+                  <label class="form-check-label" for="typeMatch">Match</label>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="typeEssay" value="essay">
-                    <label class="form-check-label" for="typeEssay">Essay</label>
-                </div>
+              </div>
             </div>
+          </div>
 
-            <div class="form-group">
-                <label for="difficulty">Select Difficulty:</label>
-                <select id="difficulty" class="form-control">
-                    <option value="default">default</option>
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                </select>
-            </div>
+          <div class="form-group">
+            <label for="difficulty">Select Difficulty:</label>
+            <select id="difficulty" class="form-control">
+              <option value="default">Default</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
 
-            <div class="form-group">
-                <label for="numQuestions">Number of Questions:</label>
-                <input type="number" id="numQuestions" class="form-control" value="5">
-            </div>
-
+          <div class="form-group">
+            <label for="numQuestions">Number of Questions:</label>
+            <input type="number" id="numQuestions" class="form-control" value="5">
+          </div>
+          <div id="left_footer">
+            <button id="all" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+              Open the full file
+            </button>
             <button id="generatequestion" class="btn btn-primary">Generate Questions</button>
+          </div>
 
-            <!-- Display generated questions -->
-            <div class="mt-3">
-                <h3>Generated Questions</h3>
-                <div id="generatedQuestions"></div>
+        </div>
+      </section>
+
+      <section id="right_side_slider">
+        <div class="sidebar-header mt-0">
+          <h5 class="mb-0">Right Sidebar Header</h5>
+        </div>
+        <div class="sidebar-body">
+          <p>Right Sidebar Content goes here...</p>
+        </div>
+      </section>
+    </section>
+
+    <!-- <div class="container mt-3">
+            <input type="file" name="file" id="import_file" class="form-control-file">
+        </div> -->
+
+    <section>
+      <!-- Modal structure -->
+      <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <!-- Use .modal-lg for a large modal -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="myModalLabel">
+                <!-- the search bar for the finder -->
+                <div id="search_place" class="fade-in">
+                  <div class="form-row align-items-center">
+                    <div class="col-auto">
+
+                    </div>
+                    <div class="col-auto">
+                      <input type="color" id="highlight_color" value="#ff3000" class="form-control form-control-color">
+                    </div>
+                    <div class="col-auto">
+                      <input type="text" id="search_word_bar" class="form-control" placeholder="search the word">
+                    </div>
+                    <div class="col-auto">
+                      <div class="btn-group">
+                        <button id="up_btn" class="btn btn-info"><i class="bi bi-arrow-up"></i></button>
+                        <button id="down_btn" class="btn btn-info"><i class="bi bi-arrow-down"></i></button>
+                        <button id="penTool" class="btn btn-info">
+                          <i class="fas fa-pen"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </h5>
+
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
+            <div class="modal-body">
+              <pre id="display_list" class="warp display">
+                    <!-- here is the doc list will be displayed so don't delete only change the css or class or bootstrap -->
+                    </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Floating button -->
+      <button id="highlightchooesbut" class="icon">✔️</button>
 
-        </section>
+      <div id="errors">
+        <!-- Error messages -->
+      </div>
+    </section>
 
-        <!-- Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/turndown/dist/turndown.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.8/mammoth.browser.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-        <!-- Import map for Google Generative AI -->
-        <script type="importmap">
+    <section class="push-content">
+      <!-- Display generated questions -->
+      <div class="mt-3">
+        <h3>Generated Questions</h3>
+        <div id="generatedQuestions"></div>
+      </div>
+    </section>
+    </section>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"></script>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/turndown/dist/turndown.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.8/mammoth.browser.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- Import map for Google Generative AI -->
+    <script type="importmap">
     {
         "imports": {
             "@google/generative-ai": "https://esm.run/@google/generative-ai"
@@ -168,21 +242,20 @@
     }
     </script>
 
-        <!-- CDN of mark.js -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"
-            integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww=="
-            crossorigin="anonymous"></script>
+    <!-- CDN of mark.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"
+      integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww=="
+      crossorigin="anonymous"></script>
 
-        <!-- User imported JS -->
-        <script type="module" src="./back_end/js/doc_to_html.js"></script>
-        <script type="module" src="./back_end/js/generatequestion.js"></script>
-        <script src="./back_end/js/selection.js"></script>
+    <!-- User imported JS -->
+    <script type="module" src="./back_end/js/doc_to_html.js"></script>
+    <script src="./back_end/js/selection.js"></script>
 
-        <!-- Bootstrap JS, Popper.js, and jQuery -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    </body>
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./js/second_page_jqury.js"></script>
+  </body>
 
 </html>
