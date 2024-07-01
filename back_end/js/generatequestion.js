@@ -1,5 +1,3 @@
-import import_ai from './connect_to_ai.js';
-
 class GeneratedText {
     constructor() {
         this.question_type = {
@@ -10,7 +8,6 @@ class GeneratedText {
             essay: []
         };
 
-        // Data to be sent to the database
         this.info = {
             question_mode: {
                 exam: [],
@@ -21,81 +18,149 @@ class GeneratedText {
             docx: {
                 full_doc: null,
                 focus_points: [],
+                lastClassifiedText: null // Store last classified text to check for changes
             }
         };
 
-        // To store the history of the info generation
+        this.converted_data = null;
         this.history = [];
-
-        // Fetch span elements once and store
-        this.spanElements = Array.from(document.getElementById('display_list').childNodes)
-            .filter(element => element.nodeName === "SPAN");
     }
 
-    // Method to add rules for generating questions
-    addrule(type, minWords, maxWords, difficulty) {
-        this.info.question_mode[type].push({ minWords, maxWords, difficulty });
-    }
+    classifyWords(text) {
+        const wordLimits = {
+            t_f: 5,
+            match: 10,
+            choose: 20,
+            short_answer: 30,
+            essay: 50
+        };
 
-    // Method to generate questions based on rules
-    generateQuestions(numQuestions, difficulty, mode) {
-        const selectedSpans = this.spanElements.filter(element => {
-            const textContent = element.textContent.trim();
-            const wordCount = textContent.split(/\s+/).length;
+        const words = text.split(/\s+/); // Split by any whitespace character
 
-            const modeCheckbox = document.getElementById(`mode${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
-            if (modeCheckbox.checked) {
-                const modeDifficulty = modeCheckbox.dataset.difficulty;
-                const modeMinWords = parseInt(modeCheckbox.dataset.minWords, 10);
-                const modeMaxWords = parseInt(modeCheckbox.dataset.maxWords, 10);
-                return wordCount >= modeMinWords && wordCount <= modeMaxWords && modeDifficulty === difficulty;
+        let currentQuestionType = 't_f';
+        let currentWords = [];
+
+        words.forEach(word => {
+            currentWords.push(word);
+            if (currentWords.length >= wordLimits[currentQuestionType]) {
+                const spanText = currentWords.join(' ');
+                this.info.docx.focus_points.push({ text: spanText, type: currentQuestionType });
+                this.question_type[currentQuestionType].push(spanText);
+                currentWords = [];
+
+                if (this.question_type[currentQuestionType].length >= 1) {
+                    switch (currentQuestionType) {
+                        case 't_f':
+                            currentQuestionType = 'match';
+                            break;
+                        case 'match':
+                            currentQuestionType = 'choose';
+                            break;
+                        case 'choose':
+                            currentQuestionType = 'short_answer';
+                            break;
+                        case 'short_answer':
+                            currentQuestionType = 'essay';
+                            break;
+                        default:
+                            currentQuestionType = 't_f';
+                            break;
+                    }
+                }
             }
-            return false;
-        }).slice(0, numQuestions);
-
-        selectedSpans.forEach(element => {
-            const textContent = element.textContent.trim();
-            const wordCount = textContent.split(/\s+/).length;
-
-            this.info.docx.focus_points.push({
-                text: textContent,
-                wordCount: wordCount,
-                gen_question: Math.floor(wordCount / 30)
-            });
         });
 
-        // Add generated questions to the respective mode in info.question_mode
-        this.info.question_mode[mode].push({
-            question_type: this.question_type[mode],
-            difficulty: difficulty
-        });
-
-        console.log(this.info); // For debugging purposes, remove it in production
-
-        // Send data to your AI module or server
-        import_ai.generateQuestions(this.info.docx.focus_points)
-            .then(response => {
-                console.log(response);
-                // Handle the response (e.g., display the questions)
-            })
-            .catch(error => {
-                showMessage('error', `Error generating questions: ${error}`);
-            });
+        if (currentWords.length > 0 && this.question_type[currentQuestionType].length < 1) {
+            const spanText = currentWords.join(' ');
+            this.info.docx.focus_points.push({ text: spanText, type: currentQuestionType });
+            this.question_type[currentQuestionType].push(spanText);
+        }
     }
 
-    // Method to save the current state
-    save() {
+    // Method to check if the document spans have changed
+    hasDocumentChanged(newText) {
+        if (newText !== this.info.docx.lastClassifiedText) {
+            this.info.docx.lastClassifiedText = newText;
+            return true;
+        }
+        return false;
+    }
 
+    addrule(questionMode, minWords, maxWords, difficulty) {
+        const fullDoc = this.info.docx.full_doc;
+        if (!fullDoc) {
+            showMessage('error', 'No document content available for classification.');
+            return;
+        }
+
+        // Check if the document content has changed before reclassifying
+        if (!this.hasDocumentChanged(fullDoc)) {
+            showMessage('info', 'Document content unchanged. Skipping reclassification.');
+            return;
+        }
+
+        // Perform classification if document content has changed
+        this.classifyWords(fullDoc);
+    }
+
+    generateQuestions(numQuestions, difficulty, mode, selectedTypes) {
+        let totalQuestions = numQuestions;
+        let remainingQuestions = numQuestions;
+
+        // Calculate proportional distribution of questions among selected types
+        const typeCounts = {};
+        selectedTypes.forEach(type => {
+            typeCounts[type] = this.question_type[type].length;
+        });
+
+        // Ensure there are questions available for all selected types
+        let typesWithQuestions = selectedTypes.filter(type => typeCounts[type] > 0);
+
+        while (remainingQuestions > 0 && typesWithQuestions.length > 0) {
+            typesWithQuestions.forEach(type => {
+                const typeCount = typeCounts[type];
+                if (typeCount > 0 && remainingQuestions > 0) {
+                    const questionsPerType = Math.ceil((typeCount / numQuestions) * totalQuestions);
+                    const questionsToAdd = Math.min(questionsPerType, remainingQuestions);
+
+                    const selectedQuestions = this.question_type[type].slice(0, questionsToAdd);
+                    selectedQuestions.forEach(question => {
+                        this.info.question_mode[mode].push({ text: question, type: type });
+                    });
+
+                    // Remove added questions from original array
+                    this.question_type[type] = this.question_type[type].slice(questionsToAdd);
+                    remainingQuestions -= questionsToAdd;
+                }
+            });
+
+            // Update typesWithQuestions to exclude types with no more questions
+            typesWithQuestions = selectedTypes.filter(type => this.question_type[type].length > 0);
+        }
+    }
+
+
+    save() {
         this.history.push({ info: { ...this.info } });
-        console.log('Current state saved:', state); // For debugging purposes
+        console.log('Current state saved:', this.history);
     }
 }
 
-// Function to retrieve user inputs and apply rules dynamically
 function getUserInputsAndApplyRules(data) {
     const difficulty = document.getElementById('difficulty').value;
     const numQuestions = parseInt(document.getElementById('numQuestions').value, 10);
-    const mode = document.querySelector('input[name="questionMode"]:checked').value;
+    const modeElement = document.querySelector('input[name="questionMode"]:checked');
+
+    if (!modeElement) {
+        showMessage('warning', 'Please select a question mode.');
+        return null;
+    }
+
+    const mode = modeElement.value;
+    const selectedTypes = [];
+    document.querySelectorAll('.form-check-input:checked').forEach(checkbox => {
+        selectedTypes.push(checkbox.value);
+    });
 
     const modeCheckbox = document.getElementById(`mode${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
     if (modeCheckbox) {
@@ -103,33 +168,51 @@ function getUserInputsAndApplyRules(data) {
         const modeMaxWords = parseInt(modeCheckbox.dataset.maxWords, 10);
         const modeDifficulty = modeCheckbox.dataset.difficulty;
 
-        // Determine question type based on mode and difficulty
         if (difficulty) {
             data.addrule(mode, modeMinWords, modeMaxWords, difficulty);
-        }
-        else {
+        } else {
             data.addrule(mode, modeMinWords, modeMaxWords, modeDifficulty);
         }
     }
 
-    return { numQuestions, difficulty, mode };
+    return { numQuestions, difficulty, mode, selectedTypes };
 }
 
 document.getElementById('generatequestion').addEventListener('click', () => {
     try {
         const data = new GeneratedText();
-        data.info.docx.full_doc = document.getElementById('display_list').innerHTML;
+        data.info.docx.full_doc = document.getElementById('display_list').innerText.trim(); // Use innerText for text content
 
-        const { numQuestions, difficulty, mode } = getUserInputsAndApplyRules(data);
+        const userInput = getUserInputsAndApplyRules(data);
+        if (!userInput) return;
 
-        data.generateQuestions(numQuestions, difficulty, mode);
-        data.save(); // Save the state after generating questions
+        const { numQuestions, difficulty, mode, selectedTypes } = userInput;
+
+        data.generateQuestions(numQuestions, difficulty, mode, selectedTypes);
+        data.save();
+
+        displayGeneratedQuestions(data.info.question_mode[mode]);
     } catch (error) {
         showMessage('warning', "Insert a proper docx or pdf");
     }
 });
 
 function showMessage(type, message) {
-    // Implement showMessage logic to display messages to the user
     console.log(`${type}: ${message}`);
+}
+
+function displayGeneratedQuestions(questions) {
+    const container = document.getElementById('generatedQuestions');
+    container.innerHTML = '';
+    questions.forEach(question => {
+        const div = document.createElement('div');
+        div.className = 'card mt-2';
+        div.innerHTML = `
+            <div class="card-body">
+                <p class="card-text">${question.text}</p>
+                <p class="card-text"><strong>Type:</strong> ${question.type}</p>
+            </div>
+        `;
+        container.appendChild(div);
+    });
 }

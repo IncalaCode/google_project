@@ -44,17 +44,13 @@ export default class ImportAI {
         }
     }
 
-    // Example method to initiate the process
-    async run(fileInput) {
-        try {
-            const generatedText = await this.textGen(fileInput);
-            // Handle or use generatedText as needed
-        } catch (error) {
-            console.error('Error running AI process:', error);
-        }
-    }
 
-    async generateQuestions() {
+    async generateQuestions(focus_points) {
+        const prompt = "Write a story about a AI and magic"
+
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
 
     }
 }
