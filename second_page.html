@@ -11,49 +11,158 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+
     <link rel="stylesheet" href="./css/second_page_css.css">
-    <link rel="stylesheet" href="/google_project/Frontend/css/secondPage.css">
     <link rel="stylesheet" href="./css/secondpage_2css.css">
+    <link rel="stylesheet" href="./css/additional_second_page.css">
   </head>
 
   <body>
+    <section class="push-content">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Logo</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('form');
-        const fileInput = document.querySelector('#import_file');
-
-        form.addEventListener('submit', function(event) {
-          event.preventDefault();
-          const file = fileInput.files[0];
-
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            const contents = e.target.result;
-            // Do something with the file contents
-            console.log(contents);
-          };
-          reader.readAsText(file);
-        });
-      });
-    </script>
-    <div class="container mt-3">
-      <input type="file" name="file" id="import_file" class="form-control-file">
-
-    
-
-      <!-- Trigger button for the modal -->
-      <button type="button" class="btn btn-primary mt-3" data-toggle="modal" data-target="#myModal">
-        Open Popup
-      </button>
-    </div>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Another Link</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </section>
 
     <section>
+      <!-- Opener and closer icons -->
+      <div class="opener-container opener-container_left left_button push-content">
+        <span class="toggle-slider" id="toggleRightSidebar">R</span>
+      </div>
 
+      <div class="opener-container opener-container_right right_button push-content">
+        <span class="toggle-slider" id="toggleLeftSidebar">L</span>
+      </div>
+
+      <section id="left_side_slider">
+
+        <div class="sidebar-body">
+
+          <div class="drop-zone">
+            <span class="drop-zone__prompt">Drop file here or click to upload</span>
+            <input type="file" name="myFile" id="import_file" class="drop-zone__input">
+          </div>
+          <div class="form-group">
+            <label>Select Question Mode:</label>
+            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+              <label class="btn btn-secondary">
+                <input type="radio" id="modeExam" name="questionMode" value="exam" data-min-words="10"
+                  data-max-words="50" data-difficulty="easy"> Exam
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" id="modeQuiz" name="questionMode" value="quiz" data-min-words="15"
+                  data-max-words="60" data-difficulty="medium"> Quiz
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" id="modeEssay" name="questionMode" value="essay" data-min-words="50"
+                  data-max-words="150" data-difficulty="hard"> Essay
+              </label>
+              <label class="btn btn-secondary">
+                <input type="radio" id="modeTest" name="questionMode" value="test" data-min-words="5"
+                  data-max-words="20" data-difficulty="medium"> Test
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Select Question Types:</label>
+            <div class="row">
+              <div class="col-6">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="typeTF" value="t_f">
+                  <label class="form-check-label" for="typeTF">True/False</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="typeChoose" value="choose">
+                  <label class="form-check-label" for="typeChoose">Choose</label>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="typeShortAnswer" value="short_answer">
+                  <label class="form-check-label" for="typeShortAnswer">Short Answer</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="typeEssay" value="essay">
+                  <label class="form-check-label" for="typeEssay">Essay</label>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="typeMatch" value="match">
+                  <label class="form-check-label" for="typeMatch">Match</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="difficulty">Select Difficulty:</label>
+            <select id="difficulty" class="form-control">
+              <option value="default">Default</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="numQuestions">Number of Questions:</label>
+            <input type="number" id="numQuestions" class="form-control" value="5">
+          </div>
+          <div id="left_footer">
+            <button id="all" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+              Open the full file
+            </button>
+            <button id="generatequestion" class="btn btn-primary">Generate Questions</button>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="right_side_slider">
+        <div class="sidebar-header mt-0">
+          <h5 class="mb-0">Right Sidebar Header</h5>
+        </div>
+        <div class="sidebar-body">
+          <p>Right Sidebar Content goes here...</p>
+        </div>
+      </section>
+    </section>
+
+    <!-- <div class="container mt-3">
+            <input type="file" name="file" id="import_file" class="form-control-file">
+        </div> -->
+
+    <section>
       <!-- Modal structure -->
       <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg"> <!-- Use .modal-lg for a large modal -->
+        <div class="modal-dialog modal-lg">
+          <!-- Use .modal-lg for a large modal -->
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="myModalLabel">
@@ -61,7 +170,7 @@
                 <div id="search_place" class="fade-in">
                   <div class="form-row align-items-center">
                     <div class="col-auto">
-                      <label for="highlight_color" class="col-form-label">Mark:</label>
+
                     </div>
                     <div class="col-auto">
                       <input type="color" id="highlight_color" value="#ff3000" class="form-control form-control-color">
@@ -81,187 +190,44 @@
                   </div>
                 </div>
               </h5>
+
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body">
               <pre id="display_list" class="warp display">
-            <!-- here is the doc list will be displayed so don't delete only change the css or class or bootstrap -->
-            </pre>
+                    <!-- here is the doc list will be displayed so don't delete only change the css or class or bootstrap -->
+                    </pre>
             </div>
           </div>
         </div>
       </div>
-
       <!-- Floating button -->
       <button id="highlightchooesbut" class="icon">✔️</button>
 
       <div id="errors">
         <!-- Error messages -->
       </div>
-
     </section>
 
-     <!-- question prefereneces -->
-     <!-- <header class='speaker-form-header'>
 
-
-      <h1>Speaker Submission</h1>
-      <p><em>Want to speak at our fake conference? Fill out this form!</em></p>
-
-    </header>
-
-      <form action='' method='get' class='speaker-form'>
-        <div class='form-row'>
-          <label for='full-name'>Name</label>
-          <input id='full-name' name='full-name' type='text'/>
-        </div>
-
-          <div class='form-row'>
-            <label for='email'>Email</label>
-            <input id='email'
-                   name='email'
-                   type='email'
-                   placeholder='joe@example.com'/>
-          </div>
-
-          <fieldset class='legacy-form-row'>
-            <legend>Type of Question</legend>
-            <input id='talk-type-1'
-                   name='talk-type'
-                   type='radio'
-                   value='main-stage' />
-            <label for='talk-type1' class='radio-label'>True or False</label>
-
-            <input id='talk-type-2'
-                   name='talk-type'
-                   type='radio'
-                   value='workshop'
-                   checked />
-            <label for='talk-type-2' class='radio-label'>Multiple Choose</label>
-        </fieldset>
-
-        <div class='form-row'>
-          <label for='t-shirt'>No of Questions</label>
-          <select id='t-shirt' name='t-shirt'>
-            <option value='xs'>Extra Small</option>
-            <option value='s'>Small</option>
-            <option value='m'>Medium</option>
-            <option value='l'>Large</option>
-          </select>
-        </div>
-      </form> -->
-
-       <!-- // parametres section (section ---2) -->
-      
-      </section>
-      <section>
-     <Div id="generated_text" class="container-fluid">
-     
-      <textarea name="txt" id="mind" cols="30" rows="10">testbox for generated_text</textarea>
-     </Div>
-     </section>
-
-       <p>
-        <a class="btn btn-primary collapseBtn" data-toggle="collapse" href="#collapseSection" role="button" aria-expanded="false" aria-controls="collapseExample">
-          Question Preferences
-        </a>
-      </p>
-      <div class="collapse" id="collapseSection">
-        <div class="card card-body">
-         
-  <section id="parametres" class="collapsible">
-
-
-    <div>
-      <main id="main" class="container">
-        <div class="row">
-           <div class="col-xs-12 col-lg-offset-3 col-lg-6">
-              <div class="m-b-md text-center">
-                 <!-- <h1 id="title">Question Preferences</h1> -->
-              </div>
-           </div>
-        </div>
-
-      <form action="" method="post">
-
-      <label>Question class</label>
-      <div class="question-answer">
-        <div>
-          <input type="radio" id="q1" name="deadline" required>
-          <label for="q1" class="radio"><span>Quiz</span></label>
-        </div>
-        <div>
-          <input type="radio" id="q2" name="deadline" required>
-          <label for="q2" class="radio"><span>Plain Question</span></label>
-        </div>
+    <section class="push-content">
+      <!-- Display generated questions -->
+      <div class="mt-3">
+        <h3>Generated Questions</h3>
+        <div id="generatedQuestions"></div>
       </div>
+    </section>
+    </section>
 
-      <label>Question type</label>
-      <div class="question-answer">
-        <div>
-          <input type="radio" id="q3" name="deadline" required>
-          <label for="q3" class="radio"><span>True or false</span></label>
-        </div>
-        <div>
-          <input type="radio" id="q4" name="deadline" required>
-          <label for="q4" class="radio"><span>Multiple choice</span></label>
-        </div>
-      </div>
-
-      <label>No. of question</label>
-      <select  name='deadline'>
-        <option value='Q5'><label for="radio_1" class="radio">1</label></option>
-        <option value='Q5'>5</option>
-        <option value='Q5'>10</option>
-        <option value='Q5'>20</option>
-        <option value='Q5'>50</option>
-
-      <!-- <div class="question-answer">
-        <div>
-          <input type="radio" value="t" name="deadline" required>
-          <label for="radio_1" class="radio"><span>1</span></label>
-        </div>
-        <div>
-          <input type="radio" value="f" name="deadline" required>
-          <label for="radio_2" class="radio"><span>5</span></label>
-        </div>
-        <div>
-          <input type="radio" value="f" name="deadline" required>
-          <label for="radio_2" class="radio"><span>10</span></label>
-        </div>
-        <div>
-          <input type="radio" value="f" name="deadline" required>
-          <label for="radio_2" class="radio"><span>20</span></label>
-        </div>
-        <div>
-          <input type="radio" value="f" name="deadline" required>
-          <label for="radio_2" class="radio"><span>50</span></label>
-        </div>
-      </div> -->
-
-
-      </form>
-    </div>
-  </div>
-</div>
-
-</section>
-
-<section >
- <div>
-<!-- <textarea name="" id="generated_text" class="form-control" id="" cols="30" rows="10"><span><p class="generated_text">Gemini Project</p></span><br></textarea> -->
- <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Generated Text</label>
-<textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Any other prompts?"></textarea>
-
-</div> 
-
-
-
-
-
-
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"></script>
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/turndown/dist/turndown.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.8/mammoth.browser.min.js"></script>
@@ -269,12 +235,12 @@
 
     <!-- Import map for Google Generative AI -->
     <script type="importmap">
-  {
-    "imports": {
-      "@google/generative-ai": "https://esm.run/@google/generative-ai"
+    {
+        "imports": {
+            "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
     }
-  }
-  </script>
+    </script>
 
     <!-- CDN of mark.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"
@@ -282,17 +248,14 @@
       crossorigin="anonymous"></script>
 
     <!-- User imported JS -->
-    <script src="/google_project/Frontend/js/secondPage.js"></script>
     <script type="module" src="./back_end/js/doc_to_html.js"></script>
     <script src="./back_end/js/selection.js"></script>
-    
 
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
-    
+    <script src="./js/second_page_jqury.js"></script>
   </body>
 
 </html>

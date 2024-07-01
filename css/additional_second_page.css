@@ -1,0 +1,178 @@
+            /* Custom CSS for sidebar and main content interaction */
+            /* Push main content when sidebar is open */
+            .push-content {
+                transition: all 0.3s ease;
+            }
+
+            .pushed_right {
+                margin-right: 300px;
+            }
+
+            .pushed_left {
+                margin-left: 300px;
+            }
+
+            .navbar-nav {
+                margin: 0 auto;
+                display: flex;
+                justify-content: center;
+            }
+
+            .navbar-nav .nav-item {
+                position: relative;
+            }
+
+            .navbar {
+                padding-top: 5px;
+                padding-bottom: 5px;
+            }
+
+            #left_side_slider,
+            #right_side_slider {
+                position: fixed;
+                top: 0;
+                height: 100vh;
+                width: 300px;
+                background-color: #f8f9fa;
+                transition: left 0.3s ease, right 0.3s ease;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                padding-top: 56px;
+            }
+
+            #left_side_slider {
+                left: -300px;
+            }
+
+            #right_side_slider {
+                right: -300px;
+            }
+
+            #left_side_slider.show {
+                left: 0;
+            }
+
+            #right_side_slider.show {
+                right: 0;
+            }
+
+            #left_side_slider .sidebar-header,
+            #right_side_slider .sidebar-header {
+                padding: 20px;
+                background-color: #343a40;
+                color: #fff;
+            }
+
+            #left_side_slider .sidebar-body,
+            #right_side_slider .sidebar-body {
+                padding: 20px;
+            }
+
+            .opener-container {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                position: absolute;
+                top: 10px;
+                z-index: 1000;
+            }
+
+            .opener-container .toggle-slider {
+                cursor: pointer;
+            }
+
+            .opener-container_left {
+                right: 10px;
+            }
+
+            .opener-container_right {
+                left: 10px;
+            }
+
+            .right_button {
+                position: relative;
+                background-color: #343a40;
+                color: #f8f9fa;
+                width: 25px;
+                align-items: center;
+                left: 0px;
+                margin-right: auto;
+                border-bottom-right-radius: 12px;
+                border-top-right-radius: 12px;
+                padding: 2px;
+                top: -35px;
+                border-bottom: 0px;
+            }
+
+            .left_button {
+                position: relative;
+                background-color: #343a40;
+                color: #f8f9fa;
+                width: 25px;
+                align-items: center;
+                border-bottom: 0px;
+                border-bottom-left-radius: 12px;
+                border-top-left-radius: 12px;
+                right: 0px;
+                margin-left: auto;
+                padding: 2px;
+                top: -10px;
+            }
+
+            .drop-zone {
+                max-width: 300px;
+                margin-bottom: 10px;
+                margin-top: 0;
+                height: 100px;
+                padding: 25px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                font-family: "Quicksand", sans-serif;
+                font-weight: 500;
+                font-size: 20px;
+                cursor: pointer;
+                color: #cccccc;
+                border: 4px dashed black;
+                border-radius: 10px;
+            }
+
+            .drop-zone--over {
+                border-style: solid;
+            }
+
+            .drop-zone__input {
+                display: none;
+            }
+
+            .drop-zone__thumb {
+                width: 100%;
+                height: 100%;
+                border-radius: 10px;
+                overflow: hidden;
+                background-color: #cccccc;
+                background-size: cover;
+                position: relative;
+            }
+
+            .drop-zone__thumb::after {
+                content: attr(data-label);
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                padding: 5px 0;
+                color: #ffffff;
+                background: rgba(0, 0, 0, 0.75);
+                font-size: 14px;
+                text-align: center;
+            }
+
+            #left_footer {
+                display: flex;
+                gap: 2px;
+            }
+
+            #left_footer .generatequestion {
+                height: 12px;
+            }

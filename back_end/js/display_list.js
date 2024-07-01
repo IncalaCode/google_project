@@ -98,13 +98,7 @@ export function display_list(convertfile) {
 
 }
 
-function code_display(value) {
-    const code_tag = document.createElement('code')
-    code_tag.innerHTML = value
 
-    return code_tag
-
-}
 
 
 
