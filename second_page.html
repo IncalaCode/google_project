@@ -6,16 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QUGEN</title>
     <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
       integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="./css/second_page_css.css">
     <link rel="stylesheet" href="./css/secondpage_2css.css">
     <link rel="stylesheet" href="./css/additional_second_page.css">
@@ -26,11 +23,11 @@
       <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Logo</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
@@ -40,7 +37,18 @@
                 <a class="nav-link" href="#">Link</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Another Link</a>
+                <div class="dropdown">
+                  <button class="btn nav-link dropdown-toggle btn-outline-light" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Mode <span class="caret"></span>
+                  </button>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#" id="light-mode">Light</a>
+                    <a class="dropdown-item" href="#" id="dark-mode">Dark</a>
+                  </div>
+                </div>
+
+
               </li>
             </ul>
           </div>
@@ -53,22 +61,19 @@
       <div class="opener-container opener-container_left left_button push-content">
         <span class="toggle-slider" id="toggleRightSidebar">R</span>
       </div>
-
       <div class="opener-container opener-container_right right_button push-content">
         <span class="toggle-slider" id="toggleLeftSidebar">L</span>
       </div>
 
       <section id="left_side_slider">
-
         <div class="sidebar-body">
-
           <div class="drop-zone">
             <span class="drop-zone__prompt">Drop file here or click to upload</span>
             <input type="file" name="myFile" id="import_file" class="drop-zone__input">
           </div>
           <div class="form-group">
             <label>Select Question Mode:</label>
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
               <label class="btn btn-secondary">
                 <input type="radio" id="modeExam" name="questionMode" value="exam" data-min-words="10"
                   data-max-words="50" data-difficulty="easy"> Exam
@@ -135,12 +140,11 @@
             <input type="number" id="numQuestions" class="form-control" value="5">
           </div>
           <div id="left_footer">
-            <button id="all" type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+            <button id="all" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
               Open the full file
             </button>
             <button id="generatequestion" class="btn btn-primary">Generate Questions</button>
           </div>
-
         </div>
       </section>
 
@@ -154,10 +158,6 @@
       </section>
     </section>
 
-    <!-- <div class="container mt-3">
-            <input type="file" name="file" id="import_file" class="form-control-file">
-        </div> -->
-
     <section>
       <!-- Modal structure -->
       <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -168,53 +168,47 @@
               <h5 class="modal-title" id="myModalLabel">
                 <!-- the search bar for the finder -->
                 <div id="search_place" class="fade-in">
-                  <div class="form-row align-items-center">
-                    <div class="col-auto">
+                  <div class="menu">
 
-                    </div>
-                    <div class="col-auto">
-                      <input type="color" id="highlight_color" value="#ff3000" class="form-control form-control-color">
-                    </div>
-                    <div class="col-auto">
-                      <input type="text" id="search_word_bar" class="form-control" placeholder="search the word">
-                    </div>
-                    <div class="col-auto">
+                    <div class="menu__button">+</div>
+                    <div class="menu__content">
+                      <h4 class="menu__title">search Here With Mark</h4>
+                      <div class="btn-group">
+                        <input type="color" id="highlight_color" value="#ff3000"
+                          class="form-control form-control-color">
+                        <input type="text" id="search_word_bar" class="form-control" placeholder="search the word">
+                      </div>
+                      <hr>
                       <div class="btn-group">
                         <button id="up_btn" class="btn btn-info"><i class="bi bi-arrow-up"></i></button>
                         <button id="down_btn" class="btn btn-info"><i class="bi bi-arrow-down"></i></button>
-                        <button id="penTool" class="btn btn-info">
-                          <i class="fas fa-pen"></i>
-                        </button>
+
                       </div>
                     </div>
                   </div>
                 </div>
               </h5>
-
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
               <pre id="display_list" class="warp display">
-                    <!-- here is the doc list will be displayed so don't delete only change the css or class or bootstrap -->
-                    </pre>
+                            <!-- here is the doc list will be displayed so don't delete only change the css or class or bootstrap -->
+                        </pre>
             </div>
           </div>
         </div>
       </div>
-      <!-- Floating button -->
-      <button id="highlightchooesbut" class="icon">✔️</button>
+
+
 
       <div id="errors">
         <!-- Error messages -->
       </div>
     </section>
 
-
-    <section class="push-content">
+    <section class="push-content middle">
       <!-- Display generated questions -->
-      <div class="mt-3">
+      <div class="">
         <h3>Generated Questions</h3>
         <div id="generatedQuestions"></div>
       </div>
@@ -222,24 +216,23 @@
     </section>
 
     <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
       crossorigin="anonymous"></script>
-    <!-- Scripts -->
+    <!-- First loaded Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/turndown/dist/turndown.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.8/mammoth.browser.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 
     <!-- Import map for Google Generative AI -->
     <script type="importmap">
-    {
-        "imports": {
-            "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        {
+            "imports": {
+                "@google/generative-ai": "https://esm.run/@google/generative-ai"
+            }
         }
-    }
     </script>
 
     <!-- CDN of mark.js -->
@@ -249,13 +242,13 @@
 
     <!-- User imported JS -->
     <script type="module" src="./back_end/js/doc_to_html.js"></script>
-    <script src="./back_end/js/selection.js"></script>
-
-    <!-- Bootstrap JS, Popper.js, and jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- <script src="./back_end/js/selection.js"></script> -->
     <script src="./js/second_page_jqury.js"></script>
+    <script src="./back_end/js/TextHighlighter.min.js"></script>
+    <script src="./back_end/js/new_text_selecter.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
   </body>
 
 </html>

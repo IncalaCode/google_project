@@ -4,453 +4,178 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>QUGEN</title>
-        <!-- Bootstrap CSS -->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <!-- Font Awesome -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-        <link rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-
-
-        <link rel="stylesheet" href="./css/second_page_css.css">
-        <link rel="stylesheet" href="./css/secondpage_2css.css">
+        <title>TextHighlighter Example</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <style>
-            /* Custom CSS for sidebar and main content interaction */
-            /* Push main content when sidebar is open */
-            .push-content {
-                transition: all 0.3s ease;
+            .highlight {
+                background-color: yellow;
             }
 
-            .pushed_right {
-                margin-right: 300px;
+            ::selection {
+                background-color: yellow;
             }
 
-            .pushed_left {
-                margin-left: 300px;
-            }
-
-            .navbar-nav {
-                margin: 0 auto;
-                display: flex;
-                justify-content: center;
-            }
-
-            .navbar-nav .nav-item {
-                position: relative;
-            }
-
-            .navbar {
-                padding-top: 5px;
-                padding-bottom: 5px;
-            }
-
-            #left_side_slider,
-            #right_side_slider {
-                position: fixed;
-                top: 0;
-                height: 100vh;
-                width: 300px;
-                background-color: #f8f9fa;
-                transition: left 0.3s ease, right 0.3s ease;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                padding-top: 56px;
-            }
-
-            #left_side_slider {
-                left: -300px;
-            }
-
-            #right_side_slider {
-                right: -300px;
-            }
-
-            #left_side_slider.show {
-                left: 0;
-            }
-
-            #right_side_slider.show {
-                right: 0;
-            }
-
-            #left_side_slider .sidebar-header,
-            #right_side_slider .sidebar-header {
-                padding: 20px;
-                background-color: #343a40;
-                color: #fff;
-            }
-
-            #left_side_slider .sidebar-body,
-            #right_side_slider .sidebar-body {
-                padding: 20px;
-            }
-
-            .opener-container {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-end;
+            .confirm-btn {
                 position: absolute;
-                top: 10px;
+                display: none;
                 z-index: 1000;
             }
 
-            .opener-container .toggle-slider {
-                cursor: pointer;
-            }
-
-            .opener-container_left {
-                right: 10px;
-            }
-
-            .opener-container_right {
-                left: 10px;
-            }
-
-            .right_button {
+            .highlight-container {
                 position: relative;
-                background-color: #343a40;
-                color: #f8f9fa;
-                width: 25px;
-                align-items: center;
-                left: 0px;
-                margin-right: auto;
-                border-bottom-right-radius: 12px;
-                border-top-right-radius: 12px;
-                padding: 2px;
-                top: -35px;
-                border-bottom: 0px;
+                display: block;
+                width: 100%;
+                margin: 10px 0;
             }
 
-            .left_button {
-                position: relative;
-                background-color: #343a40;
-                color: #f8f9fa;
-                width: 25px;
-                align-items: center;
-                border-bottom: 0px;
-                border-bottom-left-radius: 12px;
-                border-top-left-radius: 12px;
-                right: 0px;
-                margin-left: auto;
-                padding: 2px;
-                top: -10px;
-            }
-
-            .drop-zone {
-                max-width: 300px;
-                margin-bottom: 10px;
-                margin-top: 0;
-                height: 100px;
-                padding: 25px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                text-align: center;
-                font-family: "Quicksand", sans-serif;
-                font-weight: 500;
-                font-size: 20px;
-                cursor: pointer;
-                color: #cccccc;
-                border: 4px dashed black;
-                border-radius: 10px;
-            }
-
-            .drop-zone--over {
-                border-style: solid;
-            }
-
-            .drop-zone__input {
+            .collapsed-title {
                 display: none;
+                cursor: pointer;
             }
 
-            .drop-zone__thumb {
-                width: 100%;
-                height: 100%;
-                border-radius: 10px;
-                overflow: hidden;
-                background-color: #cccccc;
-                background-size: cover;
-                position: relative;
-            }
-
-            .drop-zone__thumb::after {
-                content: attr(data-label);
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                width: 100%;
-                padding: 5px 0;
-                color: #ffffff;
-                background: rgba(0, 0, 0, 0.75);
-                font-size: 14px;
-                text-align: center;
-            }
-
-            #left_footer {
+            .card-header {
                 display: flex;
-                gap: 2px;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
             }
 
-            #left_footer .generatequestion {
-                height: 12px;
+            .btn-group {
+                display: flex;
+                align-items: center;
+            }
+
+            .btn-remove {
+                margin-left: 10px;
+            }
+
+            @media (max-width: 768px) {
+                .card-body {
+                    display: none;
+                }
+
+                .btn-collapse {
+                    display: none;
+                }
             }
         </style>
     </head>
 
     <body>
-        <section class="push-content">
-            <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
-                <div class="container-fluid">
-                    <a class="navbar-brand" href="#">Logo</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav mr-auto">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Another Link</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </section>
-
-        <section>
-            <!-- Opener and closer icons -->
-            <div class="opener-container opener-container_left left_button push-content">
-                <span class="toggle-slider" id="toggleRightSidebar">R</span>
+        <div class="container mt-5">
+            <h1>TextHighlighter Example</h1>
+            <p>Select some text to highlight it.</p>
+            <div id="content">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque imperdiet libero eu neque
+                    facilisis.</p>
+                <p>Curabitur fringilla leo at neque scelerisque, a posuere libero vestibulum. Integer a auctor lacus.
+                </p>
             </div>
+            <button id="removeHighlights" class="btn btn-danger mt-3">Remove Highlights</button>
+            <button id="confirmHighlight" class="btn btn-primary confirm-btn">Confirm Highlight</button>
+        </div>
 
-            <div class="opener-container opener-container_right right_button push-content">
-                <span class="toggle-slider" id="toggleLeftSidebar">L</span>
-            </div>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="/back_end/js/TextHighlighter.min.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                var content = document.getElementById('content');
+                var confirmButton = document.getElementById('confirmHighlight');
+                var hltr = new TextHighlighter(content, {
+                    color: 'yellow',
+                    onBeforeHighlight: function (range) {
+                        // Check if the range is inside a collapsible div
+                        var parent = range.commonAncestorContainer;
+                        while (parent) {
+                            if (parent.classList && parent.classList.contains('collapse')) {
+                                return false;
+                            }
+                            parent = parent.parentNode;
+                        }
+                        return window.confirm('Selected text: ' + range + '\nReally highlight?');
+                    },
+                    onAfterHighlight: function (range, highlights) {
+                        window.alert('Created ' + highlights.length + ' highlight(s): ' + highlights.map(function (h) {
+                            return '"' + h.innerText + '"';
+                        }).join(', '));
 
-            <section id="left_side_slider">
+                        highlights.forEach(function (highlight, index) {
+                            // Create a collapsible section inside the highlighted text
+                            var highlightContainer = document.createElement('div');
+                            highlightContainer.classList.add('highlight-container', 'card');
 
-                <div class="sidebar-body">
-                    <form>
-                        <div class="drop-zone">
-                            <span class="drop-zone__prompt">Drop file here or click to upload</span>
-                            <input type="file" name="myFile" id="import_file" class="drop-zone__input">
-                        </div>
-                        <div class="form-group">
-                            <label>Select Question Mode:</label>
-                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                                <label class="btn btn-secondary">
-                                    <input type="radio" id="modeExam" name="questionMode" value="exam"
-                                        data-min-words="10" data-max-words="50" data-difficulty="easy"> Exam
-                                </label>
-                                <label class="btn btn-secondary">
-                                    <input type="radio" id="modeQuiz" name="questionMode" value="quiz"
-                                        data-min-words="15" data-max-words="60" data-difficulty="medium"> Quiz
-                                </label>
-                                <label class="btn btn-secondary">
-                                    <input type="radio" id="modeEssay" name="questionMode" value="essay"
-                                        data-min-words="50" data-max-words="150" data-difficulty="hard"> Essay
-                                </label>
-                                <label class="btn btn-secondary">
-                                    <input type="radio" id="modeTest" name="questionMode" value="test"
-                                        data-min-words="5" data-max-words="20" data-difficulty="medium"> Test
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Select Question Types:</label>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="typeTF" value="t_f">
-                                        <label class="form-check-label" for="typeTF">True/False</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="typeChoose" value="choose">
-                                        <label class="form-check-label" for="typeChoose">Choose</label>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="typeShortAnswer"
-                                            value="short_answer">
-                                        <label class="form-check-label" for="typeShortAnswer">Short Answer</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="typeEssay" value="essay">
-                                        <label class="form-check-label" for="typeEssay">Essay</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="typeMatch" value="match">
-                                        <label class="form-check-label" for="typeMatch">Match</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="difficulty">Select Difficulty:</label>
-                            <select id="difficulty" class="form-control">
-                                <option value="default">Default</option>
-                                <option value="easy">Easy</option>
-                                <option value="medium">Medium</option>
-                                <option value="hard">Hard</option>
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="numQuestions">Number of Questions:</label>
-                            <input type="number" id="numQuestions" class="form-control" value="5">
-                        </div>
-                        <div id="left_footer">
-                            <button id="all" type="button" class="btn btn-primary" data-toggle="modal"
-                                data-target="#myModal">
-                                Open the full file
-                            </button>
-                            <button id="generatequestion" class="btn btn-primary">Generate Questions</button>
-                        </div>
-
-                    </form>
-
-                </div>
-            </section>
-
-            <section id="right_side_slider">
-                <div class="sidebar-header mt-0">
-                    <h5 class="mb-0">Right Sidebar Header</h5>
-                </div>
-                <div class="sidebar-body">
-                    <p>Right Sidebar Content goes here...</p>
-                </div>
-            </section>
-        </section>
-
-        <!-- <div class="container mt-3">
-            <input type="file" name="file" id="import_file" class="form-control-file">
-        </div> -->
-
-        <section>
-            <!-- Modal structure -->
-            <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <!-- Use .modal-lg for a large modal -->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="myModalLabel">
-                                <!-- the search bar for the finder -->
-                                <div id="search_place" class="fade-in">
-                                    <div class="form-row align-items-center">
-                                        <div class="col-auto">
-
-                                        </div>
-                                        <div class="col-auto">
-                                            <input type="color" id="highlight_color" value="#ff3000"
-                                                class="form-control form-control-color">
-                                        </div>
-                                        <div class="col-auto">
-                                            <input type="text" id="search_word_bar" class="form-control"
-                                                placeholder="search the word">
-                                        </div>
-                                        <div class="col-auto">
-                                            <div class="btn-group">
-                                                <button id="up_btn" class="btn btn-info"><i
-                                                        class="bi bi-arrow-up"></i></button>
-                                                <button id="down_btn" class="btn btn-info"><i
-                                                        class="bi bi-arrow-down"></i></button>
-                                                <button id="penTool" class="btn btn-info">
-                                                    <i class="fas fa-pen"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            var cardHeader = document.createElement('div');
+                            cardHeader.classList.add('card-header');
+                            cardHeader.innerHTML = `
+                            <h5 class="mb-0">
+                                <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse-${index}" aria-expanded="true">
+                                    ${highlight.innerText.substring(0, 10)}...
+                                </button>
                             </h5>
+                        `;
 
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <pre id="display_list" class="warp display">
-                    <!-- here is the doc list will be displayed so don't delete only change the css or class or bootstrap -->
-                    </pre>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Floating button -->
-            <button id="highlightchooesbut" class="icon">✔️</button>
+                            var btnGroup = document.createElement('div');
+                            btnGroup.classList.add('btn-group');
 
-            <div id="errors">
-                <!-- Error messages -->
-            </div>
-        </section>
+                            var removeButton = document.createElement('button');
+                            removeButton.classList.add('btn', 'btn-danger', 'btn-sm', 'btn-remove');
+                            removeButton.innerText = 'Remove';
+                            removeButton.addEventListener('click', function () {
+                                var cardBodyText = highlightContainer.querySelector('.card-body').textContent;
+                                var textNode = document.createTextNode(cardBodyText);
+                                highlightContainer.replaceWith(textNode);
+                            });
 
+                            var collapseButton = document.createElement('button');
+                            collapseButton.classList.add('btn', 'btn-primary', 'btn-sm', 'btn-collapse');
+                            collapseButton.innerText = '+';
+                            collapseButton.setAttribute('data-toggle', 'collapse');
+                            collapseButton.setAttribute('data-target', `#collapse-${index}`);
 
-        <section class="push-content">
-            <!-- Display generated questions -->
-            <div class="mt-3">
-                <h3>Generated Questions</h3>
-                <div id="generatedQuestions"></div>
-            </div>
-        </section>
-        </section>
+                            btnGroup.appendChild(collapseButton);
+                            btnGroup.appendChild(removeButton);
+                            cardHeader.appendChild(btnGroup);
 
-        <!-- Bootstrap JS and dependencies -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-            crossorigin="anonymous"></script>
-        <!-- Scripts -->
-        <script src="https://cdn.jsdelivr.net/npm/turndown/dist/turndown.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/mammoth@1.4.8/mammoth.browser.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+                            var collapseSection = document.createElement('div');
+                            collapseSection.classList.add('collapse');
+                            collapseSection.id = `collapse-${index}`;
+                            collapseSection.innerHTML = `<div class="card-body">${highlight.innerHTML}</div>`;
 
-        <!-- Import map for Google Generative AI -->
-        <script type="importmap">
-    {
-        "imports": {
-            "@google/generative-ai": "https://esm.run/@google/generative-ai"
-        }
-    }
-    </script>
+                            highlightContainer.appendChild(cardHeader);
+                            highlightContainer.appendChild(collapseSection);
 
-        <!-- CDN of mark.js -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"
-            integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww=="
-            crossorigin="anonymous"></script>
+                            highlight.replaceWith(highlightContainer);
+                        });
+                    },
+                    onRemoveHighlight: function (hl) {
+                        return window.confirm('Do you really want to remove: "' + hl.innerText + '"');
+                    }
+                });
 
-        <!-- User imported JS -->
-        <script type="module" src="./back_end/js/doc_to_html.js"></script>
-        <script src="./back_end/js/selection.js"></script>
+                confirmButton.addEventListener('click', function () {
+                    // Highlight the stored range
+                    if (hltr._pendingRange) {
+                        hltr.doHighlight(hltr._pendingRange);
+                        hltr._pendingRange = null;
+                    }
 
-        <!-- Bootstrap JS, Popper.js, and jQuery -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                    // Hide the confirm button
+                    confirmButton.style.display = 'none';
+                });
 
-        <script>
+                document.getElementById('removeHighlights').addEventListener('click', function () {
+                    hltr.removeHighlights();
+                });
 
-
-        </script>
-        <script>
-            yy
-
+                // Hide the confirm button if the user clicks outside the content
+                document.addEventListener('click', function (event) {
+                    if (!content.contains(event.target) && event.target !== confirmButton) {
+                        confirmButton.style.display = 'none';
+                    }
+                });
+            });
         </script>
     </body>
 

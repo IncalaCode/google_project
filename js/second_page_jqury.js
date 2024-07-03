@@ -53,5 +53,19 @@ $(document).ready(function () {
     });
 });
 
+// dark mode
+$(document).ready(function () {
+    // Handle dropdown item clicks
+    $('#light-mode').click(function () {
+        $('body').removeClass('dark-mode');
+
+    });
+
+    $('#dark-mode').click(function () {
+        $('body').addClass('dark-mode', 'fade-out')
+    });
+});
+
+
 
 
