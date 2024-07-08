@@ -244,6 +244,7 @@ p {
     .btn-collapse {
         display: block;
     }
+
 }
 
 
@@ -314,4 +315,24 @@ p {
     visibility: hidden;
     transition: 0.2s;
     width: 180px;
+}
+
+#suggestion {
+    display: flex;
+    gap: 21px;
+    text-align: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.box {
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 12px;
+
+}
+
+.box:hover {
+    background-color: #464448;
+    color: #f8f9fa;
 }

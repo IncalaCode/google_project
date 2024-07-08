@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 var collapseSection = document.createElement('div');
                 collapseSection.classList.add('collapse');
                 collapseSection.id = `collapse-${index}`;
-                collapseSection.innerHTML = `<div class="card-body">${highlight.innerHTML}</div>`;
+                collapseSection.innerHTML = `<div class="card-body"><<foucs_point>${highlight.innerHTML}</foucs_point></div>`;
 
                 ///to incres the index
                 index++;

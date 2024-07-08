@@ -45,12 +45,31 @@ export default class ImportAI {
     }
 
 
-    async generateQuestions(focus_points) {
-        const prompt = "Write a story about a AI and magic"
+    async generateQuestions(focus_points, type, difficulty) {
 
-        const result = await model.generateContent(prompt);
+        const prompt =
+            `You're a meticulous and thorough information processing expert with a keen eye for detail.
+                     You have been trained on a vast amount of text data and are well-versed in generating precise and relevant questions from given information.
+                        Your task is to generate questions based on the input provided.
+
+                        Please use the following information to generate one question:
+
+                        Information: [${focus_points}]
+                        Question Type: [${type}]
+                        Difficulty Level: [${difficulty}]
+                        ${(type == 'choose') ? "choice must be : [A-Z](3,5) : 'choice here' " : ""}
+
+                        Return the question only in  JSON format, with the following structure:
+
+                        { "question": ""${(type == 'choose') ? ",choice : []" : ""}, "answer": "", "explanation": "" }`
+
+
+
+        const result = await this.model.generateContent(prompt);
         const response = await result.response;
         const text = response.text();
+
+        return text
 
     }
 }

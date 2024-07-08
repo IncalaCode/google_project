@@ -12,6 +12,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- message shower with  notyf-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./css/second_page_css.css">
     <link rel="stylesheet" href="./css/secondpage_2css.css">
@@ -149,71 +151,102 @@
       </section>
 
       <section id="right_side_slider">
-        <div class="sidebar-header mt-0">
-          <h5 class="mb-0">Right Sidebar Header</h5>
+        <div class="bot_contaner">
+          <div class="row d-flex">
+            <div class="">
+
+              <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center p-3"
+                  style="border-top: 4px solid #121212; height:130px; margin-top:-40px;">
+                  <h5 class="mb-0">Chatbot</h5>
+                </div>
+                <div class="card-body">
+                  <div class="chat-messages-container" id="chatMessages">
+                    <!-- Chat messages will be dynamically added here -->
+                  </div>
+                </div>
+                <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
+                  <div class="input-group mb-0">
+                    <input type="text" class="form-control" placeholder="Type message" aria-label="Recipient's username"
+                      aria-describedby="button-addon2" id="chat_bot_input" />
+                    <button class="btn btn-secondary" type="button" id="sendButton" style="padding-top: .55rem;">
+                      Send
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
         </div>
-        <div class="sidebar-body">
-          <p>Right Sidebar Content goes here...</p>
+
+      </section>
+
+      <section>
+        <!-- Modal structure -->
+        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <!-- Use .modal-lg for a large modal -->
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">
+                  <!-- the search bar for the finder -->
+                  <div id="search_place" class="fade-in">
+                    <div class="menu">
+
+                      <div class="menu__button">+</div>
+                      <div class="menu__content">
+                        <h4 class="menu__title">search Here With Mark</h4>
+                        <div class="btn-group">
+                          <input type="color" id="highlight_color" value="#ff3000"
+                            class="form-control form-control-color">
+                          <input type="text" id="search_word_bar" class="form-control" placeholder="search the word">
+                        </div>
+                        <hr>
+                        <div class="btn-group">
+                          <button id="up_btn" class="btn btn-info"><i class="bi bi-arrow-up"></i></button>
+                          <button id="down_btn" class="btn btn-info"><i class="bi bi-arrow-down"></i></button>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <pre id="display_list" class="warp display">
+                            <!-- here is the doc list will be displayed so don't delete only change the css or class or bootstrap -->
+                        </pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <section class="push-content middle">
+        <!-- Display generated questions -->
+        <div class="">
+          <h3>Generated Questions</h3>
+          <div id="versionContainer">loadLatestVersion</div>
+          <div id="generatedQuestions"></div>
+
+
         </div>
       </section>
     </section>
 
     <section>
-      <!-- Modal structure -->
-      <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-          <!-- Use .modal-lg for a large modal -->
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="myModalLabel">
-                <!-- the search bar for the finder -->
-                <div id="search_place" class="fade-in">
-                  <div class="menu">
 
-                    <div class="menu__button">+</div>
-                    <div class="menu__content">
-                      <h4 class="menu__title">search Here With Mark</h4>
-                      <div class="btn-group">
-                        <input type="color" id="highlight_color" value="#ff3000"
-                          class="form-control form-control-color">
-                        <input type="text" id="search_word_bar" class="form-control" placeholder="search the word">
-                      </div>
-                      <hr>
-                      <div class="btn-group">
-                        <button id="up_btn" class="btn btn-info"><i class="bi bi-arrow-up"></i></button>
-                        <button id="down_btn" class="btn btn-info"><i class="bi bi-arrow-down"></i></button>
+      <div id="messageshower">
 
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <pre id="display_list" class="warp display">
-                            <!-- here is the doc list will be displayed so don't delete only change the css or class or bootstrap -->
-                        </pre>
-            </div>
-          </div>
-        </div>
       </div>
 
-
-
-      <div id="errors">
-        <!-- Error messages -->
-      </div>
     </section>
 
-    <section class="push-content middle">
-      <!-- Display generated questions -->
-      <div class="">
-        <h3>Generated Questions</h3>
-        <div id="generatedQuestions"></div>
-      </div>
-    </section>
-    </section>
+    <!-- sicript with notyf -->
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
@@ -242,9 +275,10 @@
 
     <!-- User imported JS -->
     <script type="module" src="./back_end/js/doc_to_html.js"></script>
+    <script type="module" src="./back_end/js/generatequestion.js"></script>
     <!-- <script src="./back_end/js/selection.js"></script> -->
     <script src="./js/second_page_jqury.js"></script>
-    <script src="./back_end/js/TextHighlighter.min.js"></script>
+    <script src="./back_end/js/TextHighlighter.js"></script>
     <script src="./back_end/js/new_text_selecter.js"></script>
 
     <!-- Bootstrap JS -->
