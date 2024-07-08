@@ -1,30 +1,16 @@
 $(document).ready(function () {
     var $leftSidebar = $('#left_side_slider');
-    var $rightSidebar = $('#right_side_slider');
+    var $chatPopup = $('#chatPopup');
+    var $chatBackdrop = $('#chatbutton');
 
     // Function to toggle left sidebar
     function toggleLeftSidebar() {
         if ($leftSidebar.hasClass('show')) {
             $leftSidebar.removeClass('show');
             $('.push-content').removeClass('pushed_left');
-            $('#toggleLeftSidebar').html('L');
         } else {
             $leftSidebar.addClass('show');
             $('.push-content').addClass('pushed_left');
-            $('#toggleLeftSidebar').html('L');
-        }
-    }
-
-    // Function to toggle right sidebar
-    function toggleRightSidebar() {
-        if ($rightSidebar.hasClass('show')) {
-            $rightSidebar.removeClass('show');
-            $('.push-content').removeClass('pushed_right');
-            $('#toggleRightSidebar').html('R');
-        } else {
-            $rightSidebar.addClass('show');
-            $('.push-content').addClass('pushed_right');
-            $('#toggleRightSidebar').html('R');
         }
     }
 
@@ -33,43 +19,37 @@ $(document).ready(function () {
         toggleLeftSidebar();
     });
 
-    // Toggle right sidebar visibility on icon click
-    $('#toggleRightSidebar').click(function () {
-        toggleRightSidebar();
+    // Toggle chat popup
+    $('#chatbutton').click(function () {
+        $chatPopup.show();
+        $chatBackdrop.hide();
     });
 
-    // Close sidebars when clicking outside
+    // Close chat popup
+    $('#closeButton').click(function () {
+        $chatPopup.hide();
+        $chatBackdrop.show();
+    });
+
+    // Close sidebars and chat popup when clicking outside
     $(document).click(function (e) {
         if (!$(e.target).closest('#left_side_slider').length && !$(e.target).is('#toggleLeftSidebar')) {
             if ($leftSidebar.hasClass('show')) {
                 toggleLeftSidebar();
             }
         }
-        if (!$(e.target).closest('#right_side_slider').length && !$(e.target).is('#toggleRightSidebar')) {
-            if ($rightSidebar.hasClass('show')) {
-                toggleRightSidebar();
-            }
+        if (!$(e.target).closest('.popup').length && !$(e.target).is('#chatbutton')) {
+            $chatPopup.hide();
+            $chatBackdrop.show();
         }
     });
-});
 
-// dark mode
-$(document).ready(function () {
-    // Handle dropdown item clicks
+    // Dark mode
     $('#light-mode').click(function () {
         $('body').removeClass('dark-mode');
-
     });
 
     $('#dark-mode').click(function () {
-        $('body').addClass('dark-mode', 'fade-out')
+        $('body').addClass('dark-mode');
     });
 });
-
-
-
-
-
-
-
-

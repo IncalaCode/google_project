@@ -1,0 +1,39 @@
+body {
+    display: block;
+    font-family: monospace;
+}
+
+.full_scrren {
+    height: 100vh;
+    width: 100vh;
+}
+
+.opener-container {
+    position: fixed;
+    top: 90%;
+    transform: translateY(-50%);
+
+}
+
+.opener-container_left {
+    left: 10px;
+    z-index: 1050;
+
+}
+
+.opener-container_right {
+    right: 10px;
+    z-index: 1050;
+
+}
+
+.toggle-slider {
+    display: inline-block;
+    padding: 10px;
+    color: rgb(82, 82, 199);
+
+    border-radius: 30%;
+    cursor: pointer;
+    font-size: 20px;
+
+}

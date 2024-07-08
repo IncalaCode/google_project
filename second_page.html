@@ -18,9 +18,13 @@
     <link rel="stylesheet" href="./css/second_page_css.css">
     <link rel="stylesheet" href="./css/secondpage_2css.css">
     <link rel="stylesheet" href="./css/additional_second_page.css">
+
+    <!-- lastest add css use this for now  -->
+    <link rel="stylesheet" href="./css/secondPage.css">
   </head>
 
   <body>
+    <!-- this the nav bar  -->
     <section class="push-content">
       <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
         <div class="container-fluid">
@@ -49,201 +53,245 @@
                     <a class="dropdown-item" href="#" id="dark-mode">Dark</a>
                   </div>
                 </div>
-
-
               </li>
             </ul>
           </div>
         </div>
       </nav>
     </section>
+    <!-- nar bar end -->
+
+
+
+    <!-- left side opend -->
+
+    <section id="left_side_slider">
+      <div class="sidebar-body">
+        <div class="drop-zone">
+          <span class="drop-zone__prompt">Drop file here or click to upload</span>
+          <input type="file" name="myFile" id="import_file" class="drop-zone__input">
+        </div>
+        <div class="form-group">
+          <label>Select Question Mode:</label>
+          <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
+            <label class="btn btn-secondary">
+              <input type="radio" id="modeExam" name="questionMode" value="exam" data-min-words="10" data-max-words="50"
+                data-difficulty="easy"> Exam
+            </label>
+            <label class="btn btn-secondary">
+              <input type="radio" id="modeQuiz" name="questionMode" value="quiz" data-min-words="15" data-max-words="60"
+                data-difficulty="medium"> Quiz
+            </label>
+            <label class="btn btn-secondary">
+              <input type="radio" id="modeEssay" name="questionMode" value="essay" data-min-words="50"
+                data-max-words="150" data-difficulty="hard"> Essay
+            </label>
+            <label class="btn btn-secondary">
+              <input type="radio" id="modeTest" name="questionMode" value="test" data-min-words="5" data-max-words="20"
+                data-difficulty="medium"> Test
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Select Question Types:</label>
+          <div class="row">
+            <div class="col-6">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="typeTF" value="t_f">
+                <label class="form-check-label" for="typeTF">True/False</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="typeChoose" value="choose">
+                <label class="form-check-label" for="typeChoose">Choose</label>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="typeShortAnswer" value="short_answer">
+                <label class="form-check-label" for="typeShortAnswer">Short Answer</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="typeEssay" value="essay">
+                <label class="form-check-label" for="typeEssay">Essay</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="typeMatch" value="match">
+                <label class="form-check-label" for="typeMatch">Match</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="difficulty">Select Difficulty:</label>
+          <select id="difficulty" class="form-control">
+            <option value="default">Default</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="numQuestions">Number of Questions:</label>
+          <input type="number" id="numQuestions" class="form-control" value="5">
+        </div>
+        <div id="left_footer">
+          <button id="all" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
+            Open the full file
+          </button>
+          <button id="generatequestion" class="btn btn-primary">Generate Questions</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- left silder end -->
+
+    <!-- chat bot open -->
 
     <section>
-      <!-- Opener and closer icons -->
-      <div class="opener-container opener-container_left left_button push-content">
-        <span class="toggle-slider" id="toggleRightSidebar">R</span>
-      </div>
-      <div class="opener-container opener-container_right right_button push-content">
-        <span class="toggle-slider" id="toggleLeftSidebar">L</span>
-      </div>
 
-      <section id="left_side_slider">
-        <div class="sidebar-body">
-          <div class="drop-zone">
-            <span class="drop-zone__prompt">Drop file here or click to upload</span>
-            <input type="file" name="myFile" id="import_file" class="drop-zone__input">
-          </div>
-          <div class="form-group">
-            <label>Select Question Mode:</label>
-            <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
-              <label class="btn btn-secondary">
-                <input type="radio" id="modeExam" name="questionMode" value="exam" data-min-words="10"
-                  data-max-words="50" data-difficulty="easy"> Exam
-              </label>
-              <label class="btn btn-secondary">
-                <input type="radio" id="modeQuiz" name="questionMode" value="quiz" data-min-words="15"
-                  data-max-words="60" data-difficulty="medium"> Quiz
-              </label>
-              <label class="btn btn-secondary">
-                <input type="radio" id="modeEssay" name="questionMode" value="essay" data-min-words="50"
-                  data-max-words="150" data-difficulty="hard"> Essay
-              </label>
-              <label class="btn btn-secondary">
-                <input type="radio" id="modeTest" name="questionMode" value="test" data-min-words="5"
-                  data-max-words="20" data-difficulty="medium"> Test
-              </label>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Select Question Types:</label>
-            <div class="row">
-              <div class="col-6">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="typeTF" value="t_f">
-                  <label class="form-check-label" for="typeTF">True/False</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="typeChoose" value="choose">
-                  <label class="form-check-label" for="typeChoose">Choose</label>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="typeShortAnswer" value="short_answer">
-                  <label class="form-check-label" for="typeShortAnswer">Short Answer</label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="typeEssay" value="essay">
-                  <label class="form-check-label" for="typeEssay">Essay</label>
-                </div>
-              </div>
-              <div class="col-12">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="typeMatch" value="match">
-                  <label class="form-check-label" for="typeMatch">Match</label>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="difficulty">Select Difficulty:</label>
-            <select id="difficulty" class="form-control">
-              <option value="default">Default</option>
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label for="numQuestions">Number of Questions:</label>
-            <input type="number" id="numQuestions" class="form-control" value="5">
-          </div>
-          <div id="left_footer">
-            <button id="all" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-              Open the full file
+      <div class="popup fade-in fade-out" id="chatPopup">
+        <div class="card">
+          <div class="card-header d-flex p-3" style="border-top: 4px solid #121212;">
+            <h5 class="mb-0">Chatbot</h5>
+            <button type="button" class="close ml-auto" aria-label="Close" id="closeButton">
+              <span aria-hidden="true">&times;</span>
             </button>
-            <button id="generatequestion" class="btn btn-primary">Generate Questions</button>
           </div>
-        </div>
-      </section>
-
-      <section id="right_side_slider">
-        <div class="bot_contaner">
-          <div class="row d-flex">
-            <div class="">
-
-              <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center p-3"
-                  style="border-top: 4px solid #121212; height:130px; margin-top:-40px;">
-                  <h5 class="mb-0">Chatbot</h5>
-                </div>
-                <div class="card-body">
-                  <div class="chat-messages-container" id="chatMessages">
-                    <!-- Chat messages will be dynamically added here -->
-                  </div>
-                </div>
-                <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
-                  <div class="input-group mb-0">
-                    <input type="text" class="form-control" placeholder="Type message" aria-label="Recipient's username"
-                      aria-describedby="button-addon2" id="chat_bot_input" />
-                    <button class="btn btn-secondary" type="button" id="sendButton" style="padding-top: .55rem;">
-                      Send
-                    </button>
-                  </div>
-                </div>
-              </div>
-
+          <div class="card-body">
+            <div class="chat-messages-container" id="chatMessages">
+              <!-- Chat messages will be dynamically added here -->
+            </div>
+          </div>
+          <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
+            <div class="input-group mb-0">
+              <input type="text" class="form-control" placeholder="Type message" aria-label="Recipient's username"
+                aria-describedby="button-addon2" id="chat_bot_input" />
+              <button class="btn btn-secondary" type="button" id="sendButton" style="padding-top: .55rem;">Send</button>
             </div>
           </div>
         </div>
+      </div>
 
-      </section>
 
-      <section>
-        <!-- Modal structure -->
-        <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-            <!-- Use .modal-lg for a large modal -->
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">
-                  <!-- the search bar for the finder -->
-                  <div id="search_place" class="fade-in">
-                    <div class="menu">
 
-                      <div class="menu__button">+</div>
-                      <div class="menu__content">
-                        <h4 class="menu__title">search Here With Mark</h4>
-                        <div class="btn-group">
-                          <input type="color" id="highlight_color" value="#ff3000"
-                            class="form-control form-control-color">
-                          <input type="text" id="search_word_bar" class="form-control" placeholder="search the word">
-                        </div>
-                        <hr>
-                        <div class="btn-group">
-                          <button id="up_btn" class="btn btn-info"><i class="bi bi-arrow-up"></i></button>
-                          <button id="down_btn" class="btn btn-info"><i class="bi bi-arrow-down"></i></button>
+    </section>
+    <!-- chat bot  end -->
 
-                        </div>
+    <!-- document display opened  -->
+    <section>
+      <!-- Modal structure -->
+      <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+          <!-- Use .modal-lg for a large modal -->
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="myModalLabel">
+                <!-- the search bar for the finder -->
+                <div id="search_place" class="fade-in">
+                  <div class="menu">
+
+                    <div class="menu__button">+</div>
+                    <div class="menu__content">
+                      <h4 class="menu__title">search Here With Mark</h4>
+                      <div class="btn-group">
+                        <input type="color" id="highlight_color" value="#ff3000"
+                          class="form-control form-control-color">
+                        <input type="text" id="search_word_bar" class="form-control" placeholder="search the word">
+                      </div>
+                      <hr>
+                      <div class="btn-group">
+                        <button id="up_btn" class="btn btn-info"><i class="bi bi-arrow-up"></i></button>
+                        <button id="down_btn" class="btn btn-info"><i class="bi bi-arrow-down"></i></button>
+
                       </div>
                     </div>
                   </div>
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
-                <pre id="display_list" class="warp display">
+                </div>
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <pre id="display_list" class="warp display">
                             <!-- here is the doc list will be displayed so don't delete only change the css or class or bootstrap -->
                         </pre>
-              </div>
             </div>
           </div>
         </div>
-
-      </section>
-
-      <section class="push-content middle">
-        <!-- Display generated questions -->
-        <div class="">
-          <h3>Generated Questions</h3>
-          <div id="versionContainer">loadLatestVersion</div>
-          <div id="generatedQuestions"></div>
-
-
-        </div>
-      </section>
-    </section>
-
-    <section>
-
-      <div id="messageshower">
-
       </div>
-
     </section>
+    <!--  document display end -->
+
+    <!-- after this the dispaly:blocked -->
+
+    <section id="frist_slide" class="full_scrren">
+      <div>
+        <div class="row">
+          <div class="col-lg-6 col-md-12 col-sm-12 btnhold">
+            <h1 class="testbox">QUGEN</h1>
+            <br>
+            <p>Powered by Gemini.AI<!-- ANIMATION BLOCK -->
+              <span>
+                <div class="gif" id="g1">
+                  <h2 class="text-center">Questions.</h2>
+                </div>
+                <div class="gif" id="g2">
+                  <h2 class="text-center">Quizzes?</h2>
+                </div>
+                <div class="gif" id="g3">
+                  <h2 class="text-center">Summarize~</h2>
+                </div>
+                <div class="gif" id="g4">
+                  <h2 class="text-center">Free access!</h2>
+                </div>
+              </span>
+            </p>
+          </div>
+          <!-- work on  this pls ok -->
+          <div class="col-lg-6 col-md-12 col-sm-12 d-flex align-items-center justify-content-center" id="dropZone">
+            <div>
+              <input type="text" id="text_imoprt">
+              <input type="file" id="file_import">
+            </div>
+            <!-- on the css and html ok  -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- R and L  opened-->
+    <div class="opener-container opener-container_left left_button push-content fade-in">
+      <span class="toggle-slider"><i id="toggleLeftSidebar" class="fas fa-question"></i></span>
+    </div>
+    <div class="opener-container opener-container_right right_button push-content fade-in">
+      <span class="toggle-slider"><i id="chatbutton" class="fas fa-comment"></i></span>
+    </div>
+    <!-- R and L end  -->
+
+    <section id="about" class="full_scrren">
+      <h1 class="text-center"> about</h1>
+      <!-- div for text and video -->
+    </section>
+
+    <section id="contact" class="full_scrren">
+      <h1 class="text-center"> contact</h1>
+      <!-- div for  contact-->
+    </section>
+
+    <!-- marke this invisble -->
+    <section class="push-content middle">
+      <!-- Display generated questions -->
+      <div class="">
+        <h3>Generated Questions</h3>
+        <div id="versionContainer">loadLatestVersion</div>
+        <div id="generatedQuestions"></div>
+      </div>
+    </section>
+
 
     <!-- sicript with notyf -->
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
@@ -274,6 +322,7 @@
       crossorigin="anonymous"></script>
 
     <!-- User imported JS -->
+
     <script type="module" src="./back_end/js/doc_to_html.js"></script>
     <script type="module" src="./back_end/js/generatequestion.js"></script>
     <!-- <script src="./back_end/js/selection.js"></script> -->
