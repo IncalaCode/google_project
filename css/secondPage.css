@@ -1,6 +1,12 @@
+/* text animation */
+
+@import url("https://fonts.googleapis.com/css?family=Raleway:900&display=swap");
+
+
 body {
     display: block;
     font-family: monospace;
+    background-color: #f1f1f1;
 }
 
 
@@ -14,6 +20,7 @@ body {
 .opener-container_left {
     left: 10px;
     z-index: 1050;
+    z-index: 9999;
 
 }
 
@@ -26,11 +33,13 @@ body {
 .toggle-slider {
     display: inline-block;
     padding: 10px;
-    color: rgb(82, 82, 199);
+    /* color: rgb(82, 82, 199); */
+    color:#422781;
 
     border-radius: 30%;
     cursor: pointer;
     font-size: 20px;
+    
 
 }
 
@@ -49,7 +58,7 @@ button {
     border: 0;
     vertical-align: middle;
     text-decoration: none;
-    background: transparent;
+    background-color: transparent;
     padding: 0;
     font-size: inherit;
     font-family: inherit;
@@ -150,4 +159,433 @@ button:hover .button-text {
     align-self: center;
     justify-self: center;
 
+}
+
+
+
+
+
+#container {
+    /* position: absolute; */
+    /* margin: auto; */
+    /* width: 300px;
+    height: 40pt; */
+    /* top: 0;
+    bottom: 0; */
+
+    filter: url(#threshold) blur(0.6px);
+}
+
+#text1,
+#text2 {
+    position: absolute;
+    /* width: 100%; */
+    display: inline-block;
+    text-align: center;
+
+    font-family: "Raleway", sans-serif;
+    font-size: 20pt;
+    font-weight: bold;
+    color: #0e2d72;
+
+    user-select: none;
+}
+
+
+/* row layout update */
+
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    margin: 0;
+    padding: 0 10px;
+    height: calc(100vh - 100px);
+    align-items: flex-start;
+    justify-content: center;
+
+
+    /* Add some empty spaces to fill */
+    margin-top: 90px;
+    padding-top: 100px;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+
+/* hidden generated question */
+.genques {
+    visibility: hidden;
+}
+
+
+
+
+/* start guide section */
+.start-guide {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.start-guide video {
+    flex: 0 0 560px;
+    margin-right: 20px;
+}
+
+.start-guide .text-container {
+    flex: 1;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.text-container {
+    padding-top: 0%;
+    margin-top: 0%;
+}
+
+
+
+/* Add your custom CSS here */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+a,
+button,
+input,
+label,
+select,
+textarea {
+    font-family: 'Lora', serif;
+}
+
+h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+}
+
+/* nav bar css */
+
+nav.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    background: #422781;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 0 0 20px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+nav.navbar ul {
+    display: flex;
+    gap: 1.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+nav.navbar li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.Troubleshoot,
+.link {
+    text-decoration: none;
+    padding: 0.5rem 0.75rem;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fdfdff;
+    position: relative;
+    transition: color 0.25s;
+}
+
+.link:hover {
+    color: rgb(251, 249, 255);
+}
+
+.Troubleshoot,
+.link::after {
+    position: absolute;
+    content: "";
+    inset: 0;
+    background-color: #f0dbdb;
+    scale: 0 1;
+    z-index: -1;
+    transition: 0.45s;
+    border-radius: 10px;
+    background: #000000;
+}
+
+.Troubleshoot,
+.link:hover::after {
+    scale: 1 1;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.logo img {
+    max-height: 40px;
+    width: auto;
+    border-radius: 12px;
+    margin: 6px 6px;
+}
+
+
+#footer {
+    color: #8f8f8f;
+    text-align: center;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 7% 15%;
+}
+
+.footin {
+    font-size: 4rem;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+.social-icon {
+    margin: 20px 10px;
+}
+
+
+
+/* Custom CSS for Troubleshoot link */
+.navbar-text .Troubleshoot {
+    position: relative;
+    color: #fdfdff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    margin-left: 40px;
+    font-size: 18px;
+    font-weight: 600;
+    margin-right: 20px;
+
+}
+
+
+/* inside  */
+
+/* input text */
+.input {
+    color: #fff;
+    font-size: 0.9rem;
+    background-color: transparent;
+    width: 100%;
+    box-sizing: border-box;
+    padding-inline: 0.5em;
+    padding-block: 0.7em;
+    border: none;
+    border-bottom: var(--border-height) solid var(--border-before-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.input-border {
+    position: absolute;
+    background: var(--border-after-color);
+    height: 2px;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    transform: scaleX(0%);
+    transition: transform 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+
+.input:focus {
+    outline: none;
+}
+
+.input:focus+.input-border {
+    transform: scaleX(100%);
+}
+
+.form-control {
+    position: relative;
+    --width-of-input: 300px;
+}
+
+.input-alt {
+    font-size: 1.2rem;
+    padding-inline: 1em;
+    padding-block: 0.8em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.input-border-alt {
+    height: 3px;
+    background: linear-gradient(90deg, #ff6464 0%, #ffbf59 50%, #47c9ff 100%);
+    transition: transform 0.4s cubic-bezier(0.42, 0, 0.58, 1);
+}
+
+.input-alt:focus+.input-border-alt {
+    transform: scaleX(100%);
+}
+
+
+
+
+/* drop zone css */
+.drop-zone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.drop-zone__input {
+    display: none;
+}
+
+.drop-zone__thumb {
+    display: block;
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.drop-zone__label {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+.drop-zone:hover {
+    border-color: #999;
+}
+
+.drop-zone__input:focus+.drop-zone {
+    border-color: #666;
+}
+
+
+/* text field inpu text css */
+
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+
+/* message button css */
+
+.message-icon {
+    width: 40px;
+    height: 40px;
+    background-image: url('../img/chat.png');
+    
+    /* background-repeat: no-repeat; */
+    background-size: contain;
+    background-position: center;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+    margin-top: 15px;
+    width: 55px;
+    height: 55px;
+    animation: shake 4s infinite;
+}
+
+@keyframes shake {
+    20% {
+        transform: translateX(-5px);
+    }
+    40% {
+        transform: translateX(5px);
+    }
+    60% {
+        transform: translateX(-5px);
+    }
+    80% {
+        transform: translateX(5px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* dark mode drop down */
+
+
+#navbarNav .dropdown-menu {
+    top: 100% !important;
+    transform: translateY(-10px);
+}
+
+
+.dark-mode {
+    /* Add transition to smoothly change background color */
+    transition: background-color 0.3s ease;
+}
+
+.dark-mode.active {
+    background-color: rgb(26, 24, 24);
+    color: #f0dbdb;
+
+    /* Add transition to smoothly change background color */
+    transition: background-color 0.3s ease; 
+}
+
+body.dark-mode {
+    background-color: rgb(26, 24, 24);
+    color: #f0dbdb;
+}
+
+.dark-mode a,
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6,
+.dark-mode p,
+.dark-mode span,
+.toggle-slider
+ {
+    color: #f0dbdb;
+}
+
+#video-container {
+    border: 1px solid #f0dbdb;
+    background-color: rgb(26, 24, 24);
+}
+
+.text-animation,#container,#text1,#text2{
+    z-index: -1;
 }

@@ -24,7 +24,7 @@
 
   <body>
     <!-- this the nav bar  -->
-    <section class="push-content">
+    <!-- <section class="push-content">
       <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">Logo</a>
@@ -57,19 +57,65 @@
           </div>
         </div>
       </nav>
-    </section>
+    </section> -->
+
+
     <!-- nar bar end -->
 
+    <!-- redisigned new nav bar -->
 
 
-    <!-- left side opend -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <a class="logo" href="#">
+        <img src="https://frogjuggler.co.uk/my_content/uploads/2020/04/crybrandlogo-1.jpg" alt="Logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link link" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link link" href="#start-guide">Start Guide</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Mode
+            </a>
+            <div class="popup_arrow arrow-top dropdown-menu" style="position: fixed;" aria-labelledby="navbarDropdown">
+              <div class="popup-wrapper">
+                <a class="dropdown-item" href="#" id="light-mode">Light</a>
+                <a class="dropdown-item" href="#" id="dark-mode">Dark</a>
+                <a class="dropdown-item" href="#" id="default-mode">Default</a>
+              </div>
+            </div>
+          </li>
+          <li class="nav-item"><a class="nav-link link" href="#about">About</a></li>
+          <li class="nav-item"><a class="nav-link link" href="#footer">Contact Us</a></li>
+        </ul>
+        <div class="navbar-text">
+          <a href="#" class="Troubleshoot">?</a>
+        </div>
+      </div>
+    </nav>
+
 
     <section id="left_side_slider">
       <div class="sidebar-body">
-        <div class="drop-zone">
-          <span class="drop-zone__prompt">Drop file here or click to upload</span>
-          <input type="file" name="myFile" id="import_file" class="drop-zone__input">
+        <div class="form-group">
+          <!-- <label for="inputText text-center">reuplaod :</label> -->
+          <input type="text" id="inputText" data-type="0" class="form-control" placeholder="Type your text here">
         </div>
+
+        <div class="text-center my-3">-- OR --</div>
+
+        <div class="form-group">
+          <div class="drop-zone">
+            <span class="drop-zone__prompt">Drop file here or click to upload</span>
+            <input type="file" name="myFile" id="import_file" class="drop-zone__input">
+          </div>
+        </div>
+
         <div class="form-group">
           <label>Select Question Mode:</label>
           <div class="btn-group btn-group-toggle" data-bs-toggle="buttons">
@@ -94,7 +140,7 @@
 
         <div class="form-group">
           <label>Select Question Types:</label>
-          <div class="row">
+          <div class="col-10">
             <div class="col-6">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="typeTF" value="t_f">
@@ -138,11 +184,10 @@
           <label for="numQuestions">Number of Questions:</label>
           <input type="number" id="numQuestions" class="form-control" value="5">
         </div>
-        <div id="left_footer">
-          <button id="all" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal">
-            Open the full file
+        <div class="btn-group mt-3 gap-1">
+          <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#myModal"> Open the full
           </button>
-          <button id="generatequestion" class="btn btn-primary">Generate Questions</button>
+          <button id="generatequestion" class="btn btn-info">Generate Questions</button>
         </div>
       </div>
     </section>
@@ -167,10 +212,10 @@
             </div>
           </div>
           <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
-            <div class="input-group mb-0">
-              <input type="text" class="form-control" placeholder="Type message" aria-label="Recipient's username"
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Type message..." aria-label="Recipient's username"
                 aria-describedby="button-addon2" id="chat_bot_input" />
-              <button class="btn btn-secondary" type="button" id="sendButton" style="padding-top: .55rem;">Send</button>
+              <button class="btn btn-secondary " type="button" id="sendButton">Send</button>
             </div>
           </div>
         </div>
@@ -215,7 +260,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <pre id="display_list" class="warp display">
+              <pre id="display_list" data-type="0" class="warp display">
                             <!-- here is the doc list will be displayed so don't delete only change the css or class or bootstrap -->
                         </pre>
             </div>
@@ -225,16 +270,29 @@
     </section>
     <!--  document display end -->
 
+
+    <section>
+      <div id="panel" class="panel">
+        <div class="panel-content">
+          <h2>Slide-down Panel</h2>
+          <p>Panel content goes here...</p>
+        </div>
+      </div>
+      <button id="toggleButton" class="toggle-button">Toggle Panel</button>
+    </section>
+
     <!-- after this the dispaly:blocked -->
 
-    <section id="frist_slide" class="full_scrren">
+    <section id="frist_slide">
       <div>
         <div class="row">
           <div class="col-lg-6 col-md-12 col-sm-12 btnhold">
-            <h1 class="testbox">QUGEN</h1>
+            <h1 class="testbox">QUIZ ME<span style="color:#422781" font-size="10px">.io</span>
+            </h1>
+
             <br>
-            <p>Powered by Gemini.AI<!-- ANIMATION BLOCK -->
-              <span>
+            <p><!-- ANIMATION BLOCK -->
+              <!-- <span>
                 <div class="gif" id="g1">
                   <h2 class="text-center">Questions.</h2>
                 </div>
@@ -247,50 +305,177 @@
                 <div class="gif" id="g4">
                   <h2 class="text-center">Free access!</h2>
                 </div>
-              </span>
+              </span> -->
+              <!-- text animation -->
+
+            <div class="text-animation">
+              <div id="container">
+                <span id="text1"></span>
+                <span id="text2"></span>
+              </div>
+
+              <svg id="filters">
+                <defs>
+                  <filter id="threshold">
+                    <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0
+                                    0 1 0 0 0
+                                    0 0 1 0 0
+                                    0 0 0 255 -140" />
+                  </filter>
+                </defs>
+              </svg>
+            </div>
+
+            <!-- <div class="buttons">
+  <button class="learn-more">
+    <span class="circle" aria-hidden="true">
+      <span class="icon arrow"></span>
+    </span>
+    <span class="button-text">Preference</span>
+  </button>
+</div> -->
+
+
             </p>
           </div>
+
           <!-- work on  this pls ok -->
           <div class="col-lg-6 col-md-12 col-sm-12 d-flex align-items-center justify-content-center" id="dropZone">
-            <div>
-              <input type="text" id="text_imoprt">
-              <input type="file" id="file_import">
+
+            <div class="form-group">
+              <input type="text" data-type="1" id="text_imoprt">
+              <div class="text-center my-3">-- OR --</div>
+              <div class="drop-zone">
+                <span class="drop-zone__prompt">Drop file here or click to upload</span>
+                <input type="file" name="myFile" id="file_import" class="drop-zone__input">
+              </div>
             </div>
+
+
             <!-- on the css and html ok  -->
           </div>
         </div>
       </div>
     </section>
 
+
     <!-- R and L  opened-->
 
     <div class="buttons">
 
     </div>
-
+    <!-- 
     <div class="opener-container opener-container_left left_button push-content fade-in">
       <span class="toggle-slider"><i id="toggleLeftSidebar" class="fas fa-question"></i></span>
 
-    </div>
+    </div> -->
     <div class="opener-container opener-container_right right_button push-content fade-in">
-      <span class="toggle-slider"><i id="chatbutton" class="fas fa-comment"></i></span>
+      <span class="toggle-slider"><i id="chatbutton" class="message-icon"></i></span>
+    </div>
+    <div class="buttons opener-container opener-container_left left_button push-content fade-in">
+      <button class="learn-more">
+        <span class="circle toggle-slider" aria-hidden="true">
+          <span class="icon arrow"></span>
+        </span>
+        <span id="toggleLeftSidebar" class="button-text">Preference</span>
+      </button>
     </div>
     <!-- R and L end  -->
 
-    <section id="about" class="full_scrren">
-      <h1 class="text-center"> about</h1>
-      <!-- div for text and video -->
+
+    <!-- <section class="" id="start-guide">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="video-container">
+            <iframe width="520" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="text-container">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, lectus a interdum bibendum, nibh
+              tellus tincidunt nibh, vel aliquet lectus ipsum vel elit. Sed euismod, lectus a interdum bibendum, nibh
+              tellus tincidunt nibh, vel aliquet lectus ipsum vel elit. Sed euismod, lectus a interdum bibendum, nibh
+              tellus tincidunt nibh, vel aliquet lectus ipsum vel elit.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, lectus a interdum bibendum, nibh
+              tellus tincidunt nibh, vel aliquet lectus ipsum vel elit. Sed euismod, lectus a interdum bibendum, nibh
+              tellus tincidunt nibh, vel aliquet lectus ipsum vel elit. Sed euismod, lectus a interdum bibendum, nibh
+              tellus tincidunt nibh, vel aliquet lectus ipsum vel elit.</p>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+
+    <section id="start-guide" class="full_screen">
+      <!-- Div for text and video -->
+      <div class="container mt-4">
+        <div class="row">
+          <!-- <h1 class="text-center">About</h1> -->
+          <!-- Text Content -->
+          <div class="col-md-6">
+            <h2>Developer's Note</h2>
+            <p>For the layout of text and video, I used Bootstrap to create a responsive section and filled it with
+              Lorem Ipsum text.</p>
+            <p>The section is responsive and will adjust to different screen sizes.</p>
+          </div>
+          <!-- Video Embedding -->
+          <div class="col-md-6">
+            <div class="ratio ratio-16x9">
+              <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section id="contact" class="full_scrren">
-      <h1 class="text-center"> contact</h1>
-      <!-- div for  contact-->
-    </section>
+
+
+    <!-- Footer -->
+
+    <!-- Footer -->
+    <footer id="footer" class="bg-dark text-light py-5">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4">
+            <h5>Contact Us</h5>
+            <ul class="list-unstyled">
+              <li>Address: Mirzapur, Bangladesh</li>
+              <li>Email: info@example.com</li>
+              <li>Phone: +1234567890</li>
+            </ul>
+          </div>
+          <div class="col-lg-4">
+            <h5>Follow Us</h5>
+            <ul class="list-inline">
+              <li class="list-inline-item"><a href="#" class="text-light"><i class="fab fa-facebook"></i></a></li>
+              <li class="list-inline-item"><a href="#" class="text-light"><i class="fab fa-twitter"></i></a></li>
+              <li class="list-inline-item"><a href="#" class="text-light"><i class="fab fa-instagram"></i></a></li>
+              <li class="list-inline-item"><a href="#" class="text-light"><i class="fab fa-linkedin"></i></a></li>
+            </ul>
+          </div>
+          <div class="col-lg-4">
+            <h5>About Us</h5>
+            <p>QUGEN is a leading platform for generating educational questions to help teachers and students.</p>
+          </div>
+        </div>
+        <div class="text-center mt-4">
+          <p>&copy; 2024 QUGEN. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+
+    <!-- <section id="contact" class="full_scrren">
+      <h1 class="text-center"> contact</h1> -->
+    <!-- div for  contact-->
+    <!-- </section> -->
 
     <!-- marke this invisble -->
     <section class="push-content middle">
       <!-- Display generated questions -->
-      <div class="">
+      <div class="genques">
         <h3>Generated Questions</h3>
         <div id="versionContainer">loadLatestVersion</div>
         <div id="generatedQuestions"></div>
@@ -334,6 +519,8 @@
     <script src="./js/second_page_jqury.js"></script>
     <script src="./back_end/js/TextHighlighter.js"></script>
     <script src="./back_end/js/new_text_selecter.js"></script>
+    <!-- new js added here -->
+    <script src="./js/secondPage.js"></script>
 
     <!-- Bootstrap JS -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>

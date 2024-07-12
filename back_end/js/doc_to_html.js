@@ -1,6 +1,52 @@
 import import_ai from "./connect_to_ai.js";
 import { Tag } from "./classification.js";
 import { display_list } from "./display_list.js";
+import { generate } from "./generatequestion.js";
+import NotyfService from './message.shower.js';
+
+
+// form the input text to generate
+document.getElementById('inputText').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        GetTxtGenrate(e.target.value, true);
+    }
+});
+
+
+// form the input text to generate
+document.getElementById('text_imoprt').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        GetTxtGenrate(e.target.value, false);
+    }
+});
+
+
+async function GetTxtGenrate(value, gen) {
+    NotyfService.showMessage('loading', 'input preparing', true)
+    var temp = new import_ai()
+    temp.genrateDox(value).then(data => {
+        display_list(data, gen)
+        return gen || generate()
+    })
+}
+
+document.getElementById('file_import').addEventListener('change', (e) => {
+    if (!e.target.files.length) {
+        NotyfService.showMessage('warning', "Drag or click to upload a file ;)", false);
+        return;
+    }
+
+
+
+    // Simulated progress check
+    let progressInterval = setInterval(() => {
+        // Replace this condition with your actual progress condition
+        if (parseInt(document.getElementById('display_list').getAttribute('data-type'))) {
+            clearInterval(progressInterval);
+
+        }
+    }, 100);
+});
 
 
 document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
@@ -72,6 +118,10 @@ function updateThumbnail(dropZoneElement, file) {
 
 // Add event listener for file drop
 async function file_handler(file) {
+
+    // to start the dox race
+
+    NotyfService.showMessage("loading", "Processing the imported document ;)", true);
 
     if (file) {
         console.log('File name:', file.name);

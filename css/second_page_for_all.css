@@ -274,34 +274,24 @@ input[type="radio"]:checked+label~input[type="radio"]+label {
 #left_side_slider {
     position: fixed;
     top: 0;
-    height: 100vh;
+    left: 0;
     width: 300px;
+    height: 100%;
+    z-index: 1051;
+    /* High z-index to stay on top */
     background-color: #f8f9fa;
-    transition: left 0.3s ease, right 0.3s ease;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding-top: 56px;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+    /* Initially hidden */
 }
-
-#left_side_slider {
-    left: -300px;
-}
-
-
 
 #left_side_slider.show {
-    left: 0;
+    transform: translateX(0);
+    /* Show when toggled */
 }
 
-
-
-#left_side_slider {
-    padding: 20px;
-    background-color: #343a40;
-    color: #fff;
-}
-
-#left_side_slider .sidebar-body {
-    padding: 20px;
+.sidebar-body {
+    padding: 15px;
 }
 
 .drop-zone {
@@ -354,6 +344,16 @@ input[type="radio"]:checked+label~input[type="radio"]+label {
     text-align: center;
 }
 
+.drop-zone__prompt {
+    color: #696868;
+}
+
+.drop-zone__prompt:hover {
+    color: #343a40;
+}
+
+
+
 
 
 
@@ -384,8 +384,7 @@ input[type="radio"]:checked+label~input[type="radio"]+label {
         color: white;
     }
 
-    #left_side_slider,
-    #right_side_slider {
+    #left_side_slider {
         background-color: #696e72;
         color: white;
     }
@@ -410,6 +409,7 @@ input[type="radio"]:checked+label~input[type="radio"]+label {
     padding: 10px;
     border-radius: 5px;
     max-width: 75%;
+
 }
 
 .chatbot-message.user {
@@ -431,12 +431,14 @@ input[type="radio"]:checked+label~input[type="radio"]+label {
 .chat-messages-container {
     display: flex;
     flex-direction: column;
-    height: 400px;
+    height: 350px;
     overflow-y: auto;
+    z-index: 1050;
 }
 
 .card-body {
-    height: 400px;
+    height: 360px;
+    overflow: hidden;
 }
 
 .popup {
@@ -444,10 +446,11 @@ input[type="radio"]:checked+label~input[type="radio"]+label {
     bottom: 10px;
     right: 10px;
     width: 350px;
+    /* height: max-content; */
     background-color: #fff;
     border: none;
     border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 20px #422781;
     display: none;
     z-index: 1050;
 }
@@ -471,4 +474,132 @@ input[type="radio"]:checked+label~input[type="radio"]+label {
     width: 3rem;
     height: 3rem;
     margin-top: 10px;
+}
+
+/* Popup Arrows and dropshadows are applied to .popup. Text align is "centered." You'll probably want to set it to "left." */
+.popup_arrow {
+    margin-top: 0 auto;
+    width: 400px;
+    position: absolute;
+    text-align: center;
+    z-index: 999;
+    width: calc(12% + 10px);
+}
+
+.popup:after {
+    content: "";
+    height: 100%;
+    width: 100%;
+    border-radius: 4px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 0 1px 14px rgba(0, 0, 0, .2);
+}
+
+.popup_arrow:before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    transform: rotate(45deg);
+    box-shadow: 0 1px 14px rgba(0, 0, 0, .2);
+    background: #fff;
+    position: fixed;
+    z-index: 998;
+}
+
+/*
+Different arrow positioning
+*/
+.popup_arrow.arrow-top:before {
+    left: calc(50% - 10px);
+    top: -8px;
+}
+
+.popup_arrow.arrow-right:before {
+    top: calc(50% - 10px);
+    right: -8px;
+}
+
+.popup_arrow.arrow-bottom:before {
+    left: calc(50% - 10px);
+    bottom: -8px;
+}
+
+.popup.arrow-left:before {
+    top: calc(50% - 10px);
+    left: -8px;
+}
+
+@media (max-width: 768px) {
+    .popup_arrow {
+        margin-top: -160px;
+    }
+}
+
+/* 
+Popup wrapper
+This is where we add the white background and padding of the content within the popup
+*/
+
+/* top slider */
+.panel {
+    position: fixed;
+    top: 0;
+    /* Position at the top of the page */
+    left: 0;
+    width: 100%;
+    height: 100svh;
+    background-color: #38fb23;
+    border-bottom: 1px solid #eeebeb;
+    overflow: inherit;
+    /* Border at the bottom */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: translateY(-100%);
+    /* Initially off-screen */
+    opacity: 0;
+    z-index: 1050;
+    /* Initially hidden */
+}
+
+.panel.open {
+    transform: translateY(0%);
+    opacity: 1;
+}
+
+.panel-content {
+    padding: 20px;
+}
+
+.push_down {
+    margin-bottom: 100%;
+}
+
+.toggle-button {
+    position: fixed;
+    top: 60px;
+    /* Initially at the top of the page */
+    left: 80%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    background-color: #080808;
+    color: white;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    cursor: pointer;
+    transition: top 0.3s ease;
+    z-index: 1050;
+    /* Transition top property */
+}
+
+.toggle-button.top {
+    top: calc(90% + 10px);
+    border-radius: 12px;
+    scrollbar-width: 1px;
+    /* Move to the bottom */
+}
+
+.left_footer {
+    display: flex;
+    gap: 12px;
 }

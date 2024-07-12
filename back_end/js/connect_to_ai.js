@@ -69,7 +69,18 @@ export default class ImportAI {
         const response = await result.response;
         const text = response.text();
 
+
         return text
 
     }
+    async genrateDox(value) {
+        const prompt = `generate a 2000 word article about "${value}"`
+        const result = await this.model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
+        return text
+
+    }
+
+
 }

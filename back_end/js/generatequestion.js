@@ -1,5 +1,5 @@
 import ImportAI from "./connect_to_ai.js";
-import showMessage from "./message.shower.js";
+import NotyfService from './message.shower.js';
 
 class GeneratedText {
     constructor() {
@@ -89,12 +89,12 @@ class GeneratedText {
     addRule(numQuestions) {
         const focusPoints = this.findFocusPoint() || this.history.docx.full_doc;
         if (!focusPoints) {
-            showMessage('error', 'No document content available for classification.');
+            NotyfService.showMessage('error', 'No document content available for classification.');
             return;
         }
 
         if (!this.hasDocumentChanged(focusPoints)) {
-            showMessage('info', 'Document content unchanged. Skipping reclassification.');
+            NotyfService.showMessage('info', 'Document content unchanged. Skipping reclassification.');
             return;
         }
 
@@ -108,7 +108,7 @@ class GeneratedText {
         const totalAvailableQuestions = selectedTypes.reduce((sum, type) => sum + this.question_type[type].length, 0);
 
         if (totalAvailableQuestions < numQuestions) {
-            showMessage('warning', 'Not enough questions available to fulfill the request.');
+            NotyfService.showMessage('warning', 'Not enough questions available to fulfill the request.');
             remainingQuestions = totalAvailableQuestions;
         }
 
@@ -146,9 +146,9 @@ class GeneratedText {
             const version = this.history.docx.versions[versionIndex];
             this.question_type = { ...version.question_type };
             this.info = { ...version.info };
-            showMessage('info', `Rolled back to version ${versionIndex}`);
+            NotyfService.showMessage('info', `Rolled back to version ${versionIndex}`);
         } else {
-            showMessage('error', 'Invalid version index.');
+            NotyfService.showMessage('error', 'Invalid version index.');
         }
     }
 
@@ -206,7 +206,7 @@ function getUserInputsAndApplyRules(data) {
     const modeElement = document.querySelector('input[name="questionMode"]:checked');
 
     if (!modeElement) {
-        showMessage('warning', 'Please select a question mode.');
+        NotyfService.showMessage('warning', 'Please select a question mode.');
         return null;
     }
 
@@ -229,9 +229,13 @@ function getUserInputsAndApplyRules(data) {
 
     return { numQuestions, difficulty, mode, selectedTypes };
 }
+//generate button clicked
+document.getElementById('generatequestion').addEventListener('click', generate)
 
-document.getElementById('generatequestion').addEventListener('click', async () => {
+
+export async function generate() {
     try {
+        NotyfService.showMessage('loading', "started to generate the question", true)
         const data = new GeneratedText();
         data.history.docx.full_doc = document.getElementById('display_list').innerText.trim();
 
@@ -246,11 +250,12 @@ document.getElementById('generatequestion').addEventListener('click', async () =
         displayGeneratedQuestions(data.info.question_mode[mode][difficulty]);
 
         data.save();
+        NotyfService.dismiss('success', "finsied generating the question")
     } catch (error) {
-        showMessage('warning', 'Error occurred while generating questions.');
+        NotyfService.showMessage('warning', 'Error occurred while generating questions.');
         console.error(error);
     }
-});
+};
 
 // function showMessage(type, message) {
 //     console.log(`${type}: ${message}`);

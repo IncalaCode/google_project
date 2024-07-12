@@ -81,15 +81,20 @@
 // }
 
 
+import NotyfService from './message.shower.js';
 
 
+export async function display_list(convertfile, gen) {
+    // to it is commplted and showed
 
-export function display_list(convertfile) {
+    if (gen) NotyfService.dismiss('success', 'Processing completed!');
+
     const displayListElement = document.getElementById('display_list');
     displayListElement.innerHTML = '';
     displayListElement.classList.add('fade-in', "main_display")// Clear any existing content
 
     displayListElement.innerHTML = convertfile;
+
 
     // for selecting the selectable place 
 
