@@ -552,7 +552,7 @@ This is where we add the white background and padding of the content within the 
     height: 100svh;
     background-color: #38fb23;
     border-bottom: 1px solid #eeebeb;
-    overflow: inherit;
+    overflow: auto;
     /* Border at the bottom */
     transition: transform 0.3s ease, opacity 0.3s ease;
     transform: translateY(-100%);
@@ -602,4 +602,43 @@ This is where we add the white background and padding of the content within the 
 .left_footer {
     display: flex;
     gap: 12px;
+}
+
+/* for the question display */
+.card-header,
+.card-footer {
+    background-color: #f8f9fa;
+}
+
+.card-body {
+    margin-bottom: 20px;
+}
+
+.match-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.match-question,
+.match-answer {
+    width: 45%;
+}
+
+.match-question input {
+    width: 30px;
+    margin-right: 10px;
+}
+
+.short-answer-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-icons {
+    float: right;
+}
+
+.footer-icons i {
+    margin-left: 10px;
+    cursor: pointer;
 }
