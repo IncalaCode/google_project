@@ -33,6 +33,12 @@ class Notyfclass {
                         background: 'green',
                         duration: 3000,
                         dismissible: true
+                    },
+                    {
+                        type: 'info',
+                        background: '#21ff9f',
+                        duration: 3000,
+                        dismissible: true
                     }
                 ]
             });

@@ -31,13 +31,18 @@
 // };
 
 
-
 document.addEventListener('DOMContentLoaded', () => {
-
   const panel = document.getElementById('panel');
   const toggleButton = document.getElementById('toggleButton');
+  toggleButton.innerHTML = '<i class="fas fa-angle-double-down"></i>';
+
   toggleButton.addEventListener('click', () => {
     panel.classList.toggle('open');
+    if (panel.classList.contains('open')) {
+      toggleButton.innerHTML = '<i class="fas fa-angle-double-up"></i>';
+    } else {
+      toggleButton.innerHTML = '<i class="fas fa-angle-double-down"></i>';
+    }
     toggleButton.classList.toggle('top');
   });
-})
+});

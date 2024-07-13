@@ -1,5 +1,9 @@
 import ImportAI from "./connect_to_ai.js";
 import NotyfService from './message.shower.js';
+import createCard from './display_questions.js'
+
+const ai = new ImportAI();
+
 
 class GeneratedText {
     constructor() {
@@ -15,7 +19,7 @@ class GeneratedText {
             question_mode: {
                 exam: { easy: [], medium: [], hard: [], default: [] },
                 quiz: { easy: [], medium: [], hard: [], default: [] },
-                essay: { easy: [], medium: [], hard: [], default: [] },
+                // essay: { easy: [], medium: [], hard: [], default: [] },
                 test: { easy: [], medium: [], hard: [], default: [] }
             }
         };
@@ -31,39 +35,59 @@ class GeneratedText {
         };
     }
 
-    classifyWords(text, numQuestions) {
+    classifyWords(text, numQuestions, selectedTypes) {
         const words = text.split(/\s+/);
         const totalWords = words.length;
+        console.log(selectedTypes)
 
-        // Calculate maximum word limits based on numQuestions
-        const wordLimits = {
-            t_f: totalWords * 0.55 / numQuestions,
-            match: totalWords * 0.70 / numQuestions,
-            choose: totalWords * 0.80 / numQuestions,
-            short_answer: totalWords * 0.90 / numQuestions,
-            essay: totalWords * 1 / numQuestions
-        };
+        // Initialize wordLimits based on selectedTypes and numQuestions
+        const wordLimits = {};
+
+        Array.from(selectedTypes).forEach(type => {
+            switch (type) {
+                case 't_f':
+                    wordLimits[type] = totalWords * 0.55 / numQuestions;
+                    break;
+                case 'match':
+                    wordLimits[type] = totalWords * 0.70 / numQuestions;
+                    break;
+                case 'choose':
+                    wordLimits[type] = totalWords * 0.80 / numQuestions;
+                    break;
+                case 'short_answer':
+                    wordLimits[type] = totalWords * 0.90 / numQuestions;
+                    break;
+                case 'essay':
+                    wordLimits[type] = totalWords * 1 / numQuestions;
+                    break;
+                default:
+                    break;
+            }
+        });
 
         let currentWords = [];
-        let currentQuestionType = 't_f';
+        let currentQuestionType = selectedTypes[0]; // Start with the first selected type
 
-        const questionTypes = Object.keys(wordLimits);
         let questionTypeIndex = 0;
 
         words.forEach(word => {
             currentWords.push(word);
 
-            if (currentWords.length >= wordLimits[currentQuestionType]) {
+            // Check if currentQuestionType matches the type being processed
+            const maxWords = wordLimits[currentQuestionType];
+            if (currentWords.length >= maxWords) {
                 const spanText = currentWords.join(' ');
                 this.history.docx.focus_points.push({ text: spanText, type: currentQuestionType });
                 this.question_type[currentQuestionType].push(spanText);
                 currentWords = [];
 
-                questionTypeIndex = (questionTypeIndex + 1) % questionTypes.length;
-                currentQuestionType = questionTypes[questionTypeIndex];
+                // Move to the next question type in rotation
+                questionTypeIndex = (questionTypeIndex + 1) % selectedTypes.length;
+                currentQuestionType = selectedTypes[questionTypeIndex];
             }
         });
 
+        // Push remaining words to the last processed question type
         if (currentWords.length > 0) {
             const spanText = currentWords.join(' ');
             this.history.docx.focus_points.push({ text: spanText, type: currentQuestionType });
@@ -72,6 +96,7 @@ class GeneratedText {
 
         this.saveVersion(); // Save current version after classification
     }
+
 
     hasDocumentChanged(newText) {
         if (newText !== this.history.docx.lastClassifiedText) {
@@ -86,7 +111,7 @@ class GeneratedText {
         return spans.length > 0 ? Array.from(spans).map(span => span.innerText).join(' ') : false;
     }
 
-    addRule(numQuestions) {
+    addRule(numQuestions, selectedTypes) {
         const focusPoints = this.findFocusPoint() || this.history.docx.full_doc;
         if (!focusPoints) {
             NotyfService.showMessage('error', 'No document content available for classification.');
@@ -98,7 +123,7 @@ class GeneratedText {
             return;
         }
 
-        this.classifyWords(focusPoints, numQuestions);
+        this.classifyWords(focusPoints, numQuestions, selectedTypes);
     }
 
     async arrangeQuestons(numQuestions, difficulty, mode, selectedTypes) {
@@ -112,13 +137,14 @@ class GeneratedText {
             remainingQuestions = totalAvailableQuestions;
         }
 
-        const ai = new ImportAI();
+
 
         while (remainingQuestions > 0) {
             for (const type of selectedTypes) {
                 if (this.question_type[type].length > 0 && remainingQuestions > 0) {
                     const focusPoint = this.question_type[type].shift();
-                    const generatedQuestion = await ai.generateQuestions(focusPoint, type);
+                    var generatedQuestion = await ai.generateQuestions(focusPoint, type);
+                    generatedQuestion = this.parseJsonFromText(generatedQuestion)
                     selectedQuestions.push({ text: generatedQuestion, type: type });
                     remainingQuestions--;
                 }
@@ -185,18 +211,34 @@ class GeneratedText {
             info: { ...this.info }
         };
         this.history.full_history_data.push(currentState);
+        ai.save([this.info, this.history.docx.focus_points])
         console.log('Current state saved:', this.history.full_history_data);
     }
 
-    async generateQuestions_ai(mode, difficulty) {
-        const ai = new ImportAI();
-        const questions = this.info.question_mode[mode][difficulty];
-
-        for (let i = 0; i < questions.length; i++) {
-            const question = questions[i];
-            question.text = await ai.generateQuestions(question.text, question.type);
+    parseJsonFromText(text) {
+        try {
+            const startIndex = text.indexOf('{');
+            const endIndex = text.lastIndexOf('}');
+            const trimmedJsonData = text.substring(startIndex, endIndex + 1);
+            const parsedData = JSON.parse(trimmedJsonData.trim());
+            return parsedData;
+        } catch (error) {
+            console.error('Error parsing JSON:', error);
+            console.error('Input text:', text);
+            return null;
         }
     }
+
+
+    // async generateQuestions_ai(mode, difficulty) {
+    //     const ai = new ImportAI();
+    //     const questions = this.info.question_mode[mode][difficulty];
+
+    //     for (let i = 0; i < questions.length; i++) {
+    //         const question = questions[i];
+    //         question.text = await ai.generateQuestions(question.text, question.type);
+    //     }
+    // }
 
 }
 
@@ -218,12 +260,11 @@ function getUserInputsAndApplyRules(data) {
 
     const modeCheckbox = document.getElementById(`mode${mode.charAt(0).toUpperCase() + mode.slice(1)}`);
     if (modeCheckbox) {
-        const modeDifficulty = modeCheckbox.dataset.difficulty;
 
         if (difficulty) {
-            data.addRule(numQuestions);
+            data.addRule(numQuestions, selectedTypes);
         } else {
-            data.addRule(numQuestions);
+            data.addRule(numQuestions, selectedTypes);
         }
     }
 
@@ -245,9 +286,8 @@ export async function generate() {
         const { numQuestions, difficulty, mode, selectedTypes } = userInput;
 
         await data.arrangeQuestons(numQuestions, difficulty, mode, selectedTypes);
-        await data.generateQuestions_ai(mode, difficulty);
 
-        displayGeneratedQuestions(data.info.question_mode[mode][difficulty]);
+        displayGeneratedQuestions(data.info.question_mode[mode][difficulty], mode);
 
         data.save();
         NotyfService.dismiss('success', "finsied generating the question")
@@ -260,102 +300,204 @@ export async function generate() {
 // function showMessage(type, message) {
 //     console.log(`${type}: ${message}`);
 // }
+// Function to sort questions by their type
+function sortQuestionsByType(questions) {
+    const groupedQuestions = {
+        trueFalse: [],
+        multipleChoice: [],
+        matching: [],
+        shortAnswer: [],
+        essay: []
+    };
 
-function displayGeneratedQuestions(questions) {
-    questions.sort((a, b) => {
-        const order = ['t_f', 'match', 'choose', 'short_answer', 'essay'];
-        return order.indexOf(a.type) - order.indexOf(b.type);
-    });
-
-    const container = document.getElementById('generatedQuestions');
-    container.innerHTML = '';
     questions.forEach(question => {
-        const div = document.createElement('div');
-        div.className = 'card mt-2';
-        div.innerHTML = `
-            <div class="card-body">
-                <p class="card-text">${question.text}</p>
-                <p class="card-text"><strong>Type:</strong> ${question.type}</p>
-            </div>
-        `;
-        container.appendChild(div);
+        switch (question.type) {
+            case 't_f':
+                groupedQuestions.trueFalse.push(question);
+                break;
+            case 'choose':
+                groupedQuestions.multipleChoice.push(question);
+                break;
+            case 'match':
+                groupedQuestions.matching.push(question);
+                break;
+            case 'short_answer':
+                groupedQuestions.shortAnswer.push(question);
+                break;
+            case 'essay':
+                groupedQuestions.essay.push(question);
+                break;
+            default:
+                break;
+        }
     });
+
+    return groupedQuestions;
+}
+
+// Function to display the generated time span
+function displayGeneratedTime_mode(mode) {
+    const cardContainer = document.getElementById('card-container');
+
+    // Create a new h3 element
+    const timeSpanElement = document.createElement('h3');
+
+
+    // Set the text content of the h3 element to the current date and time
+    timeSpanElement.textContent = `Generated Time Span: ${new Date().toLocaleString()}`;
+
+    // Append the new h3 element to the card container
+    cardContainer.appendChild(timeSpanElement);
+
+    document.getElementById('mode_show').innerHTML = `Mode : ${mode}`
+
+
+}
+
+function initializeTogglePanel() {
+
+    const panel = document.getElementById('panel');
+    const toggleButton = document.getElementById('toggleButton');
+
+    // Open the panel and set the initial icon
+    panel.classList.add('open');
+    toggleButton.innerHTML = '<i class="fas fa-angle-double-down"></i>';
+    toggleButton.classList.add('top')
 }
 
 
 
 
+
+
+// Function to display generated questions after sorting them by type
+function displayGeneratedQuestions(questions, mode) {
+    // Sort questions by their type
+    const groupedQuestions = sortQuestionsByType(questions);
+
+    // for displaying the vrsion 
+    // Call the function to display the time span and open the slider
+    displayGeneratedTime_mode(mode);
+    initializeTogglePanel()
+
+    // Display true/false questions
+    groupedQuestions.trueFalse.forEach(question => {
+        const { text: questionText, type: questionType } = question;
+        createCard('trueFalse', 'True/False Question', questionText.question);
+    });
+
+    // Display multiple choice questions
+    groupedQuestions.multipleChoice.forEach(question => {
+        const { text: questionText, type: questionType } = question;
+        createCard('multipleChoice', 'Multiple Choice Question', questionText.question, questionText.choice); // Example options
+    });
+
+    // Display combined matching questions
+    if (groupedQuestions.matching.length > 0) {
+        createCard('matching', 'Matching Questions', '', groupedQuestions.matching);
+    }
+
+    // Display short answer questions
+    groupedQuestions.shortAnswer.forEach(question => {
+        const { text: questionText, type: questionType } = question;
+        createCard('shortAnswer', 'Short Answer Question', questionText.question);
+    });
+
+    // Display essay questions
+    groupedQuestions.essay.forEach(question => {
+        const { text: questionText, type: questionType } = question;
+        createCard('essay', 'Essay Question', questionText.question);
+    });
+
+    setMode(mode)
+}
+
+
 /// chat bot
 
-// Respond to user input
-document.addEventListener('DOMContentLoaded', function () {
-    var chatInput = document.getElementById('chat_bot_input');
-    var chatMessages = document.getElementById('chatMessages');
-    var sendButton = document.getElementById('sendButton');
 
-    // Function to add a new message to the chat
-    function addMessage(author, text, isUser = true, isLoading = false) {
-        var messageDiv = document.createElement('div');
-        messageDiv.classList.add('chatbot-message', isUser ? 'user' : isLoading ? 'loading' : 'bot');
+var chatInput = document.getElementById('chat_bot_input');
+var chatMessages = document.getElementById('chatMessages');
+var sendButton = document.getElementById('sendButton');
 
-        var messageText = document.createElement('div');
-        messageText.textContent = text;
+// Function to add a new message to the chat
+function addMessage(author, text, isUser = true, isLoading = false) {
+    var messageDiv = document.createElement('div');
+    messageDiv.classList.add('chatbot-message', isUser ? 'user' : isLoading ? 'loading' : 'bot');
 
-        messageDiv.appendChild(messageText);
-        chatMessages.appendChild(messageDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to the bottom
-    }
+    var messageText = document.createElement('div');
+    messageText.textContent = text;
 
-    // Function to determine bot response
-    function getBotResponse(userText) {
-        userText = userText.toLowerCase();
-        if (userText.includes('menu')) {
-            return "Sure, here is the menu: \n1. Pizza \n2. Pasta \n3. Salad";
-        } else if (userText.includes('order')) {
-            return "What would you like to order?";
-        } else if (userText.includes('thank you') || userText.includes('thanks')) {
-            return "You're welcome! Enjoy your meal!";
-        } else if (userText.includes('hello') || userText.includes('hi')) {
-            return "Hello! How can I assist you today?";
-        } else {
-            return "I'm here to help. You can ask for the menu or place an order.";
-        }
-    }
+    messageDiv.appendChild(messageText);
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to the bottom
+}
 
-    // Function to show the bot response with a loading indicator
-    function showBotMessage(userText) {
-        addMessage('User', userText, true);
-        addMessage('Bot', 'Typing...', false, true);
+// Function to determine bot response
+async function getBotResponse(userText) {
+    userText = userText.toLowerCase();
+    const text = await ai.getchat(userText);
+    return text;
+}
 
-        setTimeout(function () {
-            // Remove the loading message
-            var loadingMessage = document.querySelector('.chatbot-message.loading');
-            if (loadingMessage) {
-                loadingMessage.remove();
-            }
 
-            let botResponse = getBotResponse(userText);
-            addMessage('Bot', botResponse, false);
-        }, 1000); // Simulate a delay for bot response
-    }
 
-    // Event listener for the input field
-    chatInput.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-            let userInput = this.value.trim();
-            if (userInput) {
-                showBotMessage(userInput);
-                this.value = '';
-            }
-        }
-    });
 
-    // Event listener for the send button
-    sendButton.addEventListener('click', function () {
-        let userInput = chatInput.value.trim();
+
+
+// Event listener for the input field
+chatInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+        let userInput = this.value.trim();
         if (userInput) {
             showBotMessage(userInput);
-            chatInput.value = '';
+            this.value = '';
         }
-    });
+    }
 });
+
+// Event listener for the send button
+// sendButton.addEventListener('click', function () {
+//     let userInput = chatInput.value.trim();
+//     if (userInput) {
+//         showBotMessage(userInput);
+//         chatInput.value = '';
+//     }
+// });
+
+
+
+function setMode(mode) {
+    NotyfService.showMessage('warning', `question  mode ${mode} : offlimit`)
+}
+
+// Function to show the bot response with a loading indicator
+export async function showBotMessage(userText, get) {
+    addMessage('User', userText, true);
+    addMessage('Bot', 'Typing...', false, true);
+
+    try {
+        // Await the bot response
+        let botResponse = await getBotResponse(userText, get);
+
+        // Remove the loading message
+        var loadingMessage = document.querySelector('.chatbot-message.loading');
+        if (loadingMessage) {
+            loadingMessage.remove();
+        }
+
+        // Add the bot response message
+        addMessage('Bot', botResponse, false);
+    } catch (error) {
+        console.error('Error getting bot response:', error);
+
+        // Remove the loading message
+        var loadingMessage = document.querySelector('.chatbot-message.loading');
+        if (loadingMessage) {
+            loadingMessage.remove();
+        }
+
+        // Add an error message
+        addMessage('Bot', 'Sorry, something went wrong. Please try again.', false);
+    }
+}
