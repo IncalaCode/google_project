@@ -34,12 +34,12 @@ body {
     display: inline-block;
     padding: 10px;
     /* color: rgb(82, 82, 199); */
-    color:#422781;
+    color: #422781;
 
     border-radius: 30%;
     cursor: pointer;
     font-size: 20px;
-    
+
 
 }
 
@@ -506,7 +506,7 @@ input[type="text"] {
     width: 40px;
     height: 40px;
     background-image: url('../img/chat.png');
-    
+
     /* background-repeat: no-repeat; */
     background-size: contain;
     background-position: center;
@@ -526,15 +526,19 @@ input[type="text"] {
     20% {
         transform: translateX(-5px);
     }
+
     40% {
         transform: translateX(5px);
     }
+
     60% {
         transform: translateX(-5px);
     }
+
     80% {
         transform: translateX(5px);
     }
+
     100% {
         transform: translateX(0);
     }
@@ -559,7 +563,7 @@ input[type="text"] {
     color: #f0dbdb;
 
     /* Add transition to smoothly change background color */
-    transition: background-color 0.3s ease; 
+    transition: background-color 0.3s ease;
 }
 
 body.dark-mode {
@@ -576,8 +580,7 @@ body.dark-mode {
 .dark-mode h6,
 .dark-mode p,
 .dark-mode span,
-.toggle-slider
- {
+.toggle-slider {
     color: #f0dbdb;
 }
 
@@ -586,6 +589,45 @@ body.dark-mode {
     background-color: rgb(26, 24, 24);
 }
 
-.text-animation,#container,#text1,#text2{
+.text-animation,
+#container,
+#text1,
+#text2 {
     z-index: -1;
+}
+
+/* Basic reset for the button */
+#close_quiz {
+    display: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* Style for the close button */
+.close-btn {
+    position: fixed;
+    top: 16px;
+    /* Adjust as needed */
+    right: 16px;
+    /* Adjust as needed */
+    background-color: #080707;
+    border-radius: 50%;
+    padding: 8px;
+    font-size: 24px;
+    color: #27b412;
+}
+
+/* Optional hover effect */
+.close-btn:hover {
+    background-color: #d60606;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .close-btn {
+        top: 12px;
+        right: 12px;
+        font-size: 20px;
+        /* Adjust size for mobile */
+    }
 }
