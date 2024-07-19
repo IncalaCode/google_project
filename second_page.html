@@ -133,7 +133,7 @@
             </label> -->
             <label class="btn btn-secondary">
               <input type="radio" id="modeTest" name="questionMode" value="test" data-min-words="5" data-max-words="20"
-                data-difficulty="medium"> Test
+                data-difficulty="medium" checked> Test
             </label>
           </div>
         </div>
@@ -143,11 +143,11 @@
           <div class="col-10">
             <div class="col-6">
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="typeTF" value="t_f">
+                <input class="form-check-input" type="checkbox" id="typeTF" value="t_f" checked>
                 <label class="form-check-label" for="typeTF">True/False</label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="typeChoose" value="choose">
+                <input class="form-check-input" type="checkbox" id="typeChoose" value="choose" checked>
                 <label class="form-check-label" for="typeChoose">Choose</label>
               </div>
             </div>
@@ -192,7 +192,35 @@
       </div>
     </section>
 
+
+
+
     <!-- left silder end -->
+
+
+    <!-- warring shower for quiz -->
+
+    <div id="endQuizModal" class="modal" style="display: none;">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="endQuizModalLabel">End Quiz Mode</h5>
+            <button type="button" class="close" id="closeEndQuizModal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body h4">
+            Are you sure you want to end the quiz mode?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="cancelEndQuiz">Cancel</button>
+            <button type="button" class="btn btn-primary" id="confirmEndQuiz">Yes, End Quiz</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
 
     <!-- chat bot open -->
 
@@ -200,21 +228,20 @@
 
       <div class="popup fade-in" id="chatPopup">
         <div class="card">
-          <div class="card-header d-flex p-3" style="border-top: 4px solid #121212;">
+          <div class="chatcard-header d-flex p-3" style="border-top: 4px solid #121212;">
             <h5 class="mb-0">Chatbot</h5>
             <button type="button" class="close ml-auto" aria-label="Close" id="closeButton">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="card-body">
+          <div class="chatcard-body card-body">
             <div class="chat-messages-container" id="chatMessages">
               <!-- Chat messages will be dynamically added here -->
             </div>
           </div>
           <div class="card-footer text-muted d-flex justify-content-start align-items-center p-3">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Type message..." aria-label="Recipient's username"
-                aria-describedby="button-addon2" id="chat_bot_input" />
+              <input type="text" class="form-control" placeholder="Type message..." id="chat_bot_input" />
               <!-- <button class="btn btn-secondary " type="button" id="sendButton">Send</button> -->
             </div>
           </div>
@@ -262,6 +289,7 @@
             <div class="modal-body">
               <pre id="display_list" data-type="0" class="warp display">
                             <!-- here is the doc list will be displayed so don't delete only change the css or class or bootstrap -->
+                             <p class="text-center" style="color:darkgray;">== > Notting To See Here < ==</p>
                         </pre>
             </div>
           </div>
@@ -276,9 +304,23 @@
         <div class="panel-content">
           <h2 id="mode_show" class=" text-center"></h2>
           <div class="container mt-5" id="card-container">
+
             <!-- Cards will be inserted here by JavaScript -->
           </div>
-          <div id="generatedQuestions"></div>
+          <div id="generatedQuestions">
+            <!-- Close button -->
+            <button id="close_quiz" class="close-btn" aria-label="Close">
+              <i class="bi bi-x"></i>
+            </button>
+            <div class="container mt-5" id="card_container"></div>
+            <div class="container mt-5">
+              <div class="quiz-controls">
+                <button id="prev" class="btn btn-primary prev-btn" style="display: none;">Previous</button>
+                <button id="next" class="btn btn-primary next-btn" style="display: none;">Next</button>
+              </div>
+              <button id="showanswer" class="btn btn-success submit-btn" style="display: none;">Submit</button>
+            </div>
+          </div>
         </div>
       </div>
       <button id="toggleButton" class="toggle-button"><i class="fas fa-angle-double-down"></i></button>
@@ -363,20 +405,16 @@
 
 
     <!-- R and L  opened-->
-
-    <div class="buttons">
-
-    </div>
     <!-- 
     <div class="opener-container opener-container_left left_button push-content fade-in">
       <span class="toggle-slider"><i id="toggleLeftSidebar" class="fas fa-question"></i></span>
 
     </div> -->
     <div class="opener-container opener-container_right right_button push-content fade-in">
-      <span class="toggle-slider"><i id="chatbutton" class="message-icon"></i></span>
+      <span class="toggle-slider"><span id="chatbutton" class="message-icon"></span></span>
     </div>
     <div class="buttons opener-container opener-container_left left_button push-content fade-in">
-      <button class="learn-more">
+      <button id="pre" class="learn-more">
         <span class="circle toggle-slider" aria-hidden="true">
           <span class="icon arrow"></span>
         </span>

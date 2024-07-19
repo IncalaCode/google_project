@@ -1,6 +1,6 @@
 import ImportAI from "./connect_to_ai.js";
 import NotyfService from './message.shower.js';
-import createCard from './display_questions.js'
+import { createCard, startMode } from './display_questions.js'
 
 const ai = new ImportAI();
 
@@ -366,30 +366,28 @@ function initializeTogglePanel() {
 }
 
 
-
-
-
-
 // Function to display generated questions after sorting them by type
 function displayGeneratedQuestions(questions, mode) {
     // Sort questions by their type
     const groupedQuestions = sortQuestionsByType(questions);
 
-    // for displaying the vrsion 
+    // for displaying the vrsion
     // Call the function to display the time span and open the slider
+    enable_disable_Button(true, ["pre", "toggleButton"])
     displayGeneratedTime_mode(mode);
     initializeTogglePanel()
+    startMode(mode)
 
     // Display true/false questions
     groupedQuestions.trueFalse.forEach(question => {
         const { text: questionText, type: questionType } = question;
-        createCard('trueFalse', 'True/False Question', questionText.question);
+        createCard('trueFalse', 'True/False Question', questionText.question, questionText.answer, questionText.explanation);
     });
 
     // Display multiple choice questions
     groupedQuestions.multipleChoice.forEach(question => {
         const { text: questionText, type: questionType } = question;
-        createCard('multipleChoice', 'Multiple Choice Question', questionText.question, questionText.choice); // Example options
+        createCard('multipleChoice', 'Multiple Choice Question', questionText.question, questionText.answer, questionText.explanation, questionText.choice); // Example options
     });
 
     // Display combined matching questions
@@ -400,13 +398,13 @@ function displayGeneratedQuestions(questions, mode) {
     // Display short answer questions
     groupedQuestions.shortAnswer.forEach(question => {
         const { text: questionText, type: questionType } = question;
-        createCard('shortAnswer', 'Short Answer Question', questionText.question);
+        createCard('shortAnswer', 'Short Answer Question', questionText.question, questionText.answer, questionText.explanation);
     });
 
     // Display essay questions
     groupedQuestions.essay.forEach(question => {
         const { text: questionText, type: questionType } = question;
-        createCard('essay', 'Essay Question', questionText.question);
+        createCard('essay', 'Essay Question', questionText.question, questionText.answer, questionText.explanation);
     });
 
     setMode(mode)
@@ -467,9 +465,6 @@ chatInput.addEventListener('keydown', function (e) {
 
 
 
-function setMode(mode) {
-    NotyfService.showMessage('warning', `question  mode ${mode} : offlimit`)
-}
 
 // Function to show the bot response with a loading indicator
 export async function showBotMessage(userText, get) {
@@ -501,3 +496,100 @@ export async function showBotMessage(userText, get) {
         addMessage('Bot', 'Sorry, something went wrong. Please try again.', false);
     }
 }
+let confirmEndQuizListener;
+
+function setMode(mode) {
+    // Remove existing event listeners to avoid duplicate listeners
+    removeEndQuizListener();
+
+    switch (mode) {
+        case "exam":
+            exam();
+            break;
+        case "quiz":
+            quiz();
+            break;
+        case "test":
+            test();
+            break;
+        default:
+            test();
+            break;
+    }
+}
+
+function setup() {
+    // Add event listener to show the modal when the button is clicked
+    document.getElementById('close_quiz').addEventListener('click', showEndQuizModal);
+
+    // Add event listener to the close button in the modal
+    document.getElementById('closeEndQuizModal').addEventListener('click', hideEndQuizModal);
+
+    // Add event listener to the cancel button in the modal
+    document.getElementById('cancelEndQuiz').addEventListener('click', hideEndQuizModal);
+
+    // Add event listener to the confirm button in the modal
+    const confirmEndQuizButton = document.getElementById('confirmEndQuiz');
+    confirmEndQuizListener = () => {
+        hideEndQuizModal();
+        enable_disable_Button(true);
+        document.getElementById('close_quiz').style.display = 'none'
+    };
+    confirmEndQuizButton.addEventListener('click', confirmEndQuizListener);
+}
+
+
+function enable_disable_Button(value, button = NaN) {
+    const list = button || ["chatbutton", "pre", "toggleButton"];
+    list.forEach(buttonId => {
+        pre_hidden(value, buttonId);
+    });
+
+}
+
+function showEndQuizModal() {
+    document.getElementById('endQuizModal').style.display = 'block';
+}
+
+function hideEndQuizModal() {
+    document.getElementById('endQuizModal').style.display = 'none';
+}
+
+function quiz() {
+    console.log("Quiz mode activated");
+    document.getElementById('close_quiz').style.display = 'block'
+    enable_disable_Button(false);
+    setup();
+    return true;
+}
+
+function exam() {
+    console.log("Exam mode activated");
+    return true;
+}
+
+function test() {
+    console.log("Test mode activated");
+    return true;
+}
+
+function removeEndQuizListener() {
+    const confirmEndQuizButton = document.getElementById('confirmEndQuiz');
+    if (confirmEndQuizListener) {
+        confirmEndQuizButton.removeEventListener('click', confirmEndQuizListener);
+        confirmEndQuizListener = null;
+    }
+}
+
+function pre_hidden(value, button) {
+    var span = document.getElementById(button);
+    if (span.style.visibility === 'hidden' && value || value) {
+        span.style.visibility = 'visible';
+    } else {
+        span.style.visibility = 'hidden';
+    }
+}
+
+
+document.addEventListener('DOMContentLoaded', enable_disable_Button(false, ["pre", "toggleButton"]))
+

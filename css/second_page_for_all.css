@@ -33,7 +33,8 @@
     cursor: pointer;
 }
 
-.card-header {
+
+.chatcard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -44,7 +45,7 @@
     /* Light grey background */
 }
 
-.card-header .btn-link {
+.chatcard-header .btn-link {
     font-size: 0.875rem;
     /* Smaller font size */
     text-align: left;
@@ -61,14 +62,13 @@
 }
 
 @media (max-width: 768px) {
-    .card-body {
+    .chatcard-body {
         display: block;
     }
 
     .btn-collapse {
         display: block;
     }
-
 }
 
 
@@ -390,7 +390,7 @@ input[type="radio"]:checked+label~input[type="radio"]+label {
     }
 
     .card,
-    .card-header {
+    .chatcard-header {
         background-color: #343a40;
         color: #fff;
 
@@ -436,9 +436,9 @@ input[type="radio"]:checked+label~input[type="radio"]+label {
     z-index: 1050;
 }
 
-.card-body {
+.chatcard-body {
     height: 360px;
-    overflow: hidden;
+    overflow: auto;
 }
 
 .popup {
@@ -605,40 +605,73 @@ This is where we add the white background and padding of the content within the 
 }
 
 /* for the question display */
-.card-header,
-.card-footer {
-    background-color: #f8f9fa;
-}
-
 .card-body {
     margin-bottom: 20px;
 }
 
-.match-container {
-    display: flex;
-    justify-content: space-between;
-}
-
-.match-question,
-.match-answer {
-    width: 45%;
-}
-
-.match-question input {
-    width: 30px;
-    margin-right: 10px;
-}
-
-.short-answer-container {
+.btn-row {
     display: flex;
     flex-direction: column;
+    gap: 10px;
+}
+
+.btn-row .btn {
+    width: 100%;
+}
+
+.drawer {
+    display: none;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s ease-out;
+}
+
+.drawer.open {
+    display: block;
+    max-height: 200px;
+}
+
+.drawer-content {
+    padding: 10px;
+}
+
+.question-input {
+    margin-top: 10px;
+}
+
+.submit-btn {
+    display: none;
+    margin-top: 20px;
 }
 
 .footer-icons {
-    float: right;
+    display: flex;
+    gap: 10px;
+
 }
 
 .footer-icons i {
-    margin-left: 10px;
     cursor: pointer;
 }
+
+.quiz-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn {
+    width: 100%;
+}
+
+.card {
+    display: block;
+}
+
+/* Ensure cards are hidden by default */
