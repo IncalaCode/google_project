@@ -1,0 +1,677 @@
+/* this is the colapsable css */
+/* the new text highliter */
+.btn-link {
+    text-decoration: none;
+    /* Remove underline */
+    font-size: 12px;
+}
+
+.highlight {
+    background-color: yellow;
+}
+
+#display_list::selection {
+    background-color: yellow;
+    color: black;
+}
+
+.confirm-btn {
+    position: absolute;
+    display: none;
+    z-index: 1000;
+}
+
+.highlight-container {
+    position: relative;
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.collapsed-title {
+    display: none;
+    cursor: pointer;
+}
+
+
+.chatcard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0.5rem 1rem;
+    /* Add padding */
+    background-color: #f8f9fa;
+    /* Light grey background */
+}
+
+.chatcard-header .btn-link {
+    font-size: 0.875rem;
+    /* Smaller font size */
+    text-align: left;
+    /* Align text to the left */
+}
+
+.btn-group {
+    display: flex;
+    align-items: center;
+}
+
+.btn-remove {
+    margin-left: 10px;
+}
+
+@media (max-width: 768px) {
+    .chatcard-body {
+        display: block;
+    }
+
+    .btn-collapse {
+        display: block;
+    }
+}
+
+
+
+/* for the search button */
+.menu {
+    position: absolute;
+    top: -10px;
+    left: 0px;
+    padding: 17px 15px;
+    width: 50px;
+    height: 50px;
+    font-size: 13px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700;
+    white-space: nowrap;
+    color: #464448;
+    overflow: hidden;
+    background: #366CC8;
+    border-radius: 50%;
+    box-shadow: 0 3px 10px -2px rgba(0, 0, 0, 0.25);
+    transition: 0.2s;
+}
+
+.menu.open {
+    background: white;
+    border: 1px solid #ccc;
+    width: 200px;
+    height: 160px;
+    border-radius: 2px;
+}
+
+.menu.open .menu__button {
+    color: #999;
+    transform: rotate(45deg);
+}
+
+.menu.open .menu__content {
+    opacity: 1;
+    visibility: visible;
+}
+
+.menu__button {
+    cursor: pointer;
+    font-weight: 400;
+    border: 0;
+    background: none;
+    color: white;
+    position: absolute;
+    top: 18px;
+    right: 15px;
+    font-size: 34px;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    line-height: 12px;
+    transition: 0.2s;
+    user-select: none;
+}
+
+.menu__title {
+    font-size: 12px;
+    margin: 0 0 13px 0;
+}
+
+.menu__content {
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.2s;
+    width: 180px;
+}
+
+#suggestion {
+    display: flex;
+    gap: 21px;
+    text-align: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.box {
+    border: 2px solid black;
+    padding: 10px;
+    border-radius: 12px;
+
+}
+
+.box:hover {
+    background-color: #464448;
+    color: #f8f9fa;
+}
+
+
+/* for the + popup */
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 2s forwards;
+}
+
+.fade-out {
+    opacity: 0;
+    animation: fadeIn 3s backwards;
+
+}
+
+.warp {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+#search_place {
+    position: absolute;
+    gap: 12px;
+    border-radius: 12px;
+    z-index: 9999;
+
+
+}
+
+/* colapsable end  */
+
+/*  */
+.highlight {
+    color: white;
+    transition: background-color 3s ease;
+    /* Optional: Change text color to ensure readability */
+}
+
+.current-highlight {
+    border: 2px solid black;
+    /* Example style for the current highlight */
+}
+
+.modal-body {
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.focus_point {
+    background-color: yellow;
+    color: aliceblue;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+
+/* customize the css for  the radio button form to make it look like actual buttons */
+input[type="radio"] {
+    display: none;
+}
+
+.radio {
+    text-align: left;
+    display: inline-block;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.radio:hover {
+    background-color: #422781;
+    color: #e5edf1;
+}
+
+input[type="radio"]:checked+label,
+input[type="radio"]:checked+label~input[type="radio"]+label {
+    background-color: #422781;
+    color: #ccc;
+    font-weight: bold;
+}
+
+/* Custom CSS for sidebar and main content interaction */
+/* Push main content when sidebar is open */
+.push-content {
+    transition: all 0.3s ease;
+}
+
+
+.pushed_left {
+    margin-left: 300px;
+}
+
+.navbar-nav {
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.navbar-nav .nav-item {
+    position: relative;
+}
+
+.navbar {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#left_side_slider {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100%;
+    z-index: 1051;
+    /* High z-index to stay on top */
+    background-color: #f8f9fa;
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(-100%);
+    /* Initially hidden */
+}
+
+#left_side_slider.show {
+    transform: translateX(0);
+    /* Show when toggled */
+}
+
+.sidebar-body {
+    padding: 15px;
+}
+
+.drop-zone {
+    max-width: 300px;
+    margin-bottom: 10px;
+    margin-top: 0;
+    height: 100px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: "Quicksand", sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    cursor: pointer;
+    color: #cccccc;
+    border: 4px dashed black;
+    border-radius: 10px;
+}
+
+.drop-zone--over {
+    border-style: solid;
+}
+
+.drop-zone__input {
+    display: none;
+}
+
+.drop-zone__thumb {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #cccccc;
+    background-size: cover;
+    position: relative;
+}
+
+.drop-zone__thumb::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px 0;
+    color: #ffffff;
+    background: rgba(193, 185, 185, 0.75);
+    font-size: 14px;
+    text-align: center;
+}
+
+.drop-zone__prompt {
+    color: #696868;
+}
+
+.drop-zone__prompt:hover {
+    color: #343a40;
+}
+
+
+
+
+
+
+.dark-mode {
+    transition: all 0.3s;
+    background-color: rgb(74, 71, 71);
+
+    .dropdown-menu {
+        background-color: #696e72;
+        color: #fff;
+    }
+
+    .modal-content {
+        background-color: #696e72;
+        color: #fff;
+    }
+
+    section {
+        color: #343a40;
+    }
+
+    .opener-container {
+        background-color: #696e72;
+
+    }
+
+    .middle {
+        color: white;
+    }
+
+    #left_side_slider {
+        background-color: #696e72;
+        color: white;
+    }
+
+    .card,
+    .chatcard-header {
+        background-color: #343a40;
+        color: #fff;
+
+    }
+
+    .user {
+        background-color: #eff3f7;
+        color: #141414;
+    }
+
+}
+
+
+.chatbot-message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 75%;
+
+}
+
+.chatbot-message.user {
+    background-color: #f1f1f1;
+    align-self: flex-start;
+}
+
+.chatbot-message.bot {
+    background-color: #407dff;
+    align-self: flex-end;
+}
+
+.chatbot-message.loading {
+    background-color: #e0e0e0;
+    font-style: italic;
+    align-self: flex-end;
+}
+
+.chat-messages-container {
+    display: flex;
+    flex-direction: column;
+    height: 350px;
+    overflow-y: auto;
+    z-index: 1050;
+}
+
+.chatcard-body {
+    height: 360px;
+    overflow: auto;
+}
+
+.popup {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    width: 350px;
+    /* height: max-content; */
+    background-color: #fff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #422781;
+    display: none;
+    z-index: 1050;
+}
+
+.popup .modal-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1040;
+    display: none;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+    margin-top: 10px;
+}
+
+/* Popup Arrows and dropshadows are applied to .popup. Text align is "centered." You'll probably want to set it to "left." */
+.popup_arrow {
+    margin-top: 0 auto;
+    width: 400px;
+    position: absolute;
+    text-align: center;
+    z-index: 999;
+    width: calc(12% + 10px);
+}
+
+.popup:after {
+    content: "";
+    height: 100%;
+    width: 100%;
+    border-radius: 4px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-shadow: 0 1px 14px rgba(0, 0, 0, .2);
+}
+
+.popup_arrow:before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    transform: rotate(45deg);
+    box-shadow: 0 1px 14px rgba(0, 0, 0, .2);
+    background: #fff;
+    position: fixed;
+    z-index: 998;
+}
+
+/*
+Different arrow positioning
+*/
+.popup_arrow.arrow-top:before {
+    left: calc(50% - 10px);
+    top: -8px;
+}
+
+.popup_arrow.arrow-right:before {
+    top: calc(50% - 10px);
+    right: -8px;
+}
+
+.popup_arrow.arrow-bottom:before {
+    left: calc(50% - 10px);
+    bottom: -8px;
+}
+
+.popup.arrow-left:before {
+    top: calc(50% - 10px);
+    left: -8px;
+}
+
+@media (max-width: 768px) {
+    .popup_arrow {
+        margin-top: -160px;
+    }
+}
+
+/* 
+Popup wrapper
+This is where we add the white background and padding of the content within the popup
+*/
+
+/* top slider */
+.panel {
+    position: fixed;
+    top: 0;
+    /* Position at the top of the page */
+    left: 0;
+    width: 100%;
+    height: 100svh;
+    background-color: #38fb23;
+    border-bottom: 1px solid #eeebeb;
+    overflow: auto;
+    /* Border at the bottom */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: translateY(-100%);
+    /* Initially off-screen */
+    opacity: 0;
+    z-index: 1050;
+    /* Initially hidden */
+}
+
+.panel.open {
+    transform: translateY(0%);
+    opacity: 1;
+}
+
+.panel-content {
+    padding: 20px;
+}
+
+.push_down {
+    margin-bottom: 100%;
+}
+
+.toggle-button {
+    position: fixed;
+    top: 60px;
+    /* Initially at the top of the page */
+    left: 80%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    background-color: #080808;
+    color: white;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    cursor: pointer;
+    transition: top 0.3s ease;
+    z-index: 1050;
+    /* Transition top property */
+}
+
+.toggle-button.top {
+    top: calc(90% + 10px);
+    border-radius: 12px;
+    scrollbar-width: 1px;
+    /* Move to the bottom */
+}
+
+.left_footer {
+    display: flex;
+    gap: 12px;
+}
+
+/* for the question display */
+.card-body {
+    margin-bottom: 20px;
+}
+
+.btn-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-row .btn {
+    width: 100%;
+}
+
+.drawer {
+    display: none;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s ease-out;
+}
+
+.drawer.open {
+    display: block;
+    max-height: 200px;
+}
+
+.drawer-content {
+    padding: 10px;
+}
+
+.question-input {
+    margin-top: 10px;
+}
+
+.submit-btn {
+    display: none;
+    margin-top: 20px;
+}
+
+.footer-icons {
+    display: flex;
+    gap: 10px;
+
+}
+
+.footer-icons i {
+    cursor: pointer;
+}
+
+.quiz-controls {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn-column {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn {
+    width: 100%;
+}
+
+.card {
+    display: block;
+}
+
+/* Ensure cards are hidden by default */
