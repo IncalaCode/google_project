@@ -45,6 +45,7 @@ $(document).ready(function () {
             $chatPopup.hide();
             $chatBackdrop.show();
         }
+
     });
 
     // Dark mode
@@ -70,19 +71,18 @@ const elts = {
 };
 
 const texts = [
-    "Generate Question",
-    "Take Quizes",
-    "Summerize Texts",
-    "Create",
-    "Powerd By",
-    "GEMINI AI",
-    // "a Love",
-    // ":)",
-    // "by @GevStack"
+    "Welcome! Ready to challenge yourself? Generate a question to get started.",
+    "Take quizzes, exams, and tests to assess your knowledge.",
+    "Select your topic of interest and explore more.",
+    "Generate questions from your chosen topics for focused learning.",
+    "Powered by GEMINI AI, providing you with an intelligent learning experience.",
+    "Have fun learning and growing!",
+    "Developed with ❤️ by @3negas 😊."
 ];
 
-const morphTime = 1;
-const cooldownTime = 0.5;
+
+const morphTime = 2;
+const cooldownTime = 3;
 
 let textIndex = texts.length - 1;
 let time = new Date();
@@ -170,7 +170,7 @@ function sendMessage() {
         newMessage.textContent = userInput;
         chatMessages.appendChild(newMessage);
         document.getElementById("userInput").value = "";
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+
     }
 }
 

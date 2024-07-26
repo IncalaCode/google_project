@@ -46,3 +46,19 @@ document.addEventListener('DOMContentLoaded', () => {
     toggleButton.classList.toggle('top');
   });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+  const panel = document.getElementById('slide-panel');
+  const toggleBtn = document.getElementById('toggle-btn');
+  const yesBtn = document.querySelector('.yes-btn');
+  const noBtn = document.querySelector('.no-btn');
+
+  function togglePanel() {
+    panel.classList.toggle('show');
+    toggleBtn.classList.toggle('pushed');
+    toggleBtn.innerHTML = panel.classList.contains('show') ? ' <i style="font-size:24px" class="fas">&#xf105;</i>' : '<i class="fas fa-angle-left"></i>';
+  }
+
+  toggleBtn.addEventListener('click', togglePanel);
+
+});

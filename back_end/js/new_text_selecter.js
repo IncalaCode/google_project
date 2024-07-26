@@ -15,21 +15,21 @@ document.addEventListener("DOMContentLoaded", function () {
             return window.confirm('Selected text: ' + range + '\nReally highlight?');
         },
         onAfterHighlight: function (range, highlights) {
-            window.alert('Created ' + highlights.length + ' highlight(s): ' + highlights.map(function (h) {
-                return '"' + h.innerText + '"';
-            }).join(', '));
+            // window.alert('Created ' + highlights.length + ' highlight(s): ' + highlights.map(function (h) {
+            //     return '"' + h.innerText + '"';
+            // }).join(', '));
 
             let index = 0
 
             highlights.forEach(function (highlight) {
                 // Create a collapsible section inside the highlighted text
                 var highlightContainer = document.createElement('div');
-                highlightContainer.classList.add('highlight-container', 'card');
+                highlightContainer.classList.add('highlight-container', 'card-size', "card");
 
                 var cardHeader = document.createElement('div');
                 cardHeader.classList.add('card-header');
                 cardHeader.innerHTML = `
-                    <h5 class="mb-0" style="font-size: 12px; text-align: left;">
+                    <h5 class="mb-0" style="font-size: 12px; text-align: left; max-height:1px;height:1px;">
                         <span class="btn-link">${highlight.textContent.substring(0, 10).trim()}...</span>
                     </h5>
                 `;
@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 var collapseSection = document.createElement('div');
                 collapseSection.classList.add('collapse');
                 collapseSection.id = `collapse-${index}`;
-                collapseSection.innerHTML = `<div class="card-body"><<foucs_point>${highlight.innerHTML}</foucs_point></div>`;
+                collapseSection.innerHTML = `<div class="card-body"><foucs_point>${highlight.innerHTML}</foucs_point></div>`;
 
                 ///to incres the index
                 index++;

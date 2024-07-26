@@ -295,10 +295,11 @@ input[type="radio"]:checked+label~input[type="radio"]+label {
 }
 
 .drop-zone {
-    max-width: 300px;
+    max-width: 350px;
+    min-width: 270px;
     margin-bottom: 10px;
     margin-top: 0;
-    height: 100px;
+    height: 130px;
     padding: 25px;
     display: flex;
     align-items: center;
@@ -308,13 +309,15 @@ input[type="radio"]:checked+label~input[type="radio"]+label {
     font-weight: 500;
     font-size: 20px;
     cursor: pointer;
-    color: #cccccc;
+    color: #090808;
     border: 4px dashed black;
     border-radius: 10px;
 }
 
 .drop-zone--over {
     border-style: solid;
+    color: #38fb23;
+
 }
 
 .drop-zone__input {
@@ -345,11 +348,11 @@ input[type="radio"]:checked+label~input[type="radio"]+label {
 }
 
 .drop-zone__prompt {
-    color: #696868;
+    color: #292a2a;
 }
 
 .drop-zone__prompt:hover {
-    color: #343a40;
+    color: #52cb3a;
 }
 
 
@@ -375,10 +378,21 @@ input[type="radio"]:checked+label~input[type="radio"]+label {
         color: #343a40;
     }
 
-    .opener-container {
-        background-color: #696e72;
+    .navbar {
+        background-color: #141414;
+    }
+
+    .wave {
+        background-color: #343a40;
+    }
+
+
+    body {
+        background: linear-gradient(315deg, rgba(101, 0, 94, 1) 3%, rgba(60, 132, 206, 1) 38%, rgb(128, 196, 192) 68%, rgb(139, 135, 182) 98%);
 
     }
+
+
 
     .middle {
         color: white;
@@ -486,7 +500,7 @@ input[type="radio"]:checked+label~input[type="radio"]+label {
     width: calc(12% + 10px);
 }
 
-.popup:after {
+/* .popup:after {
     content: "";
     height: 100%;
     width: 100%;
@@ -495,7 +509,7 @@ input[type="radio"]:checked+label~input[type="radio"]+label {
     top: 0;
     left: 0;
     box-shadow: 0 1px 14px rgba(0, 0, 0, .2);
-}
+}*/
 
 .popup_arrow:before {
     content: "";
@@ -524,11 +538,6 @@ Different arrow positioning
 .popup_arrow.arrow-bottom:before {
     left: calc(50% - 10px);
     bottom: -8px;
-}
-
-.popup.arrow-left:before {
-    top: calc(50% - 10px);
-    left: -8px;
 }
 
 @media (max-width: 768px) {
@@ -620,7 +629,7 @@ This is where we add the white background and padding of the content within the 
 }
 
 .drawer {
-    display: none;
+    display: block;
     overflow: hidden;
     max-height: 0;
     transition: max-height 0.5s ease-out;
@@ -675,3 +684,54 @@ This is where we add the white background and padding of the content within the 
 }
 
 /* Ensure cards are hidden by default */
+
+
+.panel-version {
+    position: fixed;
+    right: -300px;
+    top: 45%;
+    transform: translateY(-50%);
+    width: 250px;
+    height: 300px;
+    background-color: #f0f0f0;
+    border-radius: 10px 0 0 10px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    transition: right 0.3s ease-in-out;
+    padding: 2px;
+    z-index: 1050;
+    overflow: auto;
+}
+
+.panel-version.show {
+    right: 0;
+}
+
+
+.yes-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.no-btn {
+    background-color: #f44336;
+    color: white;
+}
+
+.toggle-btn {
+    position: fixed;
+    right: 0;
+    top: 25%;
+    transform-origin: right bottom;
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px 0px 0 5px;
+    transition: right 0.3s ease-in-out;
+    z-index: 1050;
+}
+
+.toggle-btn.pushed {
+    right: 250px;
+}

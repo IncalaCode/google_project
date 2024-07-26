@@ -1,4 +1,10 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import NotyfService from "./message.shower.js";
+
+class errorcount {
+    static count = 0
+}
+
 
 export default class ImportAI {
     constructor() {
@@ -98,12 +104,39 @@ export default class ImportAI {
             "explanation": ""
         }`;
 
-        const result = await this.model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
+        try {
 
-        console.log(text)
-        return text
+            const result = await this.model.generateContent(prompt);
+            const response = await result.response;
+            var text = response.text();
+            text = this.parseJsonFromText(text)
+            console.log(text)
+            return text
+        } catch (error) {
+            if (errorcount.count == 2) {
+                errorcount.count = 0
+                NotyfService.showMessage('error', `error : ${error.message} !!`)
+                setTimeout(() => {
+                    this.generateQuestions(focus_points, type, difficulty);
+                    NotyfService.showMessage('info', "It will take some time to be present.");
+
+                }, 7000);
+
+                return
+            }
+            errorcount.count++
+            this.generateQuestions(focus_points, type, difficulty)
+            console.error(error)
+
+        }
+
+    }
+    parseJsonFromText(text) {
+        const startIndex = text.indexOf('{');
+        const endIndex = text.lastIndexOf('}');
+        const trimmedJsonData = text.substring(startIndex, endIndex + 1);
+        const parsedData = JSON.parse(trimmedJsonData.trim());
+        return parsedData;
 
     }
 

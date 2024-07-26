@@ -5,6 +5,8 @@ import { createCard, startMode } from './display_questions.js'
 const ai = new ImportAI();
 
 
+
+
 class GeneratedText {
     constructor() {
         this.question_type = {
@@ -46,19 +48,19 @@ class GeneratedText {
         Array.from(selectedTypes).forEach(type => {
             switch (type) {
                 case 't_f':
-                    wordLimits[type] = totalWords * 0.55 / numQuestions;
+                    wordLimits[type] = totalWords * 0.15 / numQuestions;
                     break;
                 case 'match':
-                    wordLimits[type] = totalWords * 0.70 / numQuestions;
+                    wordLimits[type] = totalWords * 0.20 / numQuestions;
                     break;
                 case 'choose':
-                    wordLimits[type] = totalWords * 0.80 / numQuestions;
+                    wordLimits[type] = totalWords * 0.30 / numQuestions;
                     break;
                 case 'short_answer':
-                    wordLimits[type] = totalWords * 0.90 / numQuestions;
+                    wordLimits[type] = totalWords * 0.40 / numQuestions;
                     break;
                 case 'essay':
-                    wordLimits[type] = totalWords * 1 / numQuestions;
+                    wordLimits[type] = totalWords * 0.50 / numQuestions;
                     break;
                 default:
                     break;
@@ -93,8 +95,6 @@ class GeneratedText {
             this.history.docx.focus_points.push({ text: spanText, type: currentQuestionType });
             this.question_type[currentQuestionType].push(spanText);
         }
-
-        this.saveVersion(); // Save current version after classification
     }
 
 
@@ -120,7 +120,7 @@ class GeneratedText {
 
         if (!this.hasDocumentChanged(focusPoints)) {
             NotyfService.showMessage('info', 'Document content unchanged. Skipping reclassification.');
-            return;
+            NotyfService.showMessage('loading', "conutining to generate the question", true)
         }
 
         this.classifyWords(focusPoints, numQuestions, selectedTypes);
@@ -133,10 +133,9 @@ class GeneratedText {
         const totalAvailableQuestions = selectedTypes.reduce((sum, type) => sum + this.question_type[type].length, 0);
 
         if (totalAvailableQuestions < numQuestions) {
-            NotyfService.showMessage('warning', 'Not enough questions available to fulfill the request.');
+            NotyfService.showMessage('warning', `question limmited :${totalAvailableQuestions} .`);
             remainingQuestions = totalAvailableQuestions;
         }
-
 
 
         while (remainingQuestions > 0) {
@@ -144,64 +143,50 @@ class GeneratedText {
                 if (this.question_type[type].length > 0 && remainingQuestions > 0) {
                     const focusPoint = this.question_type[type].shift();
                     var generatedQuestion = await ai.generateQuestions(focusPoint, type);
-                    generatedQuestion = this.parseJsonFromText(generatedQuestion)
                     selectedQuestions.push({ text: generatedQuestion, type: type });
                     remainingQuestions--;
                 }
             }
         }
 
-        this.info.question_mode[mode][difficulty] = selectedQuestions;
+        this.info.question_mode[mode][difficulty].push(selectedQuestions);
 
-        this.saveVersion(); // Save current version after generating questions
+        this.saveVersion(difficulty, mode); // Save current version after generating questions
     }
 
-    saveVersion() {
+    saveVersion(difficulty, mode) {
         const currentVersion = {
-            question_type: { ...this.question_type },
-            info: { ...this.info },
-            timestamp: new Date().toLocaleString()
+            generated: this.info.question_mode[mode][difficulty],
+            timestamp: new Date().toLocaleString(),
+            mode: mode
         };
+
+        console.log(currentVersion)
 
         this.history.docx.versions.push(currentVersion);
         this.displayVersions(); // Update displayed versions after saving
     }
 
-    rollbackToVersion(versionIndex) {
-        if (versionIndex >= 0 && versionIndex < this.history.docx.versions.length) {
-            const version = this.history.docx.versions[versionIndex];
-            this.question_type = { ...version.question_type };
-            this.info = { ...version.info };
-            NotyfService.showMessage('info', `Rolled back to version ${versionIndex}`);
-        } else {
-            NotyfService.showMessage('error', 'Invalid version index.');
-        }
-    }
+
 
     displayVersions() {
         const versionContainer = document.getElementById('versionContainer');
         versionContainer.innerHTML = '';
 
+        console.log(this.history)
+
         this.history.docx.versions.forEach((version, index) => {
             const button = document.createElement('button');
-            button.textContent = `Version ${index}: ${version.timestamp}`;
+            button.textContent = `quenGen ${index}: ${version.timestamp}`;
             button.classList.add('version-button');
+            button.id = index
             button.addEventListener('click', () => {
-                this.rollbackToVersion(index);
+                displayGeneratedQuestions(version.generated[
+                    version.generated.length > parseInt(button.id) ? parseInt(button.id) : (version.generated.length - 1 || 0)
+                ], version.mode);
+                NotyfService.showMessage('success', `swithed to ${version.timestamp}`)
             });
             versionContainer.appendChild(button);
-
-            // Display details of each version
-            const versionDetails = document.createElement('div');
-            versionDetails.classList.add('version-details');
-            versionDetails.innerHTML = `
-                <p><strong>Version ${index} Details:</strong></p>
-                <ul>
-                    <li><strong>Question Type:</strong> ${JSON.stringify(version.question_type)}</li>
-                    <li style='display:none;'><strong>Info:</strong> ${JSON.stringify(version.info)}</li>
-                </ul>
-            `;
-            versionContainer.appendChild(versionDetails);
         });
     }
 
@@ -215,19 +200,7 @@ class GeneratedText {
         console.log('Current state saved:', this.history.full_history_data);
     }
 
-    parseJsonFromText(text) {
-        try {
-            const startIndex = text.indexOf('{');
-            const endIndex = text.lastIndexOf('}');
-            const trimmedJsonData = text.substring(startIndex, endIndex + 1);
-            const parsedData = JSON.parse(trimmedJsonData.trim());
-            return parsedData;
-        } catch (error) {
-            console.error('Error parsing JSON:', error);
-            console.error('Input text:', text);
-            return null;
-        }
-    }
+
 
 
     // async generateQuestions_ai(mode, difficulty) {
@@ -274,10 +247,13 @@ function getUserInputsAndApplyRules(data) {
 document.getElementById('generatequestion').addEventListener('click', generate)
 
 
+// for the  const data = new GeneratedText(); to store
+const data = new GeneratedText();
+
 export async function generate() {
     try {
         NotyfService.showMessage('loading', "started to generate the question", true)
-        const data = new GeneratedText();
+
         data.history.docx.full_doc = document.getElementById('display_list').innerText.trim();
 
         const userInput = getUserInputsAndApplyRules(data);
@@ -287,7 +263,7 @@ export async function generate() {
 
         await data.arrangeQuestons(numQuestions, difficulty, mode, selectedTypes);
 
-        displayGeneratedQuestions(data.info.question_mode[mode][difficulty], mode);
+        displayGeneratedQuestions(data.info.question_mode[mode][difficulty][data.info.question_mode[mode][difficulty].length - 1 || 0], mode);
 
         data.save();
         NotyfService.dismiss('success', "finsied generating the question")
@@ -310,7 +286,10 @@ function sortQuestionsByType(questions) {
         essay: []
     };
 
-    questions.forEach(question => {
+    // Check if questions is an array or object, and convert to array if it's an object
+    const questionsArray = Array.isArray(questions) ? questions : Object.values(questions);
+
+    questionsArray.forEach(question => {
         switch (question.type) {
             case 't_f':
                 groupedQuestions.trueFalse.push(question);
@@ -334,6 +313,7 @@ function sortQuestionsByType(questions) {
 
     return groupedQuestions;
 }
+
 
 // Function to display the generated time span
 function displayGeneratedTime_mode(mode) {
@@ -564,11 +544,13 @@ function quiz() {
 }
 
 function exam() {
+    hideEndQuizModal()
     console.log("Exam mode activated");
     return true;
 }
 
 function test() {
+    hideEndQuizModal()
     console.log("Test mode activated");
     return true;
 }
@@ -587,6 +569,15 @@ function pre_hidden(value, button) {
         span.style.visibility = 'visible';
     } else {
         span.style.visibility = 'hidden';
+    }
+}
+
+function scrollToElementById(elementId) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+    } else {
+        console.error(`Element with ID ${elementId} not found.`);
     }
 }
 

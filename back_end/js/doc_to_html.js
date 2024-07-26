@@ -133,9 +133,11 @@ async function file_handler(file) {
             switch (file.type) {
                 case "application/pdf":
                     result = await pdf_convert(file); // Assuming pdf_convert() is defined
+                    return NotyfService.showMessage('error', "pdf is not allowed for momment")
                     break;
                 case "application/vnd.ms-powerpoint":
                     result = await ppt_convert(file); // Assuming ppt_convert() is defined
+                    return NotyfService.showMessage('error', "power point is not allowed for momment")
                     break;
                 case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
                     result = file;
@@ -150,6 +152,8 @@ async function file_handler(file) {
         } catch (error) {
             console.error("Error converting file to HTML:", error);
             alert("Error converting file to HTML");
+            window.location.reload();
+
         }
     } else {
         console.log('not passing')
@@ -178,13 +182,11 @@ function convertToHtml(file) {
 
 // Placeholder functions for document conversion
 async function pdf_convert(file) {
-    // Implement PDF conversion logic
-    throw new Error("pdf_convert function is not implemented");
+
 }
 
 async function ppt_convert(file) {
-    // Implement PowerPoint conversion logic
-    throw new Error("ppt_convert function is not implemented");
+
 }
 
 // Function to initialize and check conversion results
