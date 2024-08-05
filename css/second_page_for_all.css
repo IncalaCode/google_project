@@ -96,8 +96,8 @@
 .menu.open {
     background: white;
     border: 1px solid #ccc;
-    width: 200px;
-    height: 160px;
+    width: 230px;
+    height: 250px;
     border-radius: 2px;
 }
 
@@ -734,4 +734,110 @@ This is where we add the white background and padding of the content within the 
 
 .toggle-btn.pushed {
     right: 250px;
+}
+
+/* for login porpouse  */
+
+/*Trigger Button*/
+
+/*Modal*/
+h4 {
+    font-weight: bold;
+    color: #fff;
+}
+
+.close {
+    color: #fff;
+    left: auto;
+    transform: scale(1.2)
+}
+
+.modal-content {
+    font-weight: bold;
+    background: linear-gradient(to bottom right, #393131, #322b2b);
+}
+
+.form-control {
+    margin: 1em 0;
+}
+
+.form-control:hover,
+.form-control:focus {
+    box-shadow: none;
+    border-color: #fff;
+}
+
+.form-control::-webkit-input-placeholder {
+    color: #0b0303;
+}
+
+.form-control:focus::-webkit-input-placeholder {
+    font-weight: bold;
+    color: #fff;
+}
+
+.login {
+    padding: 6px 20px;
+    border-radius: 20px;
+    background: none;
+    border: 2px solid #FAB87F;
+    color: #FAB87F;
+    font-weight: bold;
+    transition: all .5s;
+    margin-top: 1em;
+}
+
+.login:hover {
+    background: #FAB87F;
+    color: #fff;
+}
+
+.save_footer {
+    margin-top: 150px;
+}
+
+.drag_palne {
+    height: 100px;
+}
+
+.suggestion-box {
+    position: relative;
+    width: 300px;
+    margin-top: 50px;
+}
+
+#loader {
+    margin-left: 10px;
+    display: none;
+}
+
+#suggestion-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: none;
+    z-index: 1000;
+    width: 100%;
+}
+
+#suggestion-list li {
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+}
+
+#suggestion-list li:hover {
+    background-color: #f0f0f0;
+}
+
+.reference-link {
+    color: #007bff;
+    text-decoration: none;
 }

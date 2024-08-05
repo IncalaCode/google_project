@@ -939,3 +939,41 @@ body::-webkit-scrollbar {
     z-index: 1;
 
 }
+
+h1 {
+    color: #2f2e2e;
+
+}
+
+/* Initial button style */
+.btn.radio_bnt {
+    background-color: #f0f0f0;
+    color: #000;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Button style when clicked */
+.btn.radio_bnt.active {
+    background-color: green;
+    color: #fff;
+}
+
+/* Initial button style */
+.version-button {
+    background-color: #f0f0f0;
+    color: #000;
+    border: 1px solid #ccc;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin: 5px;
+}
+
+/* Button style when clicked */
+.version-button.active {
+    background-color: green;
+    color: #fff;
+}

@@ -36,14 +36,18 @@ $(document).ready(function () {
 
     // Close sidebars and chat popup when clicking outside
     $(document).click(function (e) {
-        if (!$(e.target).closest('#left_side_slider').length && !$(e.target).is('#toggleLeftSidebar')) {
-            if ($leftSidebar.hasClass('show')) {
-                toggleLeftSidebar();
+
+        const is_open = document.getElementById('display_Modal').classList.contains('show')
+        if (!is_open) {
+            if (!$(e.target).closest('#left_side_slider').length && !$(e.target).is('#toggleLeftSidebar')) {
+                if ($leftSidebar.hasClass('show')) {
+                    toggleLeftSidebar();
+                }
             }
-        }
-        if (!$(e.target).closest('.popup').length && !$(e.target).is('#chatbutton')) {
-            $chatPopup.hide();
-            $chatBackdrop.show();
+            if (!$(e.target).closest('.popup').length && !$(e.target).is('#chatbutton')) {
+                $chatPopup.hide();
+                $chatBackdrop.show();
+            }
         }
 
     });
@@ -55,6 +59,26 @@ $(document).ready(function () {
 
     $('#dark-mode').click(function () {
         $('body').addClass('dark-mode');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Get the modal and button elements
+    var modalElement = document.getElementById('display_Modal');
+    var openModalButton = document.getElementById('openModalButton');
+    var closeModalButton = document.getElementById('closeModalButton');
+
+    // Create a Bootstrap Modal instance
+    var modal = new bootstrap.Modal(modalElement);
+
+    // Add event listener to the open modal button
+    openModalButton.addEventListener('click', function () {
+        modal.show();
+    });
+
+    // Add event listener to the close modal button (header close button)
+    closeModalButton.addEventListener('click', function () {
+        modal.hide();
     });
 });
 
@@ -151,28 +175,39 @@ function animate() {
 
 animate();
 
-
-// chat bot by robera
-function openChat() {
-    document.getElementById("chatPopup").style.display = "flex";
-}
-
-function closeChat() {
-    document.getElementById("chatPopup").style.display = "none";
-}
-
-function sendMessage() {
-    const userInput = document.getElementById("userInput").value;
-    if (userInput.trim() !== "") {
-        const chatMessages = document.getElementById("chatMessages");
-        const newMessage = document.createElement("div");
-        newMessage.className = "user-message";
-        newMessage.textContent = userInput;
-        chatMessages.appendChild(newMessage);
-        document.getElementById("userInput").value = "";
-
+window.process = {
+    env: {
+        api_key: "AIzaSyDTYPNXHwNE5nA5-uHRnBhS_mCXJSoDHXQ",
+        db_url: 'https://lxnumuxknannlcrjxocv.supabase.co',
+        db_pass: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4bnVtdXhrbmFubmxjcmp4b2N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI0NTg2MzQsImV4cCI6MjAzODAzNDYzNH0.KENzD5uQWiw52Qe7mECJyrHm1Bnr46Gv8yqGJwpZH74'
     }
 }
+
+
+// // chat bot by robera
+// function openChat() {
+//     document.getElementById("chatPopup").style.display = "flex";
+// }
+
+// function closeChat() {
+//     document.getElementById("chatPopup").style.display = "none";
+// }
+
+// function sendMessage() {
+//     const userInput = document.getElementById("userInput").value;
+//     if (userInput.trim() !== "") {
+//         const chatMessages = document.getElementById("chatMessages");
+//         const newMessage = document.createElement("div");
+//         newMessage.className = "user-message";
+//         newMessage.textContent = userInput;
+//         chatMessages.appendChild(newMessage);
+//         document.getElementById("userInput").value = "";
+
+//     }
+// }
+
+
+
 
 
 

@@ -1,8 +1,9 @@
 import ImportAI from "./connect_to_ai.js";
 import NotyfService from './message.shower.js';
 import { createCard, startMode } from './display_questions.js'
+import { import_user } from "./save_user_data.js";
 
-const ai = new ImportAI();
+export const ai = new ImportAI();
 
 
 
@@ -42,25 +43,28 @@ class GeneratedText {
         const totalWords = words.length;
         console.log(selectedTypes)
 
+        // for clering the focus point 
+        this.history.docx.focus_points = []
+
         // Initialize wordLimits based on selectedTypes and numQuestions
         const wordLimits = {};
 
         Array.from(selectedTypes).forEach(type => {
             switch (type) {
                 case 't_f':
-                    wordLimits[type] = totalWords * 0.15 / numQuestions;
+                    wordLimits[type] = totalWords * 1 / numQuestions;
                     break;
                 case 'match':
-                    wordLimits[type] = totalWords * 0.20 / numQuestions;
+                    wordLimits[type] = totalWords * 1 / numQuestions;
                     break;
                 case 'choose':
-                    wordLimits[type] = totalWords * 0.30 / numQuestions;
+                    wordLimits[type] = totalWords * 1 / numQuestions;
                     break;
                 case 'short_answer':
-                    wordLimits[type] = totalWords * 0.40 / numQuestions;
+                    wordLimits[type] = totalWords * 1 / numQuestions;
                     break;
                 case 'essay':
-                    wordLimits[type] = totalWords * 0.50 / numQuestions;
+                    wordLimits[type] = totalWords * 1 / numQuestions;
                     break;
                 default:
                     break;
@@ -72,12 +76,14 @@ class GeneratedText {
 
         let questionTypeIndex = 0;
 
+        console.log(wordLimits)
+
         words.forEach(word => {
             currentWords.push(word);
 
             // Check if currentQuestionType matches the type being processed
             const maxWords = wordLimits[currentQuestionType];
-            if (currentWords.length >= maxWords) {
+            if (currentWords.length >= Math.round(maxWords)) {
                 const spanText = currentWords.join(' ');
                 this.history.docx.focus_points.push({ text: spanText, type: currentQuestionType });
                 this.question_type[currentQuestionType].push(spanText);
@@ -149,6 +155,7 @@ class GeneratedText {
             }
         }
 
+
         this.info.question_mode[mode][difficulty].push(selectedQuestions);
 
         this.saveVersion(difficulty, mode); // Save current version after generating questions
@@ -171,23 +178,32 @@ class GeneratedText {
 
     displayVersions() {
         const versionContainer = document.getElementById('versionContainer');
+
         versionContainer.innerHTML = '';
-
-        console.log(this.history)
-
         this.history.docx.versions.forEach((version, index) => {
             const button = document.createElement('button');
             button.textContent = `quenGen ${index}: ${version.timestamp}`;
             button.classList.add('version-button');
-            button.id = index
+            button.id = index;
             button.addEventListener('click', () => {
-                displayGeneratedQuestions(version.generated[
+                displayGeneratedQuestions(
+                    version.generated[
                     version.generated.length > parseInt(button.id) ? parseInt(button.id) : (version.generated.length - 1 || 0)
-                ], version.mode);
-                NotyfService.showMessage('success', `swithed to ${version.timestamp}`)
+                    ],
+                    version.mode
+                );
+                NotyfService.showMessage('success', `switched to ${version.timestamp}`);
+
+                // Remove 'active' class from all buttons
+                const allButtons = document.querySelectorAll('.version-button');
+                allButtons.forEach(b => b.classList.remove('active'));
+
+                // Add 'active' class to the clicked button
+                button.classList.add('active');
             });
             versionContainer.appendChild(button);
         });
+
     }
 
     save() {
@@ -252,6 +268,10 @@ const data = new GeneratedText();
 
 export async function generate() {
     try {
+        if (!data.history.docx.full_doc) {
+            return NotyfService.showMessage('error', "add topic or import file")
+        }
+
         NotyfService.showMessage('loading', "started to generate the question", true)
 
         data.history.docx.full_doc = document.getElementById('display_list').innerText.trim();
@@ -264,7 +284,7 @@ export async function generate() {
         await data.arrangeQuestons(numQuestions, difficulty, mode, selectedTypes);
 
         displayGeneratedQuestions(data.info.question_mode[mode][difficulty][data.info.question_mode[mode][difficulty].length - 1 || 0], mode);
-
+        if (!sessionStorage.getItem('slide')) toggleLeftSidebar()
         data.save();
         NotyfService.dismiss('success', "finsied generating the question")
     } catch (error) {
@@ -272,7 +292,17 @@ export async function generate() {
         console.error(error);
     }
 };
-
+function toggleLeftSidebar() {
+    var $leftSidebar = $('#left_side_slider');
+    if ($leftSidebar.hasClass('show')) {
+        $leftSidebar.removeClass('show');
+        $('.push-content').removeClass('pushed_left');
+    } else {
+        $leftSidebar.addClass('show');
+        $('.push-content').addClass('pushed_left');
+    }
+    sessionStorage.setItem('slide', "1")
+}
 // function showMessage(type, message) {
 //     console.log(`${type}: ${message}`);
 // }
@@ -396,7 +426,6 @@ function displayGeneratedQuestions(questions, mode) {
 
 var chatInput = document.getElementById('chat_bot_input');
 var chatMessages = document.getElementById('chatMessages');
-var sendButton = document.getElementById('sendButton');
 
 // Function to add a new message to the chat
 function addMessage(author, text, isUser = true, isLoading = false) {
@@ -572,14 +601,142 @@ function pre_hidden(value, button) {
     }
 }
 
-function scrollToElementById(elementId) {
+export function scrollToElementById(elementId) {
     const element = document.getElementById(elementId);
-    if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-    } else {
-        console.error(`Element with ID ${elementId} not found.`);
+    if (!sessionStorage.getItem('user') && !sessionStorage.getItem('scroll')) {
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+            sessionStorage.setItem('scroll', "1")
+        } else {
+            console.error(`Element with ID ${elementId} not found.`);
+        }
     }
 }
 
 
-document.addEventListener('DOMContentLoaded', enable_disable_Button(false, ["pre", "toggleButton"]))
+enable_disable_Button(false, ["pre", "toggleButton"])
+
+document.addEventListener('DOMContentLoaded', function () {
+    const login_h4 = document.getElementById('login_h4');
+    const login_user = document.getElementById('login_user');
+    const username = document.getElementById('username');
+    const password = document.getElementById('password');
+    let isSignUp = false;
+
+    function displaySign(value) {
+        isSignUp = value;
+        login_h4.textContent = isSignUp ? "Sign Up" : "Login";
+        login_user.value = isSignUp ? "Sign Up" : "Login";
+        document.getElementById('login_sign').innerHTML = isSignUp ? "Already have an account? <a href='#' class='text - primary'>login</a > " : "Don't have an account? <a href='#' class='text - primary'>Sign up</a > ";
+        $('#login').modal('show');
+    }
+
+
+
+    async function login(e) {
+        NotyfService.showMessage('loading', `trying to ${!isSignUp ? "login" : "sign up"}`, true)
+        e.preventDefault();
+
+        const user = username.value.trim();
+        const pass = password.value.trim();
+
+        // Validate username and password
+        if (/^[a-zA-Z0-9]+$/.test(user) && pass.length >= 8 && !isSignUp) {
+            try {
+                // Check user existence
+                const response = await import_user({ username: user, password: pass }, "exists");
+                if (response.status == 200) {
+                    sessionStorage.setItem("user", JSON.stringify(response.data))
+                    update_inside_data(response.data.data)
+                    NotyfService.showMessage("success", `Welcome back ${response.data.username}`);
+                    logout(true)
+                } else {
+                    displaySign(true);
+                    NotyfService.showMessage("error", "Invalid username or password. Please sign up.");
+                }
+            } catch (error) {
+                NotyfService.showMessage("error", "An error occurred while logging in.");
+            }
+        } else if (/^[a-zA-Z0-9]+$/.test(user) && pass.length >= 8 && isSignUp) {
+            var response = await import_user({ username: user, password: pass, data: data.history.docx.versions }, "insert");
+            if (response.status == 201) {
+                NotyfService.showMessage("success", `Welcome to QeGen user ${user}`);
+                response = await import_user({ username: user }, "select")
+                sessionStorage.setItem("user", JSON.stringify(response.data) || user)
+
+                logout(true)
+            } else {
+                NotyfService.showMessage("error", " user exists.");
+            }
+        }
+        else {
+            NotyfService.showMessage("error", "Invalid username or password.");
+        }
+    }
+
+    function check() {
+        if (sessionStorage.getItem('user')) {
+            update_data()
+            return
+        }
+        displaySign(true);
+        NotyfService.showMessage('error', "User not found. Please sign up.");
+        return false;
+    }
+
+    function update_data() {
+        NotyfService.showMessage('loading', "saving Generated data", true)
+        const response = import_user({ id: JSON.parse(sessionStorage.getItem('user')).id, data: data.history.docx.versions }, "update")
+        if (response) {
+            NotyfService.showMessage('success', "Generated Data saved ")
+            return
+        }
+        NotyfService.showMessage('error', "Generated data was not saved")
+
+    }
+    function logout(value = false) {
+        if (value == true) {
+            document.getElementById('login').style.display = "none"
+            document.getElementById('loginlink').style.display = "none"
+            document.getElementById('logout').style.display = "block"
+            return
+        }
+
+        document.getElementById('loginlink').style.display = "block"
+        document.getElementById('logout').style.display = "none"
+        sessionStorage.removeItem('user')
+        NotyfService.showMessage("info", "You loged out successfuly")
+
+    }
+
+    document.getElementById('login_sign').addEventListener('click', function (e) {
+        e.preventDefault();
+        displaySign(!isSignUp);
+    });
+
+    function update_inside_data(versionToCheck) {
+        // const versionExists = data.history.docx.versions.some(
+        //     version => JSON.stringify(version) === JSON.stringify(versionToCheck)
+        // );
+        versionToCheck = JSON.parse(versionToCheck)
+        if (versionToCheck) {
+            versionToCheck.push(data.history.docx.versions)
+            data.history.docx.versions = versionToCheck;
+            data.displayVersions()
+            open_generated_plane()
+        }
+    }
+
+    function open_generated_plane() {
+        data.displayVersions();
+        document.getElementById('slide-panel').classList.add('show')
+        document.getElementById('toggle-btn').classList.add('pushed')
+    }
+
+
+    document.getElementById('login_user').addEventListener('click', login);
+    document.getElementById('save_data').addEventListener('click', check);
+    document.getElementById('logout').addEventListener('click', logout)
+
+});
+

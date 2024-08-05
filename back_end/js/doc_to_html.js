@@ -1,14 +1,16 @@
 import import_ai from "./connect_to_ai.js";
 import { Tag } from "./classification.js";
 import { display_list } from "./display_list.js";
-import { generate } from "./generatequestion.js";
+import { generate, scrollToElementById } from "./generatequestion.js";
 import NotyfService from './message.shower.js';
 
 
 // form the input text to generate
 document.getElementById('inputText').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
+
         GetTxtGenrate(e.target.value, true);
+
     }
 });
 
@@ -16,13 +18,17 @@ document.getElementById('inputText').addEventListener('keydown', (e) => {
 // form the input text to generate
 document.getElementById('text_imoprt').addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
+        scrollToElementById('start-guide')
         GetTxtGenrate(e.target.value, false);
+
     }
 });
 
 
+
+
 async function GetTxtGenrate(value, gen) {
-    NotyfService.showMessage('loading', 'input preparing', true)
+    NotyfService.showMessage('loading', ' while preparing input wacth our start giude video :) ', true)
     var temp = new import_ai()
     temp.genrateDox(value).then(data => {
         display_list(data, gen)
@@ -36,14 +42,14 @@ document.getElementById('file_import').addEventListener('change', (e) => {
         return;
     }
 
-
-
     // Simulated progress check
     let progressInterval = setInterval(() => {
-        // Replace this condition with your actual progress condition
-        if (parseInt(document.getElementById('display_list').getAttribute('data-type'))) {
-            clearInterval(progressInterval);
+        // wait for the display it in list
+        const vlaue = document.getElementById('display_list').getAttribute('data-type')
 
+        if (parseInt(vlaue)) {
+            clearInterval(progressInterval);
+            generate()
         }
     }, 100);
 });
@@ -92,6 +98,7 @@ document.querySelectorAll(".drop-zone__input").forEach((inputElement) => {
  * @param {File} file
  */
 function updateThumbnail(dropZoneElement, file) {
+    if (file.type != "application/pdf" && file.type != "application/vnd.openxmlformats-officedocument.wordprocessingml.document") return NotyfService.showMessage("error", "try again to import")
     let thumbnailElement = dropZoneElement.querySelector(".drop-zone__thumb");
 
     // First time - remove the prompt
@@ -122,6 +129,7 @@ async function file_handler(file) {
     // to start the dox race
 
     NotyfService.showMessage("loading", "Processing the imported document ;)", true);
+    scrollToElementById('start-guide')
 
     if (file) {
         console.log('File name:', file.name);
@@ -132,8 +140,8 @@ async function file_handler(file) {
             let result;
             switch (file.type) {
                 case "application/pdf":
-                    result = await pdf_convert(file); // Assuming pdf_convert() is defined
-                    return NotyfService.showMessage('error', "pdf is not allowed for momment")
+                    result = await convertPdfToDoc(file); // Assuming pdf_convert() is defined
+                    return display_list(result)
                     break;
                 case "application/vnd.ms-powerpoint":
                     result = await ppt_convert(file); // Assuming ppt_convert() is defined
@@ -144,6 +152,7 @@ async function file_handler(file) {
                     break;
                 default:
                     alert("The document is not supported. Error 1");
+                    NotyfService.dismiss("error", "try again to import")
                     return;
             }
 
@@ -180,13 +189,47 @@ function convertToHtml(file) {
     });
 }
 
-// Placeholder functions for document conversion
-async function pdf_convert(file) {
+// Function to convert PDF to readable text
+function convertPdfToDoc(file) {
+    return new Promise((resolve, reject) => {
+        if (!file) return reject('No file provided.');
 
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const pdfData = event.target.result;
+
+            pdfjsLib.getDocument({ data: pdfData }).promise.then(pdf => {
+                let textPromises = [];
+                for (let i = 1; i <= pdf.numPages; i++) {
+                    textPromises.push(pdf.getPage(i).then(page => {
+                        return page.getTextContent().then(textContent => {
+                            // Join text items into a single paragraph
+                            return textContent.items.map(item => item.str).join('');
+                        });
+                    }));
+                }
+
+                Promise.all(textPromises).then(texts => {
+                    const docText = texts.map(text => `<div class="paragraph">${text}</div>`).join('');
+                    resolve(docText);
+                }).catch(error => {
+                    reject(error);
+                });
+            }).catch(error => {
+                reject(error);
+            });
+        };
+
+        reader.onerror = function (error) {
+            reject(error);
+        };
+
+        reader.readAsArrayBuffer(file);
+    });
 }
 
 async function ppt_convert(file) {
-
+    return 0
 }
 
 // Function to initialize and check conversion results
@@ -213,7 +256,10 @@ async function replaceImagesWithText(htmlContent, convertedFile) {
 
     //for unfinshed list with  error hundleing method 
     try {
-        await con_img_ai(imgTags[0], convert_img);
+
+        for (let element of imgTags) {
+            await con_img_ai(element, convert_img)
+        }
     } catch (error) {
         console.error("Error processing image:", error);
     }

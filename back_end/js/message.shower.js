@@ -37,7 +37,7 @@ class Notyfclass {
                     {
                         type: 'info',
                         background: '#21ff9f',
-                        duration: 3000,
+                        duration: 15000,
                         dismissible: true
                     }
                 ]
@@ -45,9 +45,9 @@ class Notyfclass {
         });
     }
 
-    showMessage(type, message, isLoading = false) {
+    showMessage(type, message, isLoading = false, dismis = true) {
         // dismiss all befor the opening
-        this.notyf.dismiss(this.loadingNotification)
+        if (dismis) this.notyf.dismiss(this.loadingNotification)
 
         this.loadingNotification = this.notyf.open({
             type: type,

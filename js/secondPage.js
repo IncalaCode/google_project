@@ -50,8 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', function () {
   const panel = document.getElementById('slide-panel');
   const toggleBtn = document.getElementById('toggle-btn');
-  const yesBtn = document.querySelector('.yes-btn');
-  const noBtn = document.querySelector('.no-btn');
+
 
   function togglePanel() {
     panel.classList.toggle('show');
@@ -61,4 +60,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   toggleBtn.addEventListener('click', togglePanel);
 
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  const boxes = document.querySelectorAll('.radio_bnt');
+  boxes.forEach(box => {
+    box.addEventListener('click', function () {
+      // Remove 'active' class from all buttons
+      boxes.forEach(b => b.classList.remove('active'));
+      // Add 'active' class to the clicked button
+      this.classList.add('active');
+    });
+  });
 });

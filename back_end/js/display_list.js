@@ -94,6 +94,7 @@ export async function display_list(convertfile, gen) {
     displayListElement.classList.add('fade-in', "main_display")// Clear any existing content
 
     displayListElement.innerHTML = convertfile;
+    displayListElement.setAttribute("data-type", "1")
 
 
     // for selecting the selectable place 

@@ -8,10 +8,25 @@ class errorcount {
 
 export default class ImportAI {
     constructor() {
-        this.genAI = new GoogleGenerativeAI("AIzaSyDTYPNXHwNE5nA5-uHRnBhS_mCXJSoDHXQ"); // Replace with your actual API key
+        this.genAI = new GoogleGenerativeAI(process.env.api_key); // Replace with your actual API key
         // The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
-        this.model = this.genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+        // Initialize the Gemini 1.5 model with specific safety settings
+        this.model = this.genAI.getGenerativeModel(
+            {
+                model: "gemini-1.5-flash" // Specify the model to be used
+            },
+            {
+                safety_settings: {
+                    'HATE': 'BLOCK_NONE', // No blocking for hate speech
+                    'HARASSMENT': 'BLOCK_NONE', // No blocking for harassment
+                    'SEXUAL': 'BLOCK_NONE', // No blocking for sexual content
+                    'DANGEROUS': 'BLOCK_NONE' // No blocking for dangerous behavior
+                }
+            }
+        );
+
         this.history = ""
+        this.fphistory = ""
     }
 
     // Function to convert a base64-encoded image string to a GoogleGenerativeAI.Part object
@@ -91,10 +106,11 @@ export default class ImportAI {
     
         Please use the following information to generate a question:
     
-        Information: [${focus_points}]
+        Information(foucs point): [${focus_points}]
         Question Type: [${type}]
         Difficulty Level: [${difficulty}]
-        ${typeSpecificInstruction}
+        history of focus points [${this.fphistory}]
+        typeSpecificInstruction :[${typeSpecificInstruction}]
     
         Return the question only in JSON format, with the following structure:
     
@@ -104,30 +120,33 @@ export default class ImportAI {
             "explanation": ""
         }`;
 
+        this.fphistory = this.fphistory + " " + focus_points
+
         try {
 
             const result = await this.model.generateContent(prompt);
             const response = await result.response;
-            var text = response.text();
-            text = this.parseJsonFromText(text)
-            console.log(text)
-            return text
+            const text = await response.text();
+            const parsedText = this.parseJsonFromText(text);
+            console.log(parsedText);
+            errorcount.count = 0;
+            return parsedText;
         } catch (error) {
-            if (errorcount.count == 2) {
-                errorcount.count = 0
-                NotyfService.showMessage('error', `error : ${error.message} !!`)
-                setTimeout(() => {
-                    this.generateQuestions(focus_points, type, difficulty);
-                    NotyfService.showMessage('info', "It will take some time to be present.");
-
-                }, 7000);
-
-                return
+            errorcount.count++;
+            if (errorcount.count == 1) {
+                errorcount.count = 0;
+                NotyfService.showMessage('error', `Error: ${error.message} !!`);
+                NotyfService.showMessage('info', "the more you ask the more you wait ;).");
+                await new Promise(resolve => setTimeout(resolve, 16000)); // Wait for 16 seconds
+                NotyfService.showMessage('loading', "Continuing to generate");
+            } else {
+                NotyfService.showMessage('info', "It will take some time to be present.", false, false);
+                NotyfService.showMessage('loading', "Continuing to generate");
             }
-            errorcount.count++
-            this.generateQuestions(focus_points, type, difficulty)
-            console.error(error)
 
+            console.error(error);
+            // Retry the request
+            return this.generateQuestions(focus_points, type, difficulty);
         }
 
     }
@@ -142,14 +161,22 @@ export default class ImportAI {
 
 
     async genrateDox(value) {
-        const prompt = `generate a 2000 word article about "${value}"`
-        const result = await this.model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
-        return text
-
+        try {
+            const prompt = `generate a 2000 word article about "${value}"`
+            const result = await this.model.generateContent(prompt);
+            const response = await result.response;
+            const text = response.text();
+            return text
+        } catch (e) {
+            NotyfService.dismiss('loading', "wait a litle bit generating")
+            if (errorcount.count > 2) {
+                throw NotyfService.showMessage('error', "try again the Input")
+            }
+            this.genrateDox(value)
+        }
     }
     async getchat(value, get) {
+        NotyfService.showMessage('info', "Running in the background")
         const prompt = `{chat_history : "${this.history},now_user_prompt : ${value}} from the bove json put the history_chat at memory to help you
         to answer the user question and only return the anwer and if you dont have any json string answer the user  as be chat suporter`
         const result = await this.model.generateContent(prompt);
@@ -158,12 +185,35 @@ export default class ImportAI {
 
         this.history += `,[user : ${value}]`
 
-        if (get) {
-            document.getElementById('').classList.add('')
-        }
+
+        document.getElementById('chatPopup').style.display = 'block'
+
         return text
 
     }
 
+    async get_suggestion(value) {
+        const prompt = `
+        make a 5 suggestion a about this topic or word and the word or topic is [ ${value}]  and  return only this in this json format with there reference for exmaple 
+    [ { word: 'topic_suggetion', reference: 'https://example.com/apple' },
+       { word: 'topic_suggetion', reference: 'https://example.com/apple' },... until 5 suggestion]
+        `
+        const result = await this.model.generateContent(prompt);
+        const response = await result.response;
+        const text = response.text();
+        console.log(text)
+        return this.parseJsonFromText_list(text)
+    }
+
+    parseJsonFromText_list(text) {
+        const startIndex = text.indexOf('[');
+        const endIndex = text.lastIndexOf(']');
+        const trimmedJsonData = text.substring(startIndex, endIndex + 1);
+        console.log(trimmedJsonData)
+        const parsedData = JSON.parse(trimmedJsonData);
+        return parsedData;
+    }
+
 
 }
+

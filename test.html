@@ -4,30 +4,156 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Slide-down Panel with Toggle Button</title>
+        <title>Proposal Viewer</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
         <style>
             body {
-                font-family: Arial, sans-serif;
                 margin: 0;
-                padding: 0;
+                background-color: #f8f9fa;
             }
 
+            .container-fluid {
+                height: 100vh;
+            }
 
+            .left-side {
+                overflow-y: auto;
+                border-right: 1px solid #ccc;
+            }
 
-            .push-content {
-                transition: all 0.3s ease;
+            .row-button {
+                margin-bottom: 10px;
+            }
+
+            .row-button button {
+                width: 100%;
+                padding: 10px;
+                text-align: left;
+                font-size: 14px;
+                cursor: pointer;
+            }
+
+            .right-side {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+            }
+
+            .right-side iframe {
+                border: none;
+            }
+
+            .viewer {
+                width: 100%;
+                height: 100%;
+                overflow: auto;
             }
         </style>
-
     </head>
 
     <body>
+        <div class="container-fluid d-flex">
+            <div class="row flex-fill">
+                <div class="col-md-4 left-side p-3" id="buttonContainer">
+                    <!-- Buttons will be generated here by JavaScript -->
+                </div>
+                <div class="col-md-8 right-side p-3">
+                    <div id="viewer" class="viewer"></div>
+                </div>
+            </div>
+        </div>
 
+        <!-- Bootstrap JS and dependencies -->
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+        <!-- Mammoth.js Library for DOCX -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.9.359/pdf.min.js"></script>
 
         <script>
+            const proposals = [
+                {
+                    name: "Example Proposal 1",
+                    sender: "John Doe",
+                    url: "/path/to/doc1.docx",
+                    type: "docx"
+                },
+                {
+                    name: "Example Proposal 2",
+                    sender: "Jane Smith",
+                    url: "C:\\Users\\Caleb\\Downloads\\Documents\\10-predictive-parsing.ppt.pdf",
+                    type: "pdf"
+                }
+                // Add more proposals as needed
+            ];
 
+            function loadDocx(url) {
+                fetch(url)
+                    .then(response => response.arrayBuffer())
+                    .then(arrayBuffer => mammoth.convertToHtml({ arrayBuffer: arrayBuffer }))
+                    .then(result => {
+                        document.getElementById('viewer').innerHTML = result.value;
+                    })
+                    .catch(err => console.error(err));
+            }
+
+            function loadPdf(url) {
+                var loadingTask = pdfjsLib.getDocument(url);
+                loadingTask.promise.then(function (pdf) {
+                    pdf.getPage(1).then(function (page) {
+                        var scale = 1.5;
+                        var viewport = page.getViewport({ scale: scale });
+
+                        var canvas = document.createElement('canvas');
+                        var context = canvas.getContext('2d');
+                        canvas.height = viewport.height;
+                        canvas.width = viewport.width;
+
+                        var renderContext = {
+                            canvasContext: context,
+                            viewport: viewport
+                        };
+                        page.render(renderContext).promise.then(function () {
+                            document.getElementById('viewer').innerHTML = '';
+                            document.getElementById('viewer').appendChild(canvas);
+                        });
+                    });
+                }, function (reason) {
+                    console.error(reason);
+                });
+            }
+
+            function createButtons() {
+                const buttonContainer = document.getElementById('buttonContainer');
+
+                proposals.forEach(proposal => {
+                    const buttonDiv = document.createElement('div');
+                    buttonDiv.className = 'row-button';
+
+                    const button = document.createElement('button');
+                    button.className = 'btn btn-primary btn-block text-left';
+                    button.innerHTML = `Proposal Name: ${proposal.name}<br>Sender: ${proposal.sender}`;
+                    button.onclick = () => {
+                        if (proposal.type === "docx") {
+                            loadDocx(proposal.url);
+                        } else if (proposal.type === "pdf") {
+                            loadPdf(proposal.url);
+                        }
+                    };
+
+                    buttonDiv.appendChild(button);
+                    buttonContainer.appendChild(buttonDiv);
+                });
+            }
+
+            // Generate the buttons when the page loads
+            window.onload = createButtons;
         </script>
-
     </body>
 
 </html>

@@ -1,5 +1,6 @@
 
 import { showBotMessage } from "./generatequestion.js";
+import NotyfService from "./message.shower.js";
 
 let mode = '';
 let answers = {};
@@ -37,11 +38,12 @@ export function createCard(cardType, title, question, answer, explanation, optio
     const card = document.createElement('div');
     card.classList.add('card', 'mb-4', 'quiz-card');
     card.dataset.resultId = `result-${Counter.count}`;;
-    card.dataset.drawerId = `drawer-${Counter.count}`;;
+    card.dataset.drawerId = `drawer-${Counter.count}`;
+    card.dataset.correctAnswer = answer
 
     const cardHeader = document.createElement('div');
     cardHeader.classList.add('card-header');
-    cardHeader.innerHTML = `<h5>${title}</h5>`;
+    cardHeader.innerHTML = `<h5>${title}</h5> ${title == "Essay Question" || title == "Short Answer Question" ? '<h6>("Enter to submit the answer")<h6>' : ''}`;
     card.appendChild(cardHeader);
 
     const cardBody = document.createElement('div');
@@ -54,15 +56,15 @@ export function createCard(cardType, title, question, answer, explanation, optio
 
     const btnRow = document.createElement('div');
     btnRow.classList.add('btn-row');
-    btnRow.id = `question-${Counter.count}`;
+    btnRow.id = `question-${Counter.count} `;
     if (cardType === 'trueFalse') {
-        createTrueFalseButtons(btnRow, title, answer);
+        createTrueFalseButtons(card, btnRow, title,);
     } else if (cardType === 'multipleChoice') {
-        createMultipleChoiceButtons(btnRow, title, answer, options);
+        createMultipleChoiceButtons(card, btnRow, title, options);
     } else if (cardType === 'shortAnswer') {
-        createShortAnswerInput(btnRow, title, answer);
+        createShortAnswerInput(card, btnRow, title,);
     } else if (cardType === 'essay') {
-        createEssayInput(btnRow, title, answer);
+        createEssayInput(card, btnRow, title,);
     }
     cardBody.appendChild(btnRow);
 
@@ -80,7 +82,7 @@ export function createCard(cardType, title, question, answer, explanation, optio
     const footerIcons = document.createElement('div');
     footerIcons.classList.add('footer-icons');
     footerIcons.innerHTML =
-        '<i class="fas fa-redo-alt reset-btn"></i>' +
+        // '<i class="fas fa-redo-alt reset-btn"></i>' +
         '<i class="fas fa-robot call"></i>';
     cardFooter.appendChild(footerIcons);
 
@@ -100,50 +102,46 @@ export function createCard(cardType, title, question, answer, explanation, optio
     document.getElementById('card-container').appendChild(card);
 }
 
-function createTrueFalseButtons(btnRow, title, correctAnswer) {
+function createTrueFalseButtons(card, btnRow, title) {
     const options = ['True', 'False'];
     options.forEach(option => {
         const btn = document.createElement('button');
         btn.classList.add('btn', option === 'True' ? 'btn-primary' : 'btn-danger', 'btn-column');
         btn.textContent = option;
-        btn.setAttribute('data-answer', option.toLowerCase());
-        btn.addEventListener('click', () => submitAnswer('trueFalse', title, btn.getAttribute('data-answer'), btnRow.id));
+        btn.addEventListener('click', () => submitAnswer(card, 'trueFalse', title, btnRow.id, option));
         btnRow.appendChild(btn);
     });
 }
 
-function createMultipleChoiceButtons(btnRow, title, correctAnswer, options) {
+function createMultipleChoiceButtons(card, btnRow, title, options) {
     options.forEach(option => {
         const btn = document.createElement('button');
         btn.classList.add('btn', 'btn-primary', 'btn-column');
         btn.textContent = option;
-        btn.setAttribute('data-answer', option);
-        btn.addEventListener('click', () => submitAnswer('multipleChoice', title, btn.getAttribute('data-answer'), btnRow.id));
+        btn.addEventListener('click', () => submitAnswer(card, 'multipleChoice', title, btnRow.id, option));
         btnRow.appendChild(btn);
     });
 }
 
-function createShortAnswerInput(btnRow, title, correctAnswer) {
+function createShortAnswerInput(card, btnRow, title, correctAnswer) {
     const input = document.createElement('input');
     input.type = 'text';
     input.classList.add('form-control', 'question-input');
-    input.setAttribute('data-answer', correctAnswer);
     input.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
-            submitAnswer('shortAnswer', title, input.value, btnRow.id);
+            submitAnswer(card, 'shortAnswer', title, btnRow.id, input.value);
         }
     });
     btnRow.appendChild(input);
 }
 
-function createEssayInput(btnRow, title, correctAnswer) {
+function createEssayInput(card, btnRow, title, correctAnswer) {
     const textarea = document.createElement('textarea');
     textarea.classList.add('form-control', 'question-input');
     textarea.rows = 4;
-    textarea.setAttribute('data-answer', correctAnswer);
     textarea.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
-            submitAnswer('essay', title, textarea.value, btnRow.id);
+            submitAnswer(card, 'essay', title, btnRow.id, textarea.value);
         }
     });
     btnRow.appendChild(textarea);
@@ -157,13 +155,13 @@ function createDrawer(answer, explanation, id) {
     const drawerContent = document.createElement('div');
     drawerContent.classList.add('drawer-content');
     drawerContent.id = "openall"
-    drawerContent.innerHTML = `<strong>Answer:</strong> ${answer}<br><strong>Explanation:</strong> ${explanation}`;
+    drawerContent.innerHTML = `<strong> Answer:</strong> ${answer} <br><strong>Explanation:</strong> ${explanation}`;
     drawer.appendChild(drawerContent);
 
     return drawer;
 }
 
-function submitAnswer(questionType, title, userAnswer, id) {
+function submitAnswer(card, questionType, title, id, userAnswer) {
     // Use the correct ID format for resultDiv and drawer
     const resultDiv = document.getElementById(`result-${id.replace(/^question-/, '')}`);
     const drawer = document.getElementById(`drawer-${id.replace(/^question-/, '')}`);
@@ -173,19 +171,28 @@ function submitAnswer(questionType, title, userAnswer, id) {
         return;
     }
 
-    const correctAnswer = document.querySelector(`#${id} [data-answer]`).getAttribute('data-answer');
+    const correctAnswer = card.dataset.correctAnswer
+    // userAnswer = document.querySelector(`#${id} [data-answer]`)
 
     if (mode === 'quiz') {
         showAnswer(questionType, title, userAnswer, correctAnswer, resultDiv, drawer);
     } else {
         resultDiv.textContent = 'Answer submitted.';
-        checkAllAnswered();
+        card.dataset.userAnswer = userAnswer
     }
 }
 
 function showAnswer(questionType, title, userAnswer, correctAnswer, resultDiv, drawer) {
     if (questionType === 'trueFalse' || questionType === 'multipleChoice') {
-        resultDiv.textContent = userAnswer === correctAnswer ? 'Correct!' : 'Incorrect.';
+        const userAnswerLower = userAnswer.trim().toLowerCase();
+        const correctAnswerLower = correctAnswer.trim().toLowerCase();
+
+        // Ensure that empty string and "false" are not considered the same
+        if (userAnswerLower === correctAnswerLower && userAnswer !== "" && correctAnswer !== "") {
+            resultDiv.textContent = 'Correct!';
+        } else {
+            resultDiv.textContent = 'Incorrect.';
+        }
     } else {
         const similarity = calculateCosineSimilarity(userAnswer, correctAnswer);
         resultDiv.textContent = similarity > 0.7 ? 'Correct!' : 'Incorrect.';
@@ -193,13 +200,16 @@ function showAnswer(questionType, title, userAnswer, correctAnswer, resultDiv, d
     drawer.classList.add('open');
 }
 
-function checkAllAnswered() {
-    if (mode === 'test' || mode === 'exam') {
-        const allInputs = document.querySelectorAll('.question-input');
-        const allAnswered = Array.from(allInputs).every(input => input.value.trim() !== '');
-        document.querySelector('.submit-btn').style.display = allAnswered ? 'block' : 'none';
-    }
-}
+// function checkAllAnswered(cards) {
+//     if (mode === 'test' || mode === 'exam') {
+//         cards.forEach((card, index) => {
+//             if (!card.dataset.userAnswer) {
+
+//             }
+//         })
+//         return true
+//     }
+// }
 
 function calculateCosineSimilarity(text1, text2) {
     const vectorize = text => {
@@ -236,7 +246,7 @@ function showPreviousCard() {
     const cards = document.querySelectorAll('.quiz-card');
     if (currentQuestionIndex > 0) {
         currentQuestionIndex--;
-        cards.forEach((card, index) => {
+        cards.map((card, index) => {
             card.style.display = index === currentQuestionIndex ? 'block' : 'none';
         });
     }
@@ -250,18 +260,17 @@ function showAllCards() {
 }
 
 function submitAllAnswers() {
-    const allInputs = document.querySelectorAll('.question-input');
-    allInputs.forEach(input => {
-        const id = input.parentElement.id;
-        const title = document.querySelector(`#${id} .card-header h5`).textContent;
-        answers[title] = input.value;
-    });
-    showAllAnswers();
+    const cards = document.querySelectorAll('.quiz-card');
+    showAllAnswers(cards);
+    if (mode == 'test') {
+        NotyfService.showMessage('info', "Test Mode Was ON")
+    }
 }
 
-function showAllAnswers() {
-    const cards = document.querySelectorAll('.quiz-card');
-    cards.forEach(card => {
+
+function showAllAnswers(cards) {
+
+    cards.forEach((card, index) => {
         const title = card.querySelector('.card-header h5').textContent.trim();
         const questionType = getQuestionType(title);
 
@@ -277,12 +286,21 @@ function showAllAnswers() {
             return;
         }
 
-        drawer.classList.add('open')
 
-        const correctAnswer = card.querySelector(`[data-answer]`).getAttribute('data-answer');
-        const userAnswer = answers[title];
-        showAnswer(questionType, title, userAnswer, correctAnswer, resultDiv, drawer);
+
+        const correctAnswer = card.dataset.correctAnswer
+        const userAnswer = card.dataset.userAnswer;
+        console.log(userAnswer)
+        if (!userAnswer && mode == "exam") {
+            return NotyfService.showMessage("warning", `answer  questions ${index + 1} befor submit `, false, false)
+        }
+        else {
+            showAnswer(questionType, title, userAnswer || "", correctAnswer, resultDiv, drawer);
+            drawer.classList.add('open')
+        }
+
     });
+
 
 }
 
@@ -295,6 +313,8 @@ function getQuestionType(title) {
     if (title.includes('Essay')) return 'essay';
     return '';
 }
+
+
 
 
 // card.querySelectorAll('.call').forEach(function (button) {
