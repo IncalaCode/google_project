@@ -268,9 +268,9 @@ const data = new GeneratedText();
 
 export async function generate() {
     try {
-        if (!data.history.docx.full_doc) {
-            return NotyfService.showMessage('error', "add topic or import file")
-        }
+        // if (!data.history.docx.full_doc) {
+        //     return NotyfService.showMessage('error', "add topic or import file")
+        // }
 
         NotyfService.showMessage('loading', "started to generate the question", true)
 
