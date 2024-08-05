@@ -8,6 +8,7 @@ function load() {
     const loader = document.getElementById('loader');
     let currentIndex = -1; // To keep track of the current active suggestion
     let debounceTimeout;
+    let lastKeyPressTime = 0;
 
     function showLoader() {
         loader.style.display = 'block';
@@ -120,10 +121,25 @@ function load() {
             handleNavigation(e);
             return;
         }
-        clearTimeout(debounceTimeout);
-        debounceTimeout = setTimeout(showSuggestions, 700);
-    });
 
+        const currentTime = Date.now();
+        const timeDifference = currentTime - lastKeyPressTime;
+        lastKeyPressTime = currentTime;
+
+        // Adjust debounce delay based on the user's typing speed
+        let debounceDelay;
+        if (timeDifference < 100) {
+            debounceDelay = 450; // User is typing fast
+        } else if (timeDifference < 300) {
+            debounceDelay = 600; // User is typing at a moderate speed
+        } else {
+            debounceDelay = 700; // User is typing slowly
+        }
+        console.log(debounceDelay)
+
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(showSuggestions, debounceDelay);
+    });
     input.addEventListener('blur', () => {
         setTimeout(() => {
             suggestionList.style.display = 'none';

@@ -62,4 +62,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-
+document.addEventListener('DOMContentLoaded', () => {
+  const boxes = document.querySelectorAll('.radio_bnt');
+  boxes.forEach(box => {
+    box.addEventListener('click', function () {
+      // Remove 'active' class from all buttons
+      boxes.forEach(b => b.classList.remove('active'));
+      // Add 'active' class to the clicked button
+      this.classList.add('active');
+    });
+  });
+});

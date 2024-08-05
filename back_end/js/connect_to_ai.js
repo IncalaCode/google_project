@@ -26,6 +26,7 @@ export default class ImportAI {
         );
 
         this.history = ""
+        this.fphistory = ""
     }
 
     // Function to convert a base64-encoded image string to a GoogleGenerativeAI.Part object
@@ -105,10 +106,11 @@ export default class ImportAI {
     
         Please use the following information to generate a question:
     
-        Information: [${focus_points}]
+        Information(foucs point): [${focus_points}]
         Question Type: [${type}]
         Difficulty Level: [${difficulty}]
-        ${typeSpecificInstruction}
+        history of focus points [${this.fphistory}]
+        typeSpecificInstruction :[${typeSpecificInstruction}]
     
         Return the question only in JSON format, with the following structure:
     
@@ -118,7 +120,10 @@ export default class ImportAI {
             "explanation": ""
         }`;
 
+        this.fphistory = this.fphistory + " " + focus_points
+
         try {
+
             const result = await this.model.generateContent(prompt);
             const response = await result.response;
             const text = await response.text();
@@ -128,14 +133,14 @@ export default class ImportAI {
             return parsedText;
         } catch (error) {
             errorcount.count++;
-            if (errorcount.count == 2) {
+            if (errorcount.count == 1) {
                 errorcount.count = 0;
                 NotyfService.showMessage('error', `Error: ${error.message} !!`);
                 NotyfService.showMessage('info', "the more you ask the more you wait ;).");
-                await new Promise(resolve => setTimeout(resolve, 15000)); // Wait for 15 seconds
+                await new Promise(resolve => setTimeout(resolve, 16000)); // Wait for 16 seconds
                 NotyfService.showMessage('loading', "Continuing to generate");
             } else {
-                NotyfService.showMessage('info', "It will take some time to be present.");
+                NotyfService.showMessage('info', "It will take some time to be present.", false, false);
                 NotyfService.showMessage('loading', "Continuing to generate");
             }
 
@@ -156,14 +161,22 @@ export default class ImportAI {
 
 
     async genrateDox(value) {
-        const prompt = `generate a 2000 word article about "${value}"`
-        const result = await this.model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
-        return text
-
+        try {
+            const prompt = `generate a 2000 word article about "${value}"`
+            const result = await this.model.generateContent(prompt);
+            const response = await result.response;
+            const text = response.text();
+            return text
+        } catch (e) {
+            NotyfService.dismiss('loading', "wait a litle bit generating")
+            if (errorcount.count > 2) {
+                throw NotyfService.showMessage('error', "try again the Input")
+            }
+            this.genrateDox(value)
+        }
     }
     async getchat(value, get) {
+        NotyfService.showMessage('info', "Running in the background")
         const prompt = `{chat_history : "${this.history},now_user_prompt : ${value}} from the bove json put the history_chat at memory to help you
         to answer the user question and only return the anwer and if you dont have any json string answer the user  as be chat suporter`
         const result = await this.model.generateContent(prompt);
@@ -172,9 +185,9 @@ export default class ImportAI {
 
         this.history += `,[user : ${value}]`
 
-        if (get) {
-            document.getElementById('chatPopup').classList.add('show')
-        }
+
+        document.getElementById('chatPopup').style.display = 'block'
+
         return text
 
     }

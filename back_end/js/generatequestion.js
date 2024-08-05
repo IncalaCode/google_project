@@ -43,25 +43,28 @@ class GeneratedText {
         const totalWords = words.length;
         console.log(selectedTypes)
 
+        // for clering the focus point 
+        this.history.docx.focus_points = []
+
         // Initialize wordLimits based on selectedTypes and numQuestions
         const wordLimits = {};
 
         Array.from(selectedTypes).forEach(type => {
             switch (type) {
                 case 't_f':
-                    wordLimits[type] = totalWords * 0.15 / numQuestions;
+                    wordLimits[type] = totalWords * 1 / numQuestions;
                     break;
                 case 'match':
-                    wordLimits[type] = totalWords * 0.20 / numQuestions;
+                    wordLimits[type] = totalWords * 1 / numQuestions;
                     break;
                 case 'choose':
-                    wordLimits[type] = totalWords * 0.30 / numQuestions;
+                    wordLimits[type] = totalWords * 1 / numQuestions;
                     break;
                 case 'short_answer':
-                    wordLimits[type] = totalWords * 0.40 / numQuestions;
+                    wordLimits[type] = totalWords * 1 / numQuestions;
                     break;
                 case 'essay':
-                    wordLimits[type] = totalWords * 0.50 / numQuestions;
+                    wordLimits[type] = totalWords * 1 / numQuestions;
                     break;
                 default:
                     break;
@@ -73,12 +76,14 @@ class GeneratedText {
 
         let questionTypeIndex = 0;
 
+        console.log(wordLimits)
+
         words.forEach(word => {
             currentWords.push(word);
 
             // Check if currentQuestionType matches the type being processed
             const maxWords = wordLimits[currentQuestionType];
-            if (currentWords.length >= maxWords) {
+            if (currentWords.length >= Math.round(maxWords)) {
                 const spanText = currentWords.join(' ');
                 this.history.docx.focus_points.push({ text: spanText, type: currentQuestionType });
                 this.question_type[currentQuestionType].push(spanText);
@@ -142,16 +147,14 @@ class GeneratedText {
         while (remainingQuestions > 0) {
             for (const type of selectedTypes) {
                 if (this.question_type[type].length > 0 && remainingQuestions > 0) {
-                    // Process up to three questions of the same type
-                    for (let i = 0; i < 3 && this.question_type[type].length > 0 && remainingQuestions > 0; i++) {
-                        const focusPoint = this.question_type[type].shift();
-                        var generatedQuestion = await ai.generateQuestions(focusPoint, type);
-                        selectedQuestions.push({ text: generatedQuestion, type: type });
-                        remainingQuestions--;
-                    }
+                    const focusPoint = this.question_type[type].shift();
+                    var generatedQuestion = await ai.generateQuestions(focusPoint, type);
+                    selectedQuestions.push({ text: generatedQuestion, type: type });
+                    remainingQuestions--;
                 }
             }
         }
+
 
         this.info.question_mode[mode][difficulty].push(selectedQuestions);
 
@@ -175,23 +178,32 @@ class GeneratedText {
 
     displayVersions() {
         const versionContainer = document.getElementById('versionContainer');
+
         versionContainer.innerHTML = '';
-
-        console.log(this.history)
-
         this.history.docx.versions.forEach((version, index) => {
             const button = document.createElement('button');
             button.textContent = `quenGen ${index}: ${version.timestamp}`;
             button.classList.add('version-button');
-            button.id = index
+            button.id = index;
             button.addEventListener('click', () => {
-                displayGeneratedQuestions(version.generated[
+                displayGeneratedQuestions(
+                    version.generated[
                     version.generated.length > parseInt(button.id) ? parseInt(button.id) : (version.generated.length - 1 || 0)
-                ], version.mode);
-                NotyfService.showMessage('success', `swithed to ${version.timestamp}`)
+                    ],
+                    version.mode
+                );
+                NotyfService.showMessage('success', `switched to ${version.timestamp}`);
+
+                // Remove 'active' class from all buttons
+                const allButtons = document.querySelectorAll('.version-button');
+                allButtons.forEach(b => b.classList.remove('active'));
+
+                // Add 'active' class to the clicked button
+                button.classList.add('active');
             });
             versionContainer.appendChild(button);
         });
+
     }
 
     save() {
@@ -256,6 +268,10 @@ const data = new GeneratedText();
 
 export async function generate() {
     try {
+        if (!data.history.docx.full_doc) {
+            return NotyfService.showMessage('error', "add topic or import file")
+        }
+
         NotyfService.showMessage('loading', "started to generate the question", true)
 
         data.history.docx.full_doc = document.getElementById('display_list').innerText.trim();

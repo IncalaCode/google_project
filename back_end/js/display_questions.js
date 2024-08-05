@@ -43,7 +43,7 @@ export function createCard(cardType, title, question, answer, explanation, optio
 
     const cardHeader = document.createElement('div');
     cardHeader.classList.add('card-header');
-    cardHeader.innerHTML = `<h5>${title}</h5>`;
+    cardHeader.innerHTML = `<h5>${title}</h5> ${title == "Essay Question" || title == "Short Answer Question" ? '<h6>("Enter to submit the answer")<h6>' : ''}`;
     card.appendChild(cardHeader);
 
     const cardBody = document.createElement('div');
@@ -56,7 +56,7 @@ export function createCard(cardType, title, question, answer, explanation, optio
 
     const btnRow = document.createElement('div');
     btnRow.classList.add('btn-row');
-    btnRow.id = `question-${Counter.count}`;
+    btnRow.id = `question-${Counter.count} `;
     if (cardType === 'trueFalse') {
         createTrueFalseButtons(card, btnRow, title,);
     } else if (cardType === 'multipleChoice') {
@@ -129,7 +129,7 @@ function createShortAnswerInput(card, btnRow, title, correctAnswer) {
     input.classList.add('form-control', 'question-input');
     input.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
-            submitAnswer(card, 'shortAnswer', title, input.value, btnRow.id);
+            submitAnswer(card, 'shortAnswer', title, btnRow.id, input.value);
         }
     });
     btnRow.appendChild(input);
@@ -141,7 +141,7 @@ function createEssayInput(card, btnRow, title, correctAnswer) {
     textarea.rows = 4;
     textarea.addEventListener('keypress', (event) => {
         if (event.key === 'Enter') {
-            submitAnswer(card, 'essay', title, textarea.value, btnRow.id);
+            submitAnswer(card, 'essay', title, btnRow.id, textarea.value);
         }
     });
     btnRow.appendChild(textarea);
@@ -155,7 +155,7 @@ function createDrawer(answer, explanation, id) {
     const drawerContent = document.createElement('div');
     drawerContent.classList.add('drawer-content');
     drawerContent.id = "openall"
-    drawerContent.innerHTML = `<strong>Answer:</strong> ${answer}<br><strong>Explanation:</strong> ${explanation}`;
+    drawerContent.innerHTML = `<strong> Answer:</strong> ${answer} <br><strong>Explanation:</strong> ${explanation}`;
     drawer.appendChild(drawerContent);
 
     return drawer;
@@ -183,8 +183,16 @@ function submitAnswer(card, questionType, title, id, userAnswer) {
 }
 
 function showAnswer(questionType, title, userAnswer, correctAnswer, resultDiv, drawer) {
-    if (questionType == 'trueFalse' || questionType === 'multipleChoice') {
-        resultDiv.textContent = userAnswer.toLowerCase() == correctAnswer.toLowerCase() || !userAnswer || !correctAnswer ? 'Correct!' : 'Incorrect.';
+    if (questionType === 'trueFalse' || questionType === 'multipleChoice') {
+        const userAnswerLower = userAnswer.trim().toLowerCase();
+        const correctAnswerLower = correctAnswer.trim().toLowerCase();
+
+        // Ensure that empty string and "false" are not considered the same
+        if (userAnswerLower === correctAnswerLower && userAnswer !== "" && correctAnswer !== "") {
+            resultDiv.textContent = 'Correct!';
+        } else {
+            resultDiv.textContent = 'Incorrect.';
+        }
     } else {
         const similarity = calculateCosineSimilarity(userAnswer, correctAnswer);
         resultDiv.textContent = similarity > 0.7 ? 'Correct!' : 'Incorrect.';
@@ -192,18 +200,16 @@ function showAnswer(questionType, title, userAnswer, correctAnswer, resultDiv, d
     drawer.classList.add('open');
 }
 
-function checkAllAnswered(cards) {
-    if (mode === 'test' || mode === 'exam') {
-        var is_true = true
-        cards.forEach((card, index) => {
-            if (!card.dataset.userAnswer) {
-                NotyfService.showMessage("error", `answer  questions ${index + 1} befor submit `)
-                is_true = false
-            }
-        })
-        return is_true
-    }
-}
+// function checkAllAnswered(cards) {
+//     if (mode === 'test' || mode === 'exam') {
+//         cards.forEach((card, index) => {
+//             if (!card.dataset.userAnswer) {
+
+//             }
+//         })
+//         return true
+//     }
+// }
 
 function calculateCosineSimilarity(text1, text2) {
     const vectorize = text => {
@@ -255,14 +261,16 @@ function showAllCards() {
 
 function submitAllAnswers() {
     const cards = document.querySelectorAll('.quiz-card');
-    if (checkAllAnswered(cards)) {
-        showAllAnswers(cards);
+    showAllAnswers(cards);
+    if (mode == 'test') {
+        NotyfService.showMessage('info', "Test Mode Was ON")
     }
 }
 
+
 function showAllAnswers(cards) {
 
-    cards.forEach(card => {
+    cards.forEach((card, index) => {
         const title = card.querySelector('.card-header h5').textContent.trim();
         const questionType = getQuestionType(title);
 
@@ -278,13 +286,21 @@ function showAllAnswers(cards) {
             return;
         }
 
-        drawer.classList.add('open')
+
 
         const correctAnswer = card.dataset.correctAnswer
         const userAnswer = card.dataset.userAnswer;
         console.log(userAnswer)
-        showAnswer(questionType, title, userAnswer, correctAnswer, resultDiv, drawer);
+        if (!userAnswer && mode == "exam") {
+            return NotyfService.showMessage("warning", `answer  questions ${index + 1} befor submit `, false, false)
+        }
+        else {
+            showAnswer(questionType, title, userAnswer || "", correctAnswer, resultDiv, drawer);
+            drawer.classList.add('open')
+        }
+
     });
+
 
 }
 
