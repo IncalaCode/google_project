@@ -175,13 +175,15 @@ function animate() {
 
 animate();
 
-window.process = {
-    env: {
-        api_key: "AIzaSyDTYPNXHwNE5nA5-uHRnBhS_mCXJSoDHXQ",
-        db_url: 'https://lxnumuxknannlcrjxocv.supabase.co',
-        db_pass: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4bnVtdXhrbmFubmxjcmp4b2N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI0NTg2MzQsImV4cCI6MjAzODAzNDYzNH0.KENzD5uQWiw52Qe7mECJyrHm1Bnr46Gv8yqGJwpZH74'
-    }
-}
+document.addEventListener('DOMContentLoaded', function() {
+    var button = document.querySelectorAll('.choesbutton');
+
+    button.addEventListener('click', function() {
+        button.classList.toggle('active');
+    });
+});
+
+
 
 
 // // chat bot by robera
@@ -211,3 +213,252 @@ window.process = {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+window.process = {
+    env: {
+        api_key: "AIzaSyDTYPNXHwNE5nA5-uHRnBhS_mCXJSoDHXQ",
+        db_url: 'https://lxnumuxknannlcrjxocv.supabase.co',
+        db_pass: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx4bnVtdXhrbmFubmxjcmp4b2N2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI0NTg2MzQsImV4cCI6MjAzODAzNDYzNH0.KENzD5uQWiw52Qe7mECJyrHm1Bnr46Gv8yqGJwpZH74'
+    }
+}
