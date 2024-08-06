@@ -841,3 +841,8 @@ h4 {
     color: #007bff;
     text-decoration: none;
 }
+
+.choesbutton.active {
+    background-color: green;
+    color: #fff;
+}
