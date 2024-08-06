@@ -56,7 +56,7 @@ export function createCard(cardType, title, question, answer, explanation, optio
 
     const btnRow = document.createElement('div');
     btnRow.classList.add('btn-row');
-    btnRow.id = `question-${Counter.count} `;
+    btnRow.id = `question-${Counter.count}`;
     if (cardType === 'trueFalse') {
         createTrueFalseButtons(card, btnRow, title,);
     } else if (cardType === 'multipleChoice') {
