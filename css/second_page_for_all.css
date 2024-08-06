@@ -559,7 +559,7 @@ This is where we add the white background and padding of the content within the 
     left: 0;
     width: 100%;
     height: 100svh;
-    background-color: #38fb23;
+       background-color: #dde4dc;
     border-bottom: 1px solid #eeebeb;
     overflow: auto;
     /* Border at the bottom */
