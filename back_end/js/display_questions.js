@@ -106,7 +106,7 @@ function createTrueFalseButtons(card, btnRow, title) {
     const options = ['True', 'False'];
     options.forEach(option => {
         const btn = document.createElement('button');
-        btn.classList.add('btn', option === 'True' ? 'btn-primary' : 'btn-danger', 'btn-column');
+        btn.classList.add('btn', option === 'True' ? 'btn-primary' : 'btn-danger', 'btn-column','choesbutton');
         btn.textContent = option;
         btn.addEventListener('click', () => submitAnswer(card, 'trueFalse', title, btnRow.id, option));
         btnRow.appendChild(btn);
@@ -116,7 +116,7 @@ function createTrueFalseButtons(card, btnRow, title) {
 function createMultipleChoiceButtons(card, btnRow, title, options) {
     options.forEach(option => {
         const btn = document.createElement('button');
-        btn.classList.add('btn', 'btn-primary', 'btn-column');
+        btn.classList.add('btn', 'btn-primary', 'btn-column','choesbutton');
         btn.textContent = option;
         btn.addEventListener('click', () => submitAnswer(card, 'multipleChoice', title, btnRow.id, option));
         btnRow.appendChild(btn);
