@@ -101,7 +101,7 @@ const texts = [
     "Generate questions from your chosen topics for focused learning.",
     "Powered by GEMINI AI, providing you with an intelligent learning experience.",
     "Have fun learning and growing!",
-    "Developed with 🤖 by @3negas 😊."
+    "Developed with 🤖 by 😊."
 ];
 
 
