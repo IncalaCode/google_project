@@ -1,6 +1,4 @@
-Here's the revised README file for your QenGen platform:
 
----
 
 # **Question Generation (QenGen) Website**
 
